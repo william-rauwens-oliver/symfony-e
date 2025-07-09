@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fil d'actualité{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <h2>Nouvelle publication</h2>
+        {{ form_start(publicationForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+            {{ form_row(publicationForm.content) }}
+            {{ form_row(publicationForm.image) }}
+            {{ form_row(publicationForm.video) }}
+            <button class="btn">Publier</button>
+        {{ form_end(publicationForm) }}
+    {% endif %}
+
+    <hr>
+    <h1>Fil d'actualité</h1>
+    {% for publication in publications %}
+        <div class="publication">
+            <strong>{{ publication.user.username }}</strong>
+            <p>{{ publication.content }}</p>
+            {% if publication.image %}
+                <img src="{{ asset('uploads/images/' ~ publication.image) }}" alt="Image" width="300">
+            {% endif %}
+            <small>Publié le {{ publication.createdAt|date('d/m/Y H:i') }}</small>
+            <div>
+                <form action="{{ path('like_publication', {id: publication.id}) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-link">
+                        ❤️
+                        {{ publication.likes|length }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="comments">
+            <h4>Commentaires</h4>
+            {% for commentaire in publication.commentaires %}
+                <div>
+                    <strong>{{ commentaire.user.username }}</strong> :
+                    {{ commentaire.content }}
+                    <small>({{ commentaire.createdAt|date('d/m/Y H:i') }})</small>
+                </div>
+            {% else %}
+                <p>Aucun commentaire.</p>
+            {% endfor %}
+
+            {% if app.user %}
+                {{ form_start(commentForms[publication.id]) }}
+                    {{ form_row(commentForms[publication.id].content) }}
+                    <button class="btn btn-sm">Commenter</button>
+                {{ form_end(commentForms[publication.id]) }}
+            {% endif %}
+        </div>
+        <hr>
+    {% else %}
+        <p>Aucune publication pour le moment.</p>
+    {% endfor %}
+{% endblock %}
