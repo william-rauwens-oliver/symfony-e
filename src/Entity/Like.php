@@ -6,7 +6,18 @@ use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use App\Entity\Publication;
+use ApiPlatform\Core\Annotation\ApiResource;
 
+#[ApiResource(
+    collectionOperations: [
+        'get',
+        'post' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY')"]
+    ],
+    itemOperations: [
+        'get',
+        'delete' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"]
+    ]
+)]
 #[ORM\Entity(repositoryClass: LikeRepository::class)]
 #[ORM\Table(name: '`like`')]
 class Like

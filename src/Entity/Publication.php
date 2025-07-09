@@ -9,7 +9,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Commentaire;
 use App\Entity\Like;
+use ApiPlatform\Core\Annotation\ApiResource;
 
+#[ApiResource(
+    collectionOperations: [
+        'get',
+        'post' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY')"]
+    ],
+    itemOperations: [
+        'get',
+        'put' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"],
+        'patch' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"],
+        'delete' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"]
+    ]
+)]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 class Publication
 {
@@ -162,5 +175,12 @@ class Publication
         }
 
         return $this;
+    }
+
+    public function getHashtags(): array
+    {
+        if (!$this->content) return [];
+        preg_match_all('/#(\w+)/u', $this->content, $matches);
+        return $matches[1] ?? [];
     }
 }

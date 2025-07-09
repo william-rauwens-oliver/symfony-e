@@ -5,3 +5,15 @@
 2025-07-09 19:35:52.196 CEST [52995] LOG:  database system was shut down at 2025-07-09 19:34:48 CEST
 2025-07-09 19:35:52.198 CEST [52988] LOG:  database system is ready to accept connections
 2025-07-09 19:37:27.222 CEST [53809] FATAL:  database "williamrauwensoliver" does not exist
+2025-07-09 20:11:20.228 CEST [61358] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-09 20:11:20.228 CEST [61358] DETAIL:  Key (email)=(je@gmail.com) already exists.
+2025-07-09 20:11:20.228 CEST [61358] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-09 20:11:46.685 CEST [61373] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-09 20:11:46.685 CEST [61373] DETAIL:  Key (email)=(je@gmail.com) already exists.
+2025-07-09 20:11:46.685 CEST [61373] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-09 20:12:07.748 CEST [61690] ERROR:  update or delete on table "user" violates foreign key constraint "fk_af3c6779a76ed395" on table "publication"
+2025-07-09 20:12:07.748 CEST [61690] DETAIL:  Key (id)=(1) is still referenced from table "publication".
+2025-07-09 20:12:07.748 CEST [61690] STATEMENT:  DELETE FROM "user" WHERE email = 'je@gmail.com'
+2025-07-09 20:12:15.229 CEST [61845] ERROR:  update or delete on table "publication" violates foreign key constraint "fk_ac6340b338b217a7" on table "like"
+2025-07-09 20:12:15.229 CEST [61845] DETAIL:  Key (id)=(2) is still referenced from table "like".
+2025-07-09 20:12:15.229 CEST [61845] STATEMENT:  DELETE FROM publication WHERE user_id = 1

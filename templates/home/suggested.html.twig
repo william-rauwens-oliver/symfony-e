@@ -1,32 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Suggestions{% endblock %}
 
 {% block body %}
-    <!-- Header sticky -->
     <div class="main-header">
-        <h1>Accueil</h1>
+        <h1>Suggestions personnalisées</h1>
     </div>
-
-    <!-- Formulaire de publication -->
-    {% if app.user %}
-        <div class="publication-form">
-            {{ form_start(publicationForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
-                {{ form_widget(publicationForm.content, {'attr': {'placeholder': 'Que se passe-t-il ?'}}) }}
-                <button type="submit" class="btn">Tweeter</button>
-            {{ form_end(publicationForm) }}
-        </div>
-    {% endif %}
-
-    <!-- Fil d'actualité -->
-    {% for publication in publications %}
+    {% for suggestion in suggestions %}
+        {% set publication = suggestion.publication %}
+        {% set score = suggestion.score %}
+        {% set scoreDetails = suggestion.scoreDetails %}
         <article class="publication">
             <div class="publication-header">
                 <span class="publication-author">{{ publication.user.username|default('Utilisateur inconnu') }}</span>
                 <span class="publication-username">@{{ publication.user.username|default('user') }}</span>
                 <span class="publication-date">· {{ publication.createdAt ? publication.createdAt|date('j M') : 'Date inconnue' }}</span>
+                <span class="suggestion-score">Score: {{ score }}</span>
             </div>
-            
             <div class="publication-content">
                 {% set content = publication.content|default('AUCUN CONTENU') %}
                 {% set content_with_links = content|replace({'#':' #'}) %}
@@ -53,7 +43,15 @@
                     </div>
                 {% endif %}
             </div>
-
+            <div class="score-details">
+                <small>
+                    {% if scoreDetails.likes is defined %}Likes: +{{ scoreDetails.likes }}{% endif %}
+                    {% if scoreDetails.comments is defined %} | Commentaires: +{{ scoreDetails.comments }}{% endif %}
+                    {% if scoreDetails.following_likes is defined %} | Suivis: +{{ scoreDetails.following_likes }}{% endif %}
+                    {% if scoreDetails.hashtag_matches is defined %} | Hashtags: +{{ scoreDetails.hashtag_matches }}{% endif %}
+                    {% if scoreDetails.recent_interaction is defined %} | Interaction récente: +{{ scoreDetails.recent_interaction }}{% endif %}
+                </small>
+            </div>
             <div class="publication-actions">
                 <button class="action-btn" onclick="toggleCommentForm({{ publication.id }})">
                     <span class="icon-comment"></span>
@@ -71,53 +69,12 @@
                     <span class="icon-share"></span>
                 </button>
             </div>
-
-            <!-- Commentaires -->
-            {% if publication.getCommentaires|length > 0 %}
-                <div class="comments">
-                    {% for commentaire in publication.getCommentaires %}
-                        <div class="comment">
-                            <div class="comment-header">
-                                <span class="comment-author">{{ commentaire.user ? commentaire.user.username : 'Utilisateur inconnu' }}</span>
-                                <span class="comment-date">{{ commentaire.createdAt ? commentaire.createdAt|date('j M') : 'Date inconnue' }}</span>
-                            </div>
-                            <div class="comment-content">
-                                {{ commentaire.content|default('Aucun contenu') }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <!-- Formulaire de commentaire -->
-            {% if app.user %}
-                <div id="comment-form-{{ publication.id }}" class="comment-form" style="display: none;">
-                    <form action="{{ path('app_home') }}" method="post">
-                        <input type="hidden" name="publication_id" value="{{ publication.id }}">
-                        <textarea name="comment_content" placeholder="Tweeter votre réponse..." required></textarea>
-                        <button type="submit" class="btn">Répondre</button>
-                    </form>
-                </div>
-            {% endif %}
         </article>
     {% else %}
         <div class="publication">
             <div class="publication-content">
-                <p>Aucune publication pour le moment.</p>
+                <p>Aucune suggestion pour le moment.</p>
             </div>
         </div>
     {% endfor %}
-{% endblock %}
-
-{% block javascripts %}
-<script>
-function toggleCommentForm(publicationId) {
-    const form = document.getElementById('comment-form-' + publicationId);
-    if (form.style.display === 'none') {
-        form.style.display = 'block';
-    } else {
-        form.style.display = 'none';
-    }
-}
-</script>
-{% endblock %}
+{% endblock %} 

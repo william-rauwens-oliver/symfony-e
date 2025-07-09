@@ -56,4 +56,13 @@ class PublicationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByHashtag(string $tag): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where($qb->expr()->like('LOWER(p.content)', ':tag'));
+        $qb->setParameter('tag', '%#' . strtolower($tag) . '%');
+        $qb->orderBy('p.createdAt', 'DESC');
+        return $qb->getQuery()->getResult();
+    }
 }

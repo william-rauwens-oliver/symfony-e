@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use App\Repository\CommentaireRepository;
+use App\Service\SuggestionService;
 
 class HomeController extends AbstractController
 {
@@ -58,6 +59,7 @@ class HomeController extends AbstractController
             $entityManager->persist($publication);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre publication a été publiée avec succès !');
             return $this->redirectToRoute('app_home');
         }
 
@@ -77,6 +79,7 @@ class HomeController extends AbstractController
                 $entityManager->persist($commentaire);
                 $entityManager->flush();
                 
+                $this->addFlash('success', 'Votre commentaire a été ajouté avec succès !');
                 return $this->redirectToRoute('app_home');
             }
         }
@@ -124,5 +127,70 @@ class HomeController extends AbstractController
         }
 
         return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/suggested', name: 'app_suggested')]
+    public function suggested(
+        SuggestionService $suggestionService
+    ): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        $suggestions = $suggestionService->suggestPublicationsForUser($user);
+        return $this->render('home/suggested.html.twig', [
+            'suggestions' => $suggestions,
+        ]);
+    }
+
+    #[Route('/hashtag/{tag}', name: 'app_hashtag')]
+    public function hashtag(string $tag, PublicationRepository $publicationRepository): Response
+    {
+        $publications = $publicationRepository->findByHashtag($tag);
+        return $this->render('home/hashtag.html.twig', [
+            'tag' => $tag,
+            'publications' => $publications,
+        ]);
+    }
+
+    #[Route('/search', name: 'app_search')]
+    public function search(Request $request, EntityManagerInterface $em): Response
+    {
+        $query = $request->query->get('q', '');
+        $users = $hashtags = $publications = [];
+        if ($query) {
+            // Recherche utilisateurs
+            $users = $em->getRepository(\App\Entity\User::class)->createQueryBuilder('u')
+                ->where('LOWER(u.username) LIKE :q OR LOWER(u.email) LIKE :q')
+                ->setParameter('q', '%' . strtolower($query) . '%')
+                ->setMaxResults(10)
+                ->getQuery()->getResult();
+            // Recherche hashtags (distincts)
+            $publicationsWithTag = $em->getRepository(\App\Entity\Publication::class)->createQueryBuilder('p')
+                ->where('LOWER(p.content) LIKE :tag')
+                ->setParameter('tag', '%#' . strtolower($query) . '%')
+                ->getQuery()->getResult();
+            $hashtags = [];
+            foreach ($publicationsWithTag as $pub) {
+                foreach ($pub->getHashtags() as $tag) {
+                    if (stripos($tag, $query) !== false && !in_array(strtolower($tag), $hashtags)) {
+                        $hashtags[] = strtolower($tag);
+                    }
+                }
+            }
+            // Recherche publications
+            $publications = $em->getRepository(\App\Entity\Publication::class)->createQueryBuilder('p')
+                ->where('LOWER(p.content) LIKE :q')
+                ->setParameter('q', '%' . strtolower($query) . '%')
+                ->orderBy('p.createdAt', 'DESC')
+                ->setMaxResults(20)
+                ->getQuery()->getResult();
+        }
+        return $this->render('home/search.html.twig', [
+            'query' => $query,
+            'users' => $users,
+            'hashtags' => $hashtags,
+            'publications' => $publications,
+        ]);
     }
 }

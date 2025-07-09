@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer mon compte{% endblock %}
+
+{% block body %}
+    <div class="main-header">
+        <h1>Supprimer mon compte</h1>
+    </div>
+    <div class="auth-container">
+        <div class="auth-form">
+            <p>Êtes-vous sûr de vouloir supprimer votre compte ? <br><strong>Cette action est irréversible.</strong></p>
+            <form method="post">
+                <button type="submit" class="btn" style="background:#e0245e;">Oui, supprimer mon compte</button>
+                <a href="{{ path('app_profile') }}" class="btn" style="background:#657786; margin-left:10px;">Annuler</a>
+            </form>
+        </div>
+    </div>
+{% endblock %} 

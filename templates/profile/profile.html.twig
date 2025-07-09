@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }} (@{{ user.username }}){% endblock %}
+
+{% block body %}
+    <!-- Header du profil -->
+    <div class="main-header">
+        <h1>Profil</h1>
+    </div>
+
+    <!-- Bannière et avatar -->
+    <div class="profile-header">
+        <div class="profile-banner"></div>
+        <div class="profile-avatar">
+            <span style="font-size: 60px;">👤</span>
+        </div>
+    </div>
+
+    <!-- Informations du profil -->
+    <div class="profile-info">
+        <div class="profile-actions">
+            {% if app.user and app.user.id == user.id %}
+                <a href="{{ path('app_profile_edit') }}" class="btn">Modifier le profil</a>
+                <a href="{{ path('app_profile_delete') }}" class="btn" style="background:#e0245e; margin-left:10px;">Supprimer mon compte</a>
+            {% endif %}
+        </div>
+        
+        <div class="profile-details">
+            <h2 class="profile-name">{{ user.username }}</h2>
+            <p class="profile-username">@{{ user.username }}</p>
+            <p class="profile-email">{{ user.email }}</p>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat">
+                <span class="stat-number">{{ user.publications|length }}</span>
+                <span class="stat-label">Publications</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publications de l'utilisateur -->
+    <div class="profile-publications">
+        <h3>Publications</h3>
+        {% if user.publications|length > 0 %}
+            {% for publication in user.publications %}
+                <article class="publication">
+                    <div class="publication-header">
+                        <span class="publication-author">{{ publication.user.username|default('Utilisateur inconnu') }}</span>
+                        <span class="publication-username">@{{ publication.user.username|default('user') }}</span>
+                        <span class="publication-date">· {{ publication.createdAt ? publication.createdAt|date('j M') : 'Date inconnue' }}</span>
+                    </div>
+                    
+                    <div class="publication-content">
+                        {% set content = publication.content|default('AUCUN CONTENU') %}
+                        {% set content_with_links = content|replace({'#':' #'}) %}
+                        {% set words = content_with_links|split(' ') %}
+                        {% for word in words %}
+                            {% if word starts with '#' %}
+                                <a href="{{ path('app_hashtag', {'tag': word|slice(1)|lower }) }}" class="hashtag">{{ word }}</a>
+                            {% else %}
+                                {{ word }}
+                            {% endif %}
+                            {% if not loop.last %} {% endif %}
+                        {% endfor %}
+                        {% if publication.image %}
+                            <div class="publication-media">
+                                <img src="/uploads/images/{{ publication.image }}" alt="Image" style="max-width:100%; border-radius:12px; margin-top:10px;" />
+                            </div>
+                        {% endif %}
+                        {% if publication.video %}
+                            <div class="publication-media">
+                                <video controls style="max-width:100%; border-radius:12px; margin-top:10px;">
+                                    <source src="/uploads/videos/{{ publication.video }}" type="video/mp4">
+                                    Votre navigateur ne supporte pas la vidéo.
+                                </video>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="publication-actions">
+                        <button class="action-btn">
+                            <span class="icon-comment"></span>
+                            <span>{{ publication.getCommentaires|length }}</span>
+                        </button>
+                        <button class="action-btn">
+                            <span class="icon-retweet"></span>
+                            <span>0</span>
+                        </button>
+                        <a href="{{ path('like_publication', {'id': publication.id}) }}" class="action-btn">
+                            <span class="icon-heart"></span>
+                            <span>{{ publication.likes|length }}</span>
+                        </a>
+                        <button class="action-btn">
+                            <span class="icon-share"></span>
+                        </button>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <div class="publication">
+                <div class="publication-content">
+                    <p>Aucune publication pour le moment.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %} 

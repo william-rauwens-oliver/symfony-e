@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -22,6 +23,14 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Répéter le mot de passe'],
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new \Symfony\Component\Validator\Constraints\IsTrue([
+                        'message' => 'Vous devez accepter les conditions d\'utilisation.',
+                    ]),
+                ],
             ])
         ;
     }

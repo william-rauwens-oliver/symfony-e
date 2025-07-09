@@ -6,7 +6,9 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
 
+#[ApiResource(collectionOperations: ['get'], itemOperations: ['get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -34,6 +36,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $username = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class, orphanRemoval: true)]
+    private \Doctrine\Common\Collections\Collection $publications;
+
+    public function __construct()
+    {
+        $this->publications = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getPublications(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): static
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications->add($publication);
+            $publication->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): static
+    {
+        if ($this->publications->removeElement($publication)) {
+            if ($publication->getUser() === $this) {
+                $publication->setUser(null);
+            }
+        }
+        return $this;
+    }
 
     public function getId(): ?int
     {

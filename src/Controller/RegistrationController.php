@@ -31,7 +31,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Redirige vers la page de connexion après inscription
+            $this->addFlash('success', 'Votre compte a été créé avec succès ! Vous pouvez maintenant vous connecter.');
             return $this->redirectToRoute('app_login');
         }
 

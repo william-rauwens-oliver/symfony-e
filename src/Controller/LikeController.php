@@ -35,15 +35,17 @@ class LikeController extends AbstractController
         if ($existingLike) {
             // Si déjà liké, on retire le like (toggle)
             $entityManager->remove($existingLike);
+            $entityManager->flush();
+            $this->addFlash('info', 'Like retiré.');
         } else {
             // Sinon, on ajoute un like
             $like = new Like();
             $like->setUser($user);
             $like->setPublication($publication);
             $entityManager->persist($like);
+            $entityManager->flush();
+            $this->addFlash('success', 'Publication likée !');
         }
-
-        $entityManager->flush();
 
         return $this->redirectToRoute('app_home');
     }

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}#{{ tag }}{% endblock %}
+
+{% block body %}
+    <div class="main-header">
+        <h1>#{{ tag }}</h1>
+    </div>
+    {% for publication in publications %}
+        <article class="publication">
+            <div class="publication-header">
+                <span class="publication-author">{{ publication.user.username|default('Utilisateur inconnu') }}</span>
+                <span class="publication-username">@{{ publication.user.username|default('user') }}</span>
+                <span class="publication-date">· {{ publication.createdAt ? publication.createdAt|date('j M') : 'Date inconnue' }}</span>
+            </div>
+            <div class="publication-content">
+                {% set content = publication.content|default('AUCUN CONTENU') %}
+                {% set content_with_links = content|replace({'#':' #'}) %}
+                {% set words = content_with_links|split(' ') %}
+                {% for word in words %}
+                    {% if word starts with '#' %}
+                        <a href="{{ path('app_hashtag', {'tag': word|slice(1)|lower }) }}" class="hashtag">{{ word }}</a>
+                    {% else %}
+                        {{ word }}
+                    {% endif %}
+                    {% if not loop.last %} {% endif %}
+                {% endfor %}
+                {% if publication.image %}
+                    <div class="publication-media">
+                        <img src="/uploads/images/{{ publication.image }}" alt="Image" style="max-width:100%; border-radius:12px; margin-top:10px;" />
+                    </div>
+                {% endif %}
+                {% if publication.video %}
+                    <div class="publication-media">
+                        <video controls style="max-width:100%; border-radius:12px; margin-top:10px;">
+                            <source src="/uploads/videos/{{ publication.video }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la vidéo.
+                        </video>
+                    </div>
+                {% endif %}
+            </div>
+        </article>
+    {% else %}
+        <div class="publication">
+            <div class="publication-content">
+                <p>Aucune publication pour ce hashtag.</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %} 
