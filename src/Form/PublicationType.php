@@ -15,16 +15,7 @@ class PublicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
-            ->add('image')
-            ->add('video')
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ]);
+            ->add('content');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

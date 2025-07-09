@@ -30,6 +30,31 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $publication->setUser($this->getUser());
             $publication->setCreatedAt(new \DateTimeImmutable());
+
+            // Gestion de l'upload d'image
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads/images';
+                if (!is_dir($imageDirectory)) {
+                    mkdir($imageDirectory, 0777, true);
+                }
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move($imageDirectory, $newFilename);
+                $publication->setImage($newFilename);
+            }
+
+            // Gestion de l'upload de vidéo
+            $videoFile = $form->get('video')->getData();
+            if ($videoFile) {
+                $videoDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads/videos';
+                if (!is_dir($videoDirectory)) {
+                    mkdir($videoDirectory, 0777, true);
+                }
+                $newFilename = uniqid().'.'.$videoFile->guessExtension();
+                $videoFile->move($videoDirectory, $newFilename);
+                $publication->setVideo($newFilename);
+            }
+
             $entityManager->persist($publication);
             $entityManager->flush();
 
@@ -38,19 +63,19 @@ class HomeController extends AbstractController
 
         $publications = $publicationRepository->findBy([], ['createdAt' => 'DESC']);
 
-        $commentForms = [];
-        foreach ($publications as $publication) {
-            $commentaire = new Commentaire();
-            $form = $this->createForm(CommentaireType::class, $commentaire, [
-                'action' => $this->generateUrl('add_comment', ['id' => $publication->getId()])
-            ]);
-            $commentForms[$publication->getId()] = $form->createView();
-        }
+        // Suppression de la génération de commentForms
+        // foreach ($publications as $publication) {
+        //     $commentaire = new Commentaire();
+        //     $form = $this->createForm(CommentaireType::class, $commentaire, [
+        //         'action' => $this->generateUrl('add_comment', ['id' => $publication->getId()])
+        //     ]);
+        //     $commentForms[$publication->getId()] = $form->createView();
+        // }
 
         return $this->render('home/index.html.twig', [
             'publications' => $publications,
             'publicationForm' => $form->createView(),
-            'commentForms' => $commentForms,
+            // 'commentForms' => $commentForms, // supprimé
         ]);
     }
 
