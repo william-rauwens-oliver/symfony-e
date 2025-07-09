@@ -320,11 +320,6 @@ symfony-e/
 3. **Documentation** : Mise à jour du README si nécessaire
 4. **Review** : Code review obligatoire
 
-## 📄 Licence
-
-Ce projet est sous licence propriétaire. Voir le fichier `LICENSE` pour plus de détails.
-
-## 📞 Support
 
 Pour toute question ou problème :
 - **Issues GitHub** : Ouvrir une issue sur le repository
