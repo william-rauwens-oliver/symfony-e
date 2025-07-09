@@ -61,7 +61,27 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $publications = $publicationRepository->findBy([], ['createdAt' => 'DESC']);
+        // Gestion de l'ajout de commentaires
+        if ($request->isMethod('POST') && $request->request->has('publication_id') && $request->request->has('comment_content')) {
+            $publicationId = $request->request->get('publication_id');
+            $commentContent = $request->request->get('comment_content');
+            
+            $publication = $publicationRepository->find($publicationId);
+            if ($publication && $this->getUser() && !empty(trim($commentContent))) {
+                $commentaire = new Commentaire();
+                $commentaire->setUser($this->getUser());
+                $commentaire->setPublication($publication);
+                $commentaire->setContent(trim($commentContent));
+                $commentaire->setCreatedAt(new \DateTimeImmutable());
+                
+                $entityManager->persist($commentaire);
+                $entityManager->flush();
+                
+                return $this->redirectToRoute('app_home');
+            }
+        }
+
+        $publications = $publicationRepository->findAllWithRelations();
 
         // Suppression de la génération de commentForms
         // foreach ($publications as $publication) {

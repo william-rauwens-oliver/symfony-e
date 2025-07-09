@@ -17,8 +17,23 @@
     {% for publication in publications %}
         <div class="publication">
             <div class="publication-content">
+                <p>Auteur : {{ publication.user.username|default('Utilisateur inconnu') }}</p>
+                <p>Date : {{ publication.createdAt ? publication.createdAt|date('d/m/Y H:i') : 'Date inconnue' }}</p>
                 <p>Publication #{{ publication.id|default('ID inconnu') }}</p>
                 <p>Contenu : {{ publication.content|default('AUCUN CONTENU') }}</p>
+                <p>Likes : {{ publication.likes|length }}</p>
+                <div class="comments">
+                    <h4>Commentaires ({{ publication.getCommentaires|length }})</h4>
+                    {% for commentaire in publication.getCommentaires %}
+                        <div class="comment">
+                            <strong>{{ commentaire.user ? commentaire.user.username : 'Utilisateur inconnu' }}</strong>
+                            <small>{{ commentaire.createdAt ? commentaire.createdAt|date('d/m/Y H:i') : 'Date inconnue' }}</small>
+                            <p>{{ commentaire.content|default('Aucun contenu') }}</p>
+                        </div>
+                    {% else %}
+                        <p>Aucun commentaire pour le moment.</p>
+                    {% endfor %}
+                </div>
             </div>
             <div class="publication-actions">
                 <span class="likes">
@@ -35,20 +50,15 @@
                 {% endif %}
             </div>
         </div>
-        <div class="comments">
-            <h4>Commentaires</h4>
-            <p>Commentaires non affichés pour éviter les erreurs.</p>
-            
-            {% if app.user %}
-                <div id="comment-form-{{ publication.id }}" class="comment-form" style="display: none;">
-                    <form action="{{ path('app_home') }}" method="post">
-                        <input type="hidden" name="publication_id" value="{{ publication.id }}">
-                        <textarea name="comment_content" placeholder="Votre commentaire..." required></textarea>
-                        <button type="submit" class="btn btn-sm">Publier le commentaire</button>
-                    </form>
-                </div>
-            {% endif %}
-        </div>
+        {% if app.user %}
+            <div id="comment-form-{{ publication.id }}" class="comment-form" style="display: none;">
+                <form action="{{ path('app_home') }}" method="post">
+                    <input type="hidden" name="publication_id" value="{{ publication.id }}">
+                    <textarea name="comment_content" placeholder="Votre commentaire..." required></textarea>
+                    <button type="submit" class="btn btn-sm">Publier le commentaire</button>
+                </form>
+            </div>
+        {% endif %}
         <hr>
     {% else %}
         <p>Aucune publication pour le moment.</p>

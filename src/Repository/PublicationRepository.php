@@ -40,4 +40,20 @@ class PublicationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return Publication[] Returns an array of Publication objects with relations loaded
+     */
+    public function findAllWithRelations(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.user', 'u')
+            ->leftJoin('p.likes', 'l')
+            ->leftJoin('p.commentaires', 'c')
+            ->leftJoin('c.user', 'cu')
+            ->addSelect('u', 'l', 'c', 'cu')
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

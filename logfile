@@ -1,0 +1,7 @@
+2025-07-09 19:35:52.193 CEST [52988] LOG:  starting PostgreSQL 14.18 (Homebrew) on aarch64-apple-darwin24.4.0, compiled by Apple clang version 17.0.0 (clang-1700.0.13.3), 64-bit
+2025-07-09 19:35:52.194 CEST [52988] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-07-09 19:35:52.194 CEST [52988] LOG:  listening on IPv6 address "::1", port 5432
+2025-07-09 19:35:52.194 CEST [52988] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-07-09 19:35:52.196 CEST [52995] LOG:  database system was shut down at 2025-07-09 19:34:48 CEST
+2025-07-09 19:35:52.198 CEST [52988] LOG:  database system is ready to accept connections
+2025-07-09 19:37:27.222 CEST [53809] FATAL:  database "williamrauwensoliver" does not exist
