@@ -1,0 +1,181 @@
+/* Pages d'authentification avec Apple Liquid Glass */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: transparent;
+}
+
+.auth-form {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.auth-form h1 {
+  color: #2d5a27;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.auth-form .form-label {
+  display: block;
+  font-weight: 600;
+  color: #2d5a27;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.auth-form .form-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  font-size: 1rem;
+  color: #2d5a27;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-sizing: border-box;
+}
+
+.auth-form .form-input:focus {
+  outline: none;
+  border-color: #4a7c59;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+}
+
+.auth-form .form-input::placeholder {
+  color: rgba(45, 90, 39, 0.6);
+}
+
+.auth-form .form-button {
+  width: 100%;
+  background: linear-gradient(135deg, #2d5a27, #4a7c59);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.3);
+  margin-top: 1rem;
+}
+
+.auth-form .form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45, 90, 39, 0.4);
+}
+
+.auth-form .form-button:disabled {
+  background: rgba(45, 90, 39, 0.3);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-form .auth-link {
+  color: #4a7c59;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin-top: 1.5rem;
+  display: inline-block;
+}
+
+.auth-form .auth-link:hover {
+  color: #2d5a27;
+  text-decoration: underline;
+}
+
+.auth-form .auth-divider {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  color: rgba(45, 90, 39, 0.6);
+  font-size: 0.9rem;
+}
+
+.auth-form .auth-divider::before,
+.auth-form .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(45, 90, 39, 0.2);
+}
+
+.auth-form .auth-divider::before {
+  margin-right: 1rem;
+}
+
+.auth-form .auth-divider::after {
+  margin-left: 1rem;
+}
+
+.auth-form .social-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.auth-form .social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #2d5a27;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.auth-form .social-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.auth-form .social-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 1rem;
+  }
+  
+  .auth-form {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+  
+  .auth-form h1 {
+    font-size: 1.75rem;
+  }
+} 

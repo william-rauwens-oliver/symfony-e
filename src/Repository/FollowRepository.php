@@ -48,4 +48,17 @@ class FollowRepository extends ServiceEntityRepository
         ]);
         return $follow !== null;
     }
+
+    /**
+     * Compte le nombre de followers d'un utilisateur
+     */
+    public function countFollowers(User $user): int
+    {
+        return $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->where('f.followed = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 } 

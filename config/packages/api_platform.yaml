@@ -5,3 +5,20 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        enable_max_depth: true
+        extra_properties:
+            standard_put: true
+        pagination_client_enabled: true
+        pagination_client_items_per_page: true
+    eager_loading:
+        max_joins: 100
+        force_eager: false
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+        jsonhal: ['application/hal+json']
+        xml: ['application/xml', 'text/xml']
+        yaml: ['application/x-yaml']
+        csv: ['text/csv']
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']

@@ -3,39 +3,100 @@
 namespace App\Entity;
 
 use App\Repository\PublicationRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use App\Entity\PublicationInput;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Commentaire;
-use App\Entity\Like;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\ApiSubresource;
 
-#[ApiResource(
-    collectionOperations: [
-        'get',
-        'post' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY')"]
-    ],
-    itemOperations: [
-        'get',
-        'put' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"],
-        'patch' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"],
-        'delete' => ['security' => "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"]
-    ]
-)]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        // POST désactivé, géré par un contrôleur custom
+        new Put(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
+        new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
+        new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
+    ],
+    normalizationContext: ['groups' => ['publication:read']],
+    denormalizationContext: ['groups' => ['publication:write']]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact'])]
 class Publication
 {
+    #[Groups(['publication:read', 'repost:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    #[Groups(['publication:read', 'repost:read'])]
+    #[ORM\Column(type: 'text')]
+    private ?string $texte = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['publication:read', 'repost:read'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[Groups(['publication:read', 'repost:read'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $video = null;
+
+    #[Groups(['publication:read', 'repost:read', 'user:read'])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private ?User $user = null;
+
+    #[Groups(['publication:read', 'repost:read'])]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[Groups(['publication:read'])]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Like::class)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private Collection $likes;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, orphanRemoval: true)]
+    #[ApiSubresource]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private Collection $commentaires;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTexte(): ?string
+    {
+        return $this->texte;
+    }
+
+    public function setTexte(?string $texte): self
+    {
+        $this->texte = $texte;
+        return $this;
+    }
 
     public function getImage(): ?string
     {
@@ -48,66 +109,14 @@ class Publication
         return $this;
     }
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $video = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, orphanRemoval: true)]
-    private Collection $commentaires;
-
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Like::class, orphanRemoval: true)]
-    private Collection $likes;
-
-    public function __construct()
-    {
-        $this->commentaires = new ArrayCollection();
-        $this->likes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): static
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
     public function getVideo(): ?string
     {
         return $this->video;
     }
 
-    public function setVideo(?string $video): static
+    public function setVideo(?string $video): self
     {
         $this->video = $video;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -119,68 +128,65 @@ class Publication
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
-    public function getCommentaires(): Collection
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->commentaires;
+        return $this->createdAt;
     }
 
-    public function addCommentaire(Commentaire $commentaire): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires->add($commentaire);
-            $commentaire->setPublication($this);
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    #[Groups(['publication:read'])]
+    public function getLikeCount(): int
+    {
+        return $this->likes->count();
+    }
+
+    public function isLikedByUser(?User $user): bool
+    {
+        if (!$user) {
+            return false;
         }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaire $commentaire): static
-    {
-        if ($this->commentaires->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getPublication() === $this) {
-                $commentaire->setPublication(null);
+        
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) {
+                return true;
             }
         }
-
-        return $this;
+        
+        return false;
     }
 
+    /**
+     * @return Collection|Like[]
+     */
     public function getLikes(): Collection
     {
         return $this->likes;
     }
 
-    public function addLike(Like $like): static
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
     {
-        if (!$this->likes->contains($like)) {
-            $this->likes->add($like);
-            $like->setPublication($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLike(Like $like): static
-    {
-        if ($this->likes->removeElement($like)) {
-            // set the owning side to null (unless already changed)
-            if ($like->getPublication() === $this) {
-                $like->setPublication(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getHashtags(): array
-    {
-        if (!$this->content) return [];
-        preg_match_all('/#(\w+)/u', $this->content, $matches);
-        return $matches[1] ?? [];
+        return $this->commentaires;
     }
 }

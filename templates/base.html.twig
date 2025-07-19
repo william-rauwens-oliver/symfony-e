@@ -5,105 +5,108 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🐦</text></svg>">
         {% block stylesheets %}
-            <link rel="stylesheet" href="/assets/styles/app.css">
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
-        <header>
-            <nav class="main-nav">
-                <a href="{{ path('app_home') }}" class="nav-logo">SymfoX</a>
-                <form action="{{ path('app_search') }}" method="get" class="search-form">
-                    <input type="text" name="q" placeholder="Rechercher..." value="{{ app.request.get('q') }}" class="search-input" />
-                    <button type="submit" class="search-btn">🔍</button>
-                </form>
-            </nav>
-        </header>
-        
-        {% include 'partials/flash_messages.html.twig' %}
-        
-        <div class="layout">
-            <!-- Sidebar gauche -->
-            <aside class="sidebar">
-                <div class="sidebar-content">
-                    <div class="sidebar-logo">
-                        <span style="font-size: 30px;">🐦</span>
-                    </div>
-                    <nav class="sidebar-nav">
-                        <a href="{{ path('app_home') }}" class="nav-item">
-                            <span class="nav-item-icon icon-home"></span>
-                            <span>Accueil</span>
-                        </a>
-                        <a href="{{ path('app_suggested') }}" class="nav-item">
-                            <span class="nav-item-icon icon-search"></span>
-                            <span>Suggestions</span>
-                        </a>
+        <div id="root">
+            <!-- Fallback content for non-JS users -->
+            <header>
+                <nav class="main-nav">
+                    <a href="{{ path('react_home') }}" class="nav-logo">SymfoX</a>
+                    <form action="{{ path('app_search') }}" method="get" class="search-form">
+                        <input type="text" name="q" placeholder="Rechercher..." value="{{ app.request.get('q') }}" class="search-input" />
+                        <button type="submit" class="search-btn">🔍</button>
+                    </form>
+                </nav>
+            </header>
+            
+            {% include 'partials/flash_messages.html.twig' %}
+            
+            <div class="layout">
+                <!-- Sidebar gauche -->
+                <aside class="sidebar">
+                    <div class="sidebar-content">
+                        <div class="sidebar-logo">
+                            <span style="font-size: 30px;">🐦</span>
+                        </div>
+                        <nav class="sidebar-nav">
+                            <a href="{{ path('react_home') }}" class="nav-item">
+                                <span class="nav-item-icon icon-home"></span>
+                                <span>Accueil</span>
+                            </a>
+                            <a href="{{ path('react_suggested') }}" class="nav-item">
+                                <span class="nav-item-icon icon-search"></span>
+                                <span>Suggestions</span>
+                            </a>
+                            {% if app.user %}
+                                <a href="{{ path('react_profile', {'id': app.user.id}) }}" class="nav-item">
+                                    <span class="nav-item-icon icon-user"></span>
+                                    <span>Profil</span>
+                                </a>
+                                <a href="{{ path('app_logout') }}" class="nav-item">
+                                    <span class="nav-item-icon icon-settings"></span>
+                                    <span>Déconnexion</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('react_login') }}" class="nav-item">
+                                    <span class="nav-item-icon icon-user"></span>
+                                    <span>Connexion</span>
+                                </a>
+                                <a href="{{ path('react_register') }}" class="nav-item">
+                                    <span class="nav-item-icon icon-settings"></span>
+                                    <span>Inscription</span>
+                                </a>
+                            {% endif %}
+                        </nav>
                         {% if app.user %}
-                            <a href="{{ path('app_profile') }}" class="nav-item">
-                                <span class="nav-item-icon icon-user"></span>
-                                <span>Profil</span>
-                            </a>
-                            <a href="{{ path('app_logout') }}" class="nav-item">
-                                <span class="nav-item-icon icon-settings"></span>
-                                <span>Déconnexion</span>
-                            </a>
-                        {% else %}
-                            <a href="{{ path('app_login') }}" class="nav-item">
-                                <span class="nav-item-icon icon-user"></span>
-                                <span>Connexion</span>
-                            </a>
-                            <a href="{{ path('app_register') }}" class="nav-item">
-                                <span class="nav-item-icon icon-settings"></span>
-                                <span>Inscription</span>
-                            </a>
+                            <button class="tweet-btn" onclick="document.getElementById('tweet-form').style.display='block'">
+                                Tweeter
+                            </button>
                         {% endif %}
-                    </nav>
-                    {% if app.user %}
-                        <button class="tweet-btn" onclick="document.getElementById('tweet-form').style.display='block'">
-                            Tweeter
-                        </button>
-                    {% endif %}
-                </div>
-            </aside>
+                    </div>
+                </aside>
 
-            <!-- Colonne principale -->
-            <main class="main">
-                {% block body %}{% endblock %}
-            </main>
+                <!-- Colonne principale -->
+                <main class="main">
+                    {% block body %}{% endblock %}
+                </main>
 
-            <!-- Sidebar droite -->
-            <aside class="trends">
-                <div class="trends-section">
-                    <h3>Tendances</h3>
-                    <div class="trend-item">
-                        <a href="#" class="trend-tag">#Symfony</a>
+                <!-- Sidebar droite -->
+                <aside class="trends">
+                    <div class="trends-section">
+                        <h3>Tendances</h3>
+                        <div class="trend-item">
+                            <a href="#" class="trend-tag">#Symfony</a>
+                        </div>
+                        <div class="trend-item">
+                            <a href="#" class="trend-tag">#Europe</a>
+                        </div>
+                        <div class="trend-item">
+                            <a href="#" class="trend-tag">#RGPD</a>
+                        </div>
+                        <div class="trend-item">
+                            <a href="#" class="trend-tag">#OpenSource</a>
+                        </div>
                     </div>
-                    <div class="trend-item">
-                        <a href="#" class="trend-tag">#Europe</a>
+                </aside>
+            </div>
+            
+            <footer class="main-footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="{{ path('app_legal_mentions') }}">Mentions légales</a>
+                        <a href="{{ path('app_legal_privacy') }}">Politique de confidentialité</a>
                     </div>
-                    <div class="trend-item">
-                        <a href="#" class="trend-tag">#RGPD</a>
-                    </div>
-                    <div class="trend-item">
-                        <a href="#" class="trend-tag">#OpenSource</a>
+                    <div class="footer-copyright">
+                        © {{ "now"|date("Y") }} SymfoX - Réseau social éthique et conforme RGPD
                     </div>
                 </div>
-            </aside>
+            </footer>
         </div>
-    </div>
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="{{ path('app_legal_mentions') }}">Mentions légales</a>
-                <a href="{{ path('app_legal_privacy') }}">Politique de confidentialité</a>
-            </div>
-            <div class="footer-copyright">
-                © {{ "now"|date("Y") }} SymfoX - Réseau social éthique et conforme RGPD
-            </div>
-        </div>
-    </footer>
-</body>
+    </body>
 </html>

@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre compte a été créé avec succès ! Vous pouvez maintenant vous connecter.');
-            return $this->redirectToRoute('app_login');
+            return $this->redirect('/login');
         }
 
         return $this->render('registration/register.html.twig', [

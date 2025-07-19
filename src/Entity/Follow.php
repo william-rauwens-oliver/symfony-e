@@ -4,8 +4,31 @@ namespace App\Entity;
 
 use App\Repository\FollowRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: FollowRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_follow', columns: ['follower_id', 'followed_id'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(
+            processor: 'App\\DataPersister\\FollowDataPersister',
+            security: "is_granted('IS_AUTHENTICATED_FULLY')"
+        ),
+        new Delete(
+            processor: 'App\\DataPersister\\FollowDataPersister',
+            security: "is_granted('IS_AUTHENTICATED_FULLY')"
+        ),
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['follower' => 'exact', 'followed' => 'exact'])]
 class Follow
 {
     #[ORM\Id]

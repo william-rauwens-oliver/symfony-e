@@ -13,12 +13,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\JwtAuthenticator
         main:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AppCustomAuthenticator
             logout:
                 path: app_logout
+                target: app_home
                 # where to redirect after logout
                 # target: app_any_route
 
@@ -28,7 +34,7 @@ security:
                 path: /
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
-                #always_remember_me: true
+                always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -36,15 +42,22 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # L'ordre des access_control est CRUCIAL : la première règle qui matche s'applique
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/profil, roles: ROLE_USER }
-        - { path: ^/like, roles: ROLE_USER }
-        - { path: ^/comment, roles: ROLE_USER }
-        - { path: ^/publication/new, roles: ROLE_USER }
+        - { path: ^/api/publications/\d+/commentaires, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/me, roles: PUBLIC_ACCESS }
+        - { path: ^/auth/status, roles: PUBLIC_ACCESS }
+        - { path: ^/api/search, roles: PUBLIC_ACCESS }
+        - { path: ^/search, roles: PUBLIC_ACCESS }
+        - { path: ^/api/publications$, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/publications, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/commentaires, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
+        - { path: ^/api/reposts, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/follows, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         # Le reste reste public
 
 when@test:

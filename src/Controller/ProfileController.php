@@ -10,18 +10,93 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Repository\FollowRepository;
 
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'app_profile')]
-    public function profile(): Response
+    public function profile(Request $request): Response
     {
+        // Debug: Log les informations de session
+        error_log("DEBUG PROFILE - Session ID: " . $request->getSession()->getId());
+        error_log("DEBUG PROFILE - User: " . ($this->getUser() ? $this->getUser()->getEmail() : 'NULL'));
+        
         $user = $this->getUser();
         if (!$user) {
+            error_log("DEBUG PROFILE - Access denied: No user found");
             throw $this->createAccessDeniedException();
         }
+        
+        error_log("DEBUG PROFILE - Access granted for user: " . $user->getEmail());
+        
+        // Récupérer les publications et retweets de l'utilisateur
+        $publications = $user->getPublications();
+        $reposts = $user->getReposts();
+        
+        // Combiner les publications et retweets, triés par date
+        $allContent = [];
+        
+        // Ajouter les publications
+        foreach ($publications as $publication) {
+            $allContent[] = [
+                'type' => 'publication',
+                'content' => $publication,
+                'date' => $publication->getCreatedAt()
+            ];
+        }
+        
+        // Ajouter les retweets
+        foreach ($reposts as $repost) {
+            $allContent[] = [
+                'type' => 'repost',
+                'content' => $repost,
+                'date' => $repost->getCreatedAt()
+            ];
+        }
+        
+        // Trier par date décroissante
+        usort($allContent, function($a, $b) {
+            return $b['date'] <=> $a['date'];
+        });
+        
         return $this->render('profile/profile.html.twig', [
             'user' => $user,
+            'allContent' => $allContent,
+        ]);
+    }
+
+    #[Route('/profile/{id}', name: 'app_profile_show')]
+    public function show(User $user, FollowRepository $followRepository): Response
+    {
+        $publications = $user->getPublications();
+        $reposts = $user->getReposts();
+        $allContent = [];
+        foreach ($publications as $publication) {
+            $allContent[] = [
+                'type' => 'publication',
+                'content' => $publication,
+                'date' => $publication->getCreatedAt()
+            ];
+        }
+        foreach ($reposts as $repost) {
+            $allContent[] = [
+                'type' => 'repost',
+                'content' => $repost,
+                'date' => $repost->getCreatedAt()
+            ];
+        }
+        usort($allContent, function($a, $b) {
+            return $b['date'] <=> $a['date'];
+        });
+        $followers = $followRepository->findFollowers($user);
+        $followings = $followRepository->findFollowing($user);
+        return $this->render('profile/profile.html.twig', [
+            'user' => $user,
+            'allContent' => $allContent,
+            'followers_count' => count($followers),
+            'followings_count' => count($followings),
+            'followers' => array_map(fn($f) => $f->getFollower(), $followers),
+            'followings' => array_map(fn($f) => $f->getFollowed(), $followings),
         ]);
     }
 
@@ -64,16 +139,13 @@ class ProfileController extends AbstractController
             foreach ($user->getCommentaires() as $commentaire) {
                 $em->remove($commentaire);
             }
-            // Supprimer les publications de l'utilisateur
-            foreach ($user->getPublications() as $publication) {
-                $em->remove($publication);
-            }
+            // Supprimer toute logique liée aux publications de l'utilisateur
             $em->remove($user);
             $em->flush();
             $this->container->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
             $this->addFlash('success', 'Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt !');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('react_home');
         }
         return $this->render('profile/delete.html.twig');
     }

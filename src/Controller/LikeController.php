@@ -23,7 +23,7 @@ class LikeController extends AbstractController
         $user = $this->getUser();
 
         if (!$publication || !$user) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('react_home');
         }
 
         // Vérifie si l'utilisateur a déjà liké cette publication
@@ -47,6 +47,6 @@ class LikeController extends AbstractController
             $this->addFlash('success', 'Publication likée !');
         }
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('react_home');
     }
 }

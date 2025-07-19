@@ -1,75 +1,359 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche{% endblock %}
+{% block title %}Recherche - {{ query }}{% endblock %}
 
 {% block body %}
-    <div class="main-header">
-        <h1>Résultats pour "{{ query }}"</h1>
+<div class="container">
+    <div class="search-header">
+        <h1>Recherche</h1>
+        <form method="GET" action="{{ path('app_search') }}" class="search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Rechercher..." class="search-input" required>
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
     </div>
-    <div class="search-results">
-        <h2>Utilisateurs</h2>
-        {% if users|length > 0 %}
-            <ul>
-                {% for user in users %}
-                    <li>
-                        <a href="{{ path('app_profile', {'id': user.id}) }}">@{{ user.username }}</a> ({{ user.email }})
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Aucun utilisateur trouvé.</p>
-        {% endif %}
 
-        <h2>Hashtags</h2>
-        {% if hashtags|length > 0 %}
-            <ul>
-                {% for tag in hashtags %}
-                    <li><a href="{{ path('app_hashtag', {'tag': tag}) }}">#{{ tag }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Aucun hashtag trouvé.</p>
-        {% endif %}
+    {% if query %}
+        <div class="search-results">
+            <h2>Résultats pour "{{ query }}"</h2>
+            
+            {% set totalResults = results.publications|length + results.users|length + results.hashtags|length %}
+            
+            {% if totalResults == 0 %}
+                <p class="no-results">Aucun résultat trouvé pour "{{ query }}".</p>
+            {% else %}
+                <div class="results-stats">
+                    <p>{{ totalResults }} résultat(s) trouvé(s)</p>
+                </div>
+                
+                <!-- Section Utilisateurs -->
+                {% if results.users|length > 0 %}
+                    <div class="search-section">
+                        <h3>👥 Utilisateurs ({{ results.users|length }})</h3>
+                        <div class="users-list">
+                            {% for user in results.users %}
+                                <div class="user-card">
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/default-avatar.png" alt="Avatar" onerror="this.src='/default-avatar.png'">
+                                        </div>
+                                        <div class="user-details">
+                                            <strong>{{ user.username }}</strong>
+                                            <span class="user-email">{{ user.email }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="/profile/{{ user.id }}" class="view-profile-btn">Voir le profil</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Section Hashtags -->
+                {% if results.hashtags|length > 0 %}
+                    <div class="search-section">
+                        <h3>🏷️ Hashtags ({{ results.hashtags|length }})</h3>
+                        <div class="hashtags-list">
+                            {% for hashtag in results.hashtags %}
+                                <a href="/hashtag/{{ hashtag }}" class="hashtag-card">
+                                    <span class="hashtag-icon">#</span>
+                                    <span class="hashtag-name">{{ hashtag }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Section Publications -->
+                {% if results.publications|length > 0 %}
+                    <div class="search-section">
+                        <h3>📝 Publications ({{ results.publications|length }})</h3>
+                        <div class="publications-list">
+                            {% for publication in results.publications %}
+                                <div class="publication-card">
+                                    <div class="publication-header">
+                                        <div class="author-info">
+                                            <strong>{{ publication.user.username }}</strong>
+                                            <span class="date">{{ publication.createdAt|date('d/m/Y H:i') }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="publication-content">
+                                        {% set content = publication.texte|default('AUCUN CONTENU') %}
+                                        {% set content_with_links = content|replace({'#':' #'}) %}
+                                        {% set words = content_with_links|split(' ') %}
+                                        {% for word in words %}
+                                            {% if word starts with '#' %}
+                                                <a href="/hashtag/{{ word|slice(1)|lower }}" class="hashtag">{{ word }}</a>
+                                            {% else %}
+                                                {{ word }}
+                                            {% endif %}
+                                            {% if not loop.last %} {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="publication-stats">
+                                        <span>❤️ {{ publication.getLikes|length }} likes</span>
+                                        <span>💬 {{ publication.getCommentaires|length }} commentaires</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="search-placeholder">
+            <p>Entrez un terme de recherche pour commencer.</p>
+        </div>
+    {% endif %}
+</div>
 
-        <h2>Publications</h2>
-        {% if publications|length > 0 %}
-            {% for publication in publications %}
-                <article class="publication">
-                    <div class="publication-header">
-                        <span class="publication-author">{{ publication.user.username|default('Utilisateur inconnu') }}</span>
-                        <span class="publication-username">@{{ publication.user.username|default('user') }}</span>
-                        <span class="publication-date">· {{ publication.createdAt ? publication.createdAt|date('j M') : 'Date inconnue' }}</span>
-                    </div>
-                    <div class="publication-content">
-                        {% set content = publication.content|default('AUCUN CONTENU') %}
-                        {% set content_with_links = content|replace({'#':' #'}) %}
-                        {% set words = content_with_links|split(' ') %}
-                        {% for word in words %}
-                            {% if word starts with '#' %}
-                                <a href="{{ path('app_hashtag', {'tag': word|slice(1)|lower }) }}" class="hashtag">{{ word }}</a>
-                            {% else %}
-                                {{ word }}
-                            {% endif %}
-                            {% if not loop.last %} {% endif %}
-                        {% endfor %}
-                        {% if publication.image %}
-                            <div class="publication-media">
-                                <img src="/uploads/images/{{ publication.image }}" alt="Image" style="max-width:100%; border-radius:12px; margin-top:10px;" />
-                            </div>
-                        {% endif %}
-                        {% if publication.video %}
-                            <div class="publication-media">
-                                <video controls style="max-width:100%; border-radius:12px; margin-top:10px;">
-                                    <source src="/uploads/videos/{{ publication.video }}" type="video/mp4">
-                                    Votre navigateur ne supporte pas la vidéo.
-                                </video>
-                            </div>
-                        {% endif %}
-                    </div>
-                </article>
-            {% endfor %}
-        {% else %}
-            <p>Aucune publication trouvée.</p>
-        {% endif %}
-    </div>
+<style>
+.search-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.search-form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.search-btn {
+    padding: 12px 20px;
+    background: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-results h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.results-stats {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.publication-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.publication-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.author-info strong {
+    color: #333;
+}
+
+.date {
+    color: #666;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.score-badge {
+    background: #17bf63;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.publication-content {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.publication-stats {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.score-details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.score-details summary {
+    cursor: pointer;
+    color: #1da1f2;
+    font-weight: bold;
+}
+
+.score-details ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.score-details li {
+    margin-bottom: 0.25rem;
+    color: #666;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.search-placeholder {
+    text-align: center;
+    color: #666;
+    margin-top: 3rem;
+}
+
+/* Styles pour les sections de recherche */
+.search-section {
+    margin-bottom: 2rem;
+}
+
+.search-section h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1da1f2;
+}
+
+/* Styles pour les utilisateurs */
+.users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-details strong {
+    color: #333;
+    font-size: 1.1em;
+}
+
+.user-email {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.view-profile-btn {
+    background: #1da1f2;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.view-profile-btn:hover {
+    background: #1991db;
+}
+
+/* Styles pour les hashtags */
+.hashtags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.hashtag-card {
+    background: white;
+    border: 2px solid #1da1f2;
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: #1da1f2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.hashtag-card:hover {
+    background: #1da1f2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(29, 161, 242, 0.3);
+}
+
+.hashtag-icon {
+    font-size: 1.2em;
+}
+
+.hashtag-name {
+    font-size: 1.1em;
+}
+
+/* Styles pour les hashtags dans le contenu */
+.hashtag {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hashtag:hover {
+    text-decoration: underline;
+}
+</style>
 {% endblock %} 

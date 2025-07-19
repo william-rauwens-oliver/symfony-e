@@ -17,3 +17,236 @@
 2025-07-09 20:12:15.229 CEST [61845] ERROR:  update or delete on table "publication" violates foreign key constraint "fk_ac6340b338b217a7" on table "like"
 2025-07-09 20:12:15.229 CEST [61845] DETAIL:  Key (id)=(2) is still referenced from table "like".
 2025-07-09 20:12:15.229 CEST [61845] STATEMENT:  DELETE FROM publication WHERE user_id = 1
+2025-07-10 18:54:03.375 CEST [99575] ERROR:  syntax error at or near "user" at character 13
+2025-07-10 18:54:03.375 CEST [99575] STATEMENT:  INSERT INTO user (username, email, password, roles) VALUES ('testuser', 'test@example.com', '$2y$13$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '["ROLE_USER"]')
+2025-07-10 18:54:14.061 CEST [165] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-10 18:54:14.061 CEST [165] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-10 18:54:14.061 CEST [165] STATEMENT:  INSERT INTO "user" (username, email, password, roles) VALUES ('testuser', 'test@example.com', '$2y$13$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '["ROLE_USER"]')
+2025-07-10 18:59:16.280 CEST [3271] ERROR:  syntax error at or near "user" at character 13
+2025-07-10 18:59:16.280 CEST [3271] STATEMENT:  INSERT INTO user (email, roles, password, username) VALUES ('test@example.com', '["ROLE_USER"]', '$2y$13$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'testuser')
+2025-07-10 18:59:18.982 CEST [3868] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-10 18:59:18.982 CEST [3868] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-10 18:59:18.982 CEST [3868] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-10 19:17:01.459 CEST [10717] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-10 19:17:01.459 CEST [10717] DETAIL:  Failing row contains (15, null, 4).
+2025-07-10 19:17:01.459 CEST [10717] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:23:51.486 CEST [11710] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:23:51.486 CEST [11710] DETAIL:  Failing row contains (16, null, 3).
+2025-07-11 09:23:51.486 CEST [11710] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:30:14.315 CEST [13289] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:30:14.315 CEST [13289] DETAIL:  Failing row contains (17, null, 3).
+2025-07-11 09:30:14.315 CEST [13289] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:30:17.208 CEST [13291] ERROR:  null value in column "created_at" of relation "commentaire" violates not-null constraint
+2025-07-11 09:30:17.208 CEST [13291] DETAIL:  Failing row contains (3, ey, null, null, 3).
+2025-07-11 09:30:17.208 CEST [13291] STATEMENT:  INSERT INTO commentaire (content, created_at, user_id, publication_id) VALUES ($1, $2, $3, $4)
+2025-07-11 09:39:54.027 CEST [14289] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:54.027 CEST [14289] DETAIL:  Failing row contains (18, null, 3).
+2025-07-11 09:39:54.027 CEST [14289] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:55.621 CEST [14290] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:55.621 CEST [14290] DETAIL:  Failing row contains (19, null, 3).
+2025-07-11 09:39:55.621 CEST [14290] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:55.762 CEST [14291] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:55.762 CEST [14291] DETAIL:  Failing row contains (20, null, 3).
+2025-07-11 09:39:55.762 CEST [14291] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:55.911 CEST [14292] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:55.911 CEST [14292] DETAIL:  Failing row contains (21, null, 3).
+2025-07-11 09:39:55.911 CEST [14292] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:56.062 CEST [14293] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:56.062 CEST [14293] DETAIL:  Failing row contains (22, null, 3).
+2025-07-11 09:39:56.062 CEST [14293] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:56.220 CEST [14294] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:56.220 CEST [14294] DETAIL:  Failing row contains (23, null, 3).
+2025-07-11 09:39:56.220 CEST [14294] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:39:56.375 CEST [14295] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:39:56.375 CEST [14295] DETAIL:  Failing row contains (24, null, 3).
+2025-07-11 09:39:56.375 CEST [14295] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 09:40:36.004 CEST [14312] ERROR:  null value in column "created_at" of relation "commentaire" violates not-null constraint
+2025-07-11 09:40:36.004 CEST [14312] DETAIL:  Failing row contains (4, ey, null, null, 4).
+2025-07-11 09:40:36.004 CEST [14312] STATEMENT:  INSERT INTO commentaire (content, created_at, user_id, publication_id) VALUES ($1, $2, $3, $4)
+2025-07-11 09:48:35.543 CEST [15315] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 09:48:35.543 CEST [15315] DETAIL:  Failing row contains (25, null, 3).
+2025-07-11 09:48:35.543 CEST [15315] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:54.144 CEST [16171] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:54.144 CEST [16171] DETAIL:  Failing row contains (26, null, 3).
+2025-07-11 10:01:54.144 CEST [16171] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:54.760 CEST [16172] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:54.760 CEST [16172] DETAIL:  Failing row contains (27, null, 3).
+2025-07-11 10:01:54.760 CEST [16172] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:54.905 CEST [16173] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:54.905 CEST [16173] DETAIL:  Failing row contains (28, null, 3).
+2025-07-11 10:01:54.905 CEST [16173] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:55.072 CEST [16174] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:55.072 CEST [16174] DETAIL:  Failing row contains (29, null, 3).
+2025-07-11 10:01:55.072 CEST [16174] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:55.210 CEST [16175] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:55.210 CEST [16175] DETAIL:  Failing row contains (30, null, 3).
+2025-07-11 10:01:55.210 CEST [16175] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:55.365 CEST [16176] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:55.365 CEST [16176] DETAIL:  Failing row contains (31, null, 3).
+2025-07-11 10:01:55.365 CEST [16176] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 10:01:55.580 CEST [16177] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 10:01:55.580 CEST [16177] DETAIL:  Failing row contains (32, null, 3).
+2025-07-11 10:01:55.580 CEST [16177] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:47.179 CEST [21114] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:47.179 CEST [21114] DETAIL:  Failing row contains (33, null, 3).
+2025-07-11 11:24:47.179 CEST [21114] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:48.005 CEST [21115] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:48.005 CEST [21115] DETAIL:  Failing row contains (34, null, 3).
+2025-07-11 11:24:48.005 CEST [21115] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:48.190 CEST [21116] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:48.190 CEST [21116] DETAIL:  Failing row contains (35, null, 3).
+2025-07-11 11:24:48.190 CEST [21116] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:48.423 CEST [21117] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:48.423 CEST [21117] DETAIL:  Failing row contains (36, null, 3).
+2025-07-11 11:24:48.423 CEST [21117] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:48.623 CEST [21118] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:48.623 CEST [21118] DETAIL:  Failing row contains (37, null, 3).
+2025-07-11 11:24:48.623 CEST [21118] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:48.814 CEST [21119] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:24:48.814 CEST [21119] DETAIL:  Failing row contains (38, null, 3).
+2025-07-11 11:24:48.814 CEST [21119] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:24:51.067 CEST [21120] ERROR:  null value in column "created_at" of relation "commentaire" violates not-null constraint
+2025-07-11 11:24:51.067 CEST [21120] DETAIL:  Failing row contains (5, et toi ?, null, null, 3).
+2025-07-11 11:24:51.067 CEST [21120] STATEMENT:  INSERT INTO commentaire (content, created_at, user_id, publication_id) VALUES ($1, $2, $3, $4)
+2025-07-11 11:27:41.353 CEST [21386] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:27:41.353 CEST [21386] DETAIL:  Failing row contains (39, null, 3).
+2025-07-11 11:27:41.353 CEST [21386] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:27:42.152 CEST [21388] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:27:42.152 CEST [21388] DETAIL:  Failing row contains (40, null, 3).
+2025-07-11 11:27:42.152 CEST [21388] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:27:42.264 CEST [21389] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:27:42.264 CEST [21389] DETAIL:  Failing row contains (41, null, 3).
+2025-07-11 11:27:42.264 CEST [21389] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:28:13.545 CEST [21407] ERROR:  null value in column "created_at" of relation "commentaire" violates not-null constraint
+2025-07-11 11:28:13.545 CEST [21407] DETAIL:  Failing row contains (6, test, null, null, 4).
+2025-07-11 11:28:13.545 CEST [21407] STATEMENT:  INSERT INTO commentaire (content, created_at, user_id, publication_id) VALUES ($1, $2, $3, $4)
+2025-07-11 11:29:31.937 CEST [21532] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:29:31.937 CEST [21532] DETAIL:  Failing row contains (42, null, 3).
+2025-07-11 11:29:31.937 CEST [21532] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:30:54.742 CEST [21628] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:30:54.742 CEST [21628] DETAIL:  Failing row contains (43, null, 3).
+2025-07-11 11:30:54.742 CEST [21628] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:30:55.765 CEST [21629] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:30:55.765 CEST [21629] DETAIL:  Failing row contains (44, null, 3).
+2025-07-11 11:30:55.765 CEST [21629] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:30:56.053 CEST [21630] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:30:56.053 CEST [21630] DETAIL:  Failing row contains (45, null, 3).
+2025-07-11 11:30:56.053 CEST [21630] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:31:18.706 CEST [21692] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:31:18.706 CEST [21692] DETAIL:  Failing row contains (46, null, 3).
+2025-07-11 11:31:18.706 CEST [21692] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:31:19.730 CEST [21693] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:31:19.730 CEST [21693] DETAIL:  Failing row contains (47, null, 3).
+2025-07-11 11:31:19.730 CEST [21693] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:34:16.770 CEST [21869] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:34:16.770 CEST [21869] DETAIL:  Failing row contains (48, null, 3).
+2025-07-11 11:34:16.770 CEST [21869] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:40:54.715 CEST [22105] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:40:54.715 CEST [22105] DETAIL:  Failing row contains (49, null, 3).
+2025-07-11 11:40:54.715 CEST [22105] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:43.696 CEST [22181] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:43.696 CEST [22181] DETAIL:  Failing row contains (50, null, 3).
+2025-07-11 11:41:43.696 CEST [22181] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:44.465 CEST [22182] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:44.465 CEST [22182] DETAIL:  Failing row contains (51, null, 3).
+2025-07-11 11:41:44.465 CEST [22182] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:44.597 CEST [22183] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:44.597 CEST [22183] DETAIL:  Failing row contains (52, null, 3).
+2025-07-11 11:41:44.597 CEST [22183] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:44.785 CEST [22184] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:44.785 CEST [22184] DETAIL:  Failing row contains (53, null, 3).
+2025-07-11 11:41:44.785 CEST [22184] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:44.926 CEST [22185] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:44.926 CEST [22185] DETAIL:  Failing row contains (54, null, 3).
+2025-07-11 11:41:44.926 CEST [22185] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:45.089 CEST [22186] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:45.089 CEST [22186] DETAIL:  Failing row contains (55, null, 3).
+2025-07-11 11:41:45.089 CEST [22186] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:41:45.235 CEST [22187] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:41:45.235 CEST [22187] DETAIL:  Failing row contains (56, null, 3).
+2025-07-11 11:41:45.235 CEST [22187] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:42:44.334 CEST [22265] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:42:44.334 CEST [22265] DETAIL:  Failing row contains (57, null, 3).
+2025-07-11 11:42:44.334 CEST [22265] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:37.930 CEST [22468] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:37.930 CEST [22468] DETAIL:  Failing row contains (58, null, 3).
+2025-07-11 11:45:37.930 CEST [22468] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:39.424 CEST [22469] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:39.424 CEST [22469] DETAIL:  Failing row contains (59, null, 3).
+2025-07-11 11:45:39.424 CEST [22469] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.119 CEST [22470] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.119 CEST [22470] DETAIL:  Failing row contains (60, null, 3).
+2025-07-11 11:45:40.119 CEST [22470] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.350 CEST [22471] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.350 CEST [22471] DETAIL:  Failing row contains (61, null, 3).
+2025-07-11 11:45:40.350 CEST [22471] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.495 CEST [22472] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.495 CEST [22472] DETAIL:  Failing row contains (62, null, 3).
+2025-07-11 11:45:40.495 CEST [22472] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.658 CEST [22473] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.658 CEST [22473] DETAIL:  Failing row contains (63, null, 3).
+2025-07-11 11:45:40.658 CEST [22473] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.810 CEST [22474] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.810 CEST [22474] DETAIL:  Failing row contains (64, null, 3).
+2025-07-11 11:45:40.810 CEST [22474] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:45:40.991 CEST [22475] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:45:40.991 CEST [22475] DETAIL:  Failing row contains (65, null, 3).
+2025-07-11 11:45:40.991 CEST [22475] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:50:32.977 CEST [22641] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:50:32.977 CEST [22641] DETAIL:  Failing row contains (66, null, 3).
+2025-07-11 11:50:32.977 CEST [22641] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 11:55:08.975 CEST [22792] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 11:55:08.975 CEST [22792] DETAIL:  Failing row contains (67, null, 3).
+2025-07-11 11:55:08.975 CEST [22792] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 12:04:22.190 CEST [23514] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 12:04:22.190 CEST [23514] DETAIL:  Failing row contains (68, null, 3).
+2025-07-11 12:04:22.190 CEST [23514] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 12:04:23.215 CEST [23518] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 12:04:23.215 CEST [23518] DETAIL:  Failing row contains (69, null, 3).
+2025-07-11 12:04:23.215 CEST [23518] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 12:06:21.295 CEST [23625] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 12:06:21.295 CEST [23625] DETAIL:  Failing row contains (70, null, 3).
+2025-07-11 12:06:21.295 CEST [23625] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-11 12:07:14.827 CEST [23694] ERROR:  null value in column "user_id" of relation "like" violates not-null constraint
+2025-07-11 12:07:14.827 CEST [23694] DETAIL:  Failing row contains (71, null, 3).
+2025-07-11 12:07:14.827 CEST [23694] STATEMENT:  INSERT INTO "like" (user_id, publication_id) VALUES ($1, $2)
+2025-07-13 17:27:17.591 CEST [46281] ERROR:  column "id" does not exist at character 8
+2025-07-13 17:27:17.591 CEST [46281] STATEMENT:  SELECT id, email, username FROM user LIMIT 5
+2025-07-13 17:27:19.892 CEST [46394] ERROR:  syntax error at or near "\" at character 1
+2025-07-13 17:27:19.892 CEST [46394] STATEMENT:  \d user
+2025-07-13 17:36:12.990 CEST [49749] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-13 17:36:12.990 CEST [49749] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-13 17:36:12.990 CEST [49749] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-13 17:54:17.819 CEST [53590] ERROR:  column "id" does not exist at character 8
+2025-07-13 17:54:17.819 CEST [53590] STATEMENT:  SELECT id, email, username FROM user WHERE email = 'test@example.com'
+2025-07-13 17:54:42.168 CEST [54344] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-13 17:54:42.168 CEST [54344] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-13 17:54:42.168 CEST [54344] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-13 18:08:04.959 CEST [59261] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-13 18:08:04.959 CEST [59261] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-13 18:08:04.959 CEST [59261] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-13 18:32:16.001 CEST [67060] ERROR:  column "id" does not exist at character 8
+2025-07-13 18:32:16.001 CEST [67060] STATEMENT:  SELECT id, email, username FROM user LIMIT 5
+2025-07-13 18:32:30.466 CEST [67715] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-13 18:32:30.466 CEST [67715] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-13 18:32:30.466 CEST [67715] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-13 20:39:37.658 CEST [75257] ERROR:  column "id" does not exist at character 8
+2025-07-13 20:39:37.658 CEST [75257] STATEMENT:  SELECT id, username, email FROM user LIMIT 5
+2025-07-13 22:55:46.012 CEST [83655] ERROR:  column "id" does not exist at character 8
+2025-07-13 22:55:46.012 CEST [83655] STATEMENT:  SELECT id, email, username FROM user WHERE email = 'jee@gmail.com'
+2025-07-13 22:55:53.152 CEST [84128] ERROR:  duplicate key value violates unique constraint "uniq_identifier_email"
+2025-07-13 22:55:53.152 CEST [84128] DETAIL:  Key (email)=(test@example.com) already exists.
+2025-07-13 22:55:53.152 CEST [84128] STATEMENT:  INSERT INTO "user" (email, roles, password, username) VALUES ($1, $2, $3, $4)
+2025-07-14 01:46:43.890 CEST [53000] LOG:  stats_timestamp 2025-07-14 01:46:43.944269+02 is later than collector's time 2025-07-14 01:46:43.890354+02 for database 14225
+[PublicationDataPersister] Entrée process, type: NULL
+[PublicationDataPersister] Donnée non prise en charge
+[PublicationDataPersister] Entrée process, type: NULL
+[PublicationDataPersister] Donnée non prise en charge
+[PublicationDataPersister] Entrée process, type: NULL
+[PublicationDataPersister] Donnée non prise en charge
+[PublicationDataPersister] Entrée process, type: NULL
+[PublicationDataPersister] Donnée non prise en charge
+2025-07-19 12:11:18.556 CEST [52988] LOG:  received smart shutdown request
+2025-07-19 12:11:18.558 CEST [52988] LOG:  background worker "logical replication launcher" (PID 53001) exited with exit code 1
+2025-07-19 12:11:18.558 CEST [52996] LOG:  shutting down
+2025-07-19 12:11:18.583 CEST [52988] LOG:  database system is shut down

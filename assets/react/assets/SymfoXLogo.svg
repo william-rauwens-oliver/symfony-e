@@ -1,0 +1,17 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="glass1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2997ff"/>
+      <stop offset="1" stop-color="#30e0a1"/>
+    </linearGradient>
+    <linearGradient id="glass2" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#2997ff" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="20" cy="20" rx="18" ry="18" fill="url(#glass1)" fill-opacity="0.7"/>
+  <path d="M12 28 Q20 36 28 28 Q24 24 20 28 Q16 24 12 28 Z" fill="url(#glass2)"/>
+  <path d="M12 28 Q10 18 20 10 Q30 18 28 28" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <circle cx="16.5" cy="19.5" r="1.5" fill="#fff" fill-opacity="0.8"/>
+  <circle cx="23.5" cy="19.5" r="1.5" fill="#fff" fill-opacity="0.8"/>
+</svg> 

@@ -1,17 +1,72 @@
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="flash-message flash-{{ label }}">
-            <div class="flash-content">
-                <span class="flash-icon">
-                    {% if label == 'success' %}✅
-                    {% elseif label == 'error' %}❌
-                    {% elseif label == 'warning' %}⚠️
-                    {% elseif label == 'info' %}ℹ️
+{% if app.flashes is not empty %}
+    <div class="flash-messages">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-message {{ label }}">
+                    {{ message }}
+                    {% if label == 'success' %}
+                        <a href="{{ path('app_trending') }}" class="trending-link">🔥 Voir les tendances</a>
                     {% endif %}
-                </span>
-                <span class="flash-text">{{ message }}</span>
-                <button class="flash-close" onclick="this.parentElement.parentElement.remove()">×</button>
-            </div>
-        </div>
-    {% endfor %}
-{% endfor %} 
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<style>
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+.flash-message {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.flash-message.success {
+    background: linear-gradient(45deg, #17bf63, #1da1f2);
+}
+
+.flash-message.error {
+    background: linear-gradient(45deg, #e74c3c, #f39c12);
+}
+
+.flash-message.info {
+    background: linear-gradient(45deg, #3498db, #9b59b6);
+}
+
+.trending-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9em;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+.trending-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+</style> 

@@ -14,7 +14,7 @@
                 <span class="publication-date">· {{ publication.createdAt ? publication.createdAt|date('j M') : 'Date inconnue' }}</span>
             </div>
             <div class="publication-content">
-                {% set content = publication.content|default('AUCUN CONTENU') %}
+                {% set content = publication.texte|default('AUCUN CONTENU') %}
                 {% set content_with_links = content|replace({'#':' #'}) %}
                 {% set words = content_with_links|split(' ') %}
                 {% for word in words %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test React JWT Auth</title>
+</head>
+<body>
+    <h1>Test React JWT Authentication</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <button onclick="testMe()">Test /api/me</button>
+    <div id="result"></div>
+
+    <script>
+        async function testLogin() {
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'test@example.com', password: 'password123' }),
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Login failed');
+                }
+                
+                const data = await response.json();
+                localStorage.setItem('jwt_token', data.token);
+                
+                document.getElementById('result').innerHTML = '<pre>Login successful: ' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testMe() {
+            try {
+                const token = localStorage.getItem('jwt_token');
+                if (!token) {
+                    throw new Error('No token found. Please login first.');
+                }
+                
+                const response = await fetch('/api/me', {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to get user info');
+                }
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>User info: ' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html> 

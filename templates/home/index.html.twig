@@ -28,7 +28,7 @@
             </div>
             
             <div class="publication-content">
-                {% set content = publication.content|default('AUCUN CONTENU') %}
+                {% set content = publication.texte|default('AUCUN CONTENU') %}
                 {% set content_with_links = content|replace({'#':' #'}) %}
                 {% set words = content_with_links|split(' ') %}
                 {% for word in words %}
@@ -65,7 +65,7 @@
                 </button>
                 <a href="{{ path('like_publication', {'id': publication.id}) }}" class="action-btn">
                     <span class="icon-heart"></span>
-                    <span>{{ publication.likes|length }}</span>
+                                                    <span>{{ publication.getLikes|length }}</span>
                 </a>
                 <button class="action-btn">
                     <span class="icon-share"></span>
@@ -92,7 +92,7 @@
             <!-- Formulaire de commentaire -->
             {% if app.user %}
                 <div id="comment-form-{{ publication.id }}" class="comment-form" style="display: none;">
-                    <form action="{{ path('app_home') }}" method="post">
+                    <form action="{{ path('react_home') }}" method="post">
                         <input type="hidden" name="publication_id" value="{{ publication.id }}">
                         <textarea name="comment_content" placeholder="Tweeter votre réponse..." required></textarea>
                         <button type="submit" class="btn">Répondre</button>

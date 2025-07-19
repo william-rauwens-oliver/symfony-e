@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tendances{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="trending-header">
+        <h1>🔥 Tendances</h1>
+        <p>Les publications les plus populaires des dernières 24h</p>
+    </div>
+
+    <div class="trending-list">
+        {% if trending is empty %}
+            <div class="no-trending">
+                <p>Aucune tendance pour le moment.</p>
+            </div>
+        {% else %}
+            {% for item in trending %}
+                <div class="trending-card">
+                    <div class="trending-rank">
+                        #{{ loop.index }}
+                    </div>
+                    
+                    <div class="publication-content">
+                        <div class="publication-header">
+                            <div class="author-info">
+                                <strong>{{ item.publication.user.username }}</strong>
+                                <span class="date">{{ item.publication.createdAt|date('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="score-badge">
+                                Score: {{ item.score }}
+                            </div>
+                        </div>
+                        
+                        <div class="publication-text">
+                            {{ item.publication.texte|nl2br }}
+                        </div>
+                        
+                        <div class="publication-stats">
+                                                            <span>❤️ {{ item.publication.getLikes|length }} likes</span>
+                                                            <span>💬 {{ item.publication.getCommentaires|length }} commentaires</span>
+                        </div>
+                        
+                        {% if item.scoreDetails is defined and item.scoreDetails is not empty %}
+                            <div class="score-details">
+                                <details>
+                                    <summary>Détails du score</summary>
+                                    <ul>
+                                        {% if item.scoreDetails.total_interactions is defined %}
+                                            <li>Total interactions: {{ item.scoreDetails.total_interactions }}</li>
+                                        {% endif %}
+                                        {% if item.scoreDetails.followers_interactions is defined %}
+                                            <li>Followers: {{ item.scoreDetails.followers_interactions }}</li>
+                                        {% endif %}
+                                        {% if item.scoreDetails.non_followers_interactions is defined %}
+                                            <li>Non-followers: {{ item.scoreDetails.non_followers_interactions }}</li>
+                                        {% endif %}
+                                        {% if item.scoreDetails.engagement_rate is defined %}
+                                            <li>Taux d'engagement: {{ item.scoreDetails.engagement_rate }}%</li>
+                                        {% endif %}
+                                        {% if item.scoreDetails.diversity_bonus is defined %}
+                                            <li>Bonus diversité: +{{ item.scoreDetails.diversity_bonus }}</li>
+                                        {% endif %}
+                                        {% if item.scoreDetails.early_engagement_bonus is defined %}
+                                            <li>Bonus engagement précoce: +{{ item.scoreDetails.early_engagement_bonus }}</li>
+                                        {% endif %}
+                                    </ul>
+                                </details>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.trending-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.trending-header h1 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.trending-header p {
+    color: #666;
+    font-style: italic;
+}
+
+.trending-card {
+    display: flex;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.trending-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.trending-rank {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.publication-content {
+    flex: 1;
+}
+
+.publication-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.author-info strong {
+    color: #333;
+}
+
+.date {
+    color: #666;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.score-badge {
+    background: #17bf63;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.publication-text {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.publication-stats {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.score-details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.score-details summary {
+    cursor: pointer;
+    color: #1da1f2;
+    font-weight: bold;
+}
+
+.score-details ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.score-details li {
+    margin-bottom: 0.25rem;
+    color: #666;
+}
+
+.no-trending {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin-top: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .trending-card {
+        flex-direction: column;
+    }
+    
+    .trending-rank {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        align-self: center;
+    }
+}
+</style>
+{% endblock %} 

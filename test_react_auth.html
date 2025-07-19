@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test React Auth via Proxy</title>
+</head>
+<body>
+    <h1>Test React Authentication via Vite Proxy</h1>
+    <button onclick="testAuth()">Test Auth Status</button>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAuth() {
+            try {
+                const response = await fetch('/auth/status', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testLogin() {
+            try {
+                // D'abord récupérer le token CSRF
+                const loginPageResponse = await fetch('/login', {
+                    credentials: 'include',
+                });
+                const loginPageHtml = await loginPageResponse.text();
+                
+                const csrfMatch = loginPageHtml.match(/name="_csrf_token" value="([^"]+)"/);
+                if (!csrfMatch) {
+                    throw new Error('Impossible de récupérer le token CSRF');
+                }
+                const csrfToken = csrfMatch[1];
+
+                // Poster le formulaire de connexion
+                const formData = new URLSearchParams();
+                formData.append('_username', 'test@example.com');
+                formData.append('_password', 'password123');
+                formData.append('_csrf_token', csrfToken);
+
+                const res = await fetch('/login', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include',
+                });
+
+                document.getElementById('result').innerHTML = '<p>Login response status: ' + res.status + '</p>';
+                
+                // Tester l'auth status après login
+                setTimeout(testAuth, 1000);
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html> 

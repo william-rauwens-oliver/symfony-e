@@ -1,0 +1,274 @@
+.search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.search-header h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.search-form {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #1da1f2;
+}
+
+.search-btn {
+  padding: 12px 20px;
+  background: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.search-btn:hover {
+  background: #1991db;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error {
+  background: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.search-results h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.results-summary {
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.no-results {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.search-placeholder {
+  text-align: center;
+  color: #666;
+  margin-top: 3rem;
+}
+
+/* Sections de recherche */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1da1f2;
+}
+
+/* Styles pour les utilisateurs */
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-details strong {
+  color: #333;
+  font-size: 1.1em;
+}
+
+.user-email {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.view-profile-btn {
+  background: #1da1f2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.view-profile-btn:hover {
+  background: #1991db;
+}
+
+/* Styles pour les hashtags */
+.hashtags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hashtag-card {
+  background: white;
+  border: 2px solid #1da1f2;
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: #1da1f2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.hashtag-card:hover {
+  background: #1da1f2;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(29, 161, 242, 0.3);
+}
+
+.hashtag-icon {
+  font-size: 1.2em;
+}
+
+.hashtag-name {
+  font-size: 1.1em;
+}
+
+/* Styles pour les publications */
+.publications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.publication-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.publication-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.author-info strong {
+  color: #333;
+}
+
+.date {
+  color: #666;
+  font-size: 0.9em;
+  margin-left: 10px;
+}
+
+.publication-content {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.publication-stats {
+  display: flex;
+  gap: 1rem;
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 10px;
+  }
+  
+  .search-form {
+    flex-direction: column;
+  }
+  
+  .user-card {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .hashtags-list {
+    justify-content: center;
+  }
+} 

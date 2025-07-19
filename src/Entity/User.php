@@ -6,20 +6,34 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-#[ApiResource(collectionOperations: ['get'], itemOperations: ['get'])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['user:read']],
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['user:read', 'publication:read', 'commentaire:read', 'like:read', 'repost:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['user:read', 'publication:read', 'commentaire:read', 'like:read', 'repost:read'])]
     #[ORM\Column(length: 180)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
     private ?string $email = null;
 
     /**
@@ -31,42 +45,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     private ?string $password = null;
 
+    #[Groups(['user:read', 'publication:read', 'commentaire:read', 'like:read', 'repost:read'])]
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class, orphanRemoval: true)]
-    private \Doctrine\Common\Collections\Collection $publications;
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $publications;
+
+    #[Groups(['user:read', 'repost:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Repost::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $reposts;
 
     public function __construct()
     {
-        $this->publications = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function getPublications(): \Doctrine\Common\Collections\Collection
-    {
-        return $this->publications;
-    }
-
-    public function addPublication(Publication $publication): static
-    {
-        if (!$this->publications->contains($publication)) {
-            $this->publications->add($publication);
-            $publication->setUser($this);
-        }
-        return $this;
-    }
-
-    public function removePublication(Publication $publication): static
-    {
-        if ($this->publications->removeElement($publication)) {
-            if ($publication->getUser() === $this) {
-                $publication->setUser(null);
-            }
-        }
-        return $this;
+        $this->publications = new ArrayCollection();
+        $this->reposts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +158,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->username = $username;
 
+        return $this;
+    }
+
+    #[Groups(['user:read'])]
+    public function getPublicationCount(): int
+    {
+        return is_iterable($this->publications) ? iterator_count($this->publications) : 0;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getPublications(): iterable
+    {
+        return $this->publications;
+    }
+
+    /**
+     * @param iterable $publications
+     * @return self
+     */
+    public function setPublications(iterable $publications): self
+    {
+        $this->publications = $publications;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getReposts(): iterable
+    {
+        return $this->reposts;
+    }
+
+    /**
+     * @param iterable $reposts
+     * @return self
+     */
+    public function setReposts(iterable $reposts): self
+    {
+        $this->reposts = $reposts;
         return $this;
     }
 }

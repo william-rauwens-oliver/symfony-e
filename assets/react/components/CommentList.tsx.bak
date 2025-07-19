@@ -1,0 +1,256 @@
+import React, { useEffect, useState } from 'react';
+import { getToken } from '../api/auth';
+import { likeComment, unlikeComment } from '../api/publication';
+import axios from 'axios';
+import { useUser } from '../context/UserContext';
+
+interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+  user?: {
+    username: string;
+    avatarUrl?: string;
+  };
+  replies?: Comment[];
+  parent?: { id: number } | null;
+  // Ajout d'un compteur de likes local
+  _localLikes?: number;
+  _localLiked?: boolean;
+}
+
+        const getInitial = (username?: string | null) => username ? username.charAt(0).toUpperCase() : '?';
+
+const CommentItem: React.FC<{ comment: Comment; onReply: (parentId: number, content: string) => void; level?: number }> = ({ comment, onReply, level = 0 }) => {
+  const [showReply, setShowReply] = useState(false);
+  const [reply, setReply] = useState<string>('');
+  // Local like state
+  const [liked, setLiked] = useState(comment._localLiked || false);
+  const [likeCount, setLikeCount] = useState(comment._localLikes || 0);
+  const [likeAnim, setLikeAnim] = useState(false);
+
+  const handleLike = async () => {
+    if (!liked) {
+      setLiked(true);
+      setLikeCount(likeCount + 1);
+      setLikeAnim(true);
+      setTimeout(() => setLikeAnim(false), 300);
+      // Appel API pour enregistrer le like côté backend
+      try {
+        const token = getToken();
+        if (token) {
+          await likeComment(comment.id, token);
+        }
+      } catch (e) {
+        // En cas d'erreur, on annule le like local
+        setLiked(false);
+        setLikeCount(likeCount);
+      }
+    } else {
+      setLiked(false);
+      setLikeCount(likeCount - 1);
+      // Appel API pour supprimer le like côté backend
+      try {
+        const token = getToken();
+        if (token) {
+          await unlikeComment(comment.id, token);
+        }
+      } catch (e) {
+        // En cas d'erreur, on restaure le like local
+        setLiked(true);
+        setLikeCount(likeCount);
+      }
+    }
+  };
+
+  return (
+    <div className="comment" style={{ marginLeft: level * 24 }}>
+      <div className="comment-header">
+        {comment.user?.avatarUrl ? (
+          <img src={comment.user.avatarUrl} alt="avatar" className="comment-avatar" />
+        ) : (
+          <div className="comment-avatar comment-avatar-fallback">{getInitial(comment.user?.username)}</div>
+        )}
+        <span className="comment-author">{comment.user?.username || 'Utilisateur inconnu'}</span>
+        <span className="comment-date">{new Date(comment.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+      </div>
+      <div className="comment-content">{comment.content}</div>
+      <div className="comment-actions">
+        <button
+          className={`comment-like-btn${liked ? ' liked' : ''}${likeAnim ? ' pop' : ''}`}
+          title="Like"
+          onClick={handleLike}
+          type="button"
+        >
+          ❤️ <span className="comment-like-count">{likeCount}</span>
+        </button>
+        <button className="comment-reply-btn" onClick={() => setShowReply(s => !s)} type="button">{showReply ? 'Annuler' : 'Répondre'}</button>
+      </div>
+      {showReply && (
+        <form className="comment-reply-form" onSubmit={e => { e.preventDefault();
+          onReply(comment.id, reply as string);
+          setReply(''); setShowReply(false); }}>
+          <input type="text" value={reply} onChange={e => setReply(e.target.value)} placeholder="Votre réponse..." />
+          <button type="submit" disabled={!reply}>Envoyer</button>
+        </form>
+      )}
+      {comment.replies && comment.replies.length > 0 && (
+        <div className="comment-replies">
+          {comment.replies.filter(Boolean).map(reply => (
+            <CommentItem key={reply.id} comment={reply} onReply={onReply} level={level + 1} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CommentList: React.FC<{ publicationId: number }> = ({ publicationId }) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user, token, loading: userLoading } = useUser();
+
+  // Ajout : fetch des likes de l'utilisateur courant
+  const fetchUserCommentLikes = async (commentIds: number[]) => {
+    const token = getToken();
+    const filteredIds = commentIds.filter((id): id is number => typeof id === 'number' && !isNaN(id));
+    if (!token || filteredIds.length === 0) return [];
+    const params = new URLSearchParams();
+    params.append('user', 'current');
+    if (filteredIds.length !== commentIds.length) {
+      console.warn('CommentList: certains ids de commentaire sont invalides', commentIds);
+    }
+    filteredIds.forEach(id => params.append('commentaire[]', id.toString()));
+    const res = await axios.get(`/api/comment_likes?${params.toString()}`,
+      { headers: { Authorization: `Bearer ${token}` } });
+    return res.data['hydra:member'] || res.data.member || res.data || [];
+  };
+
+  const fetchComments = async (token: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/publications/${publicationId}/commentaires`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Erreur lors du chargement des commentaires');
+      const data = await res.json();
+      const all = (data['hydra:member'] || data.member || data);
+      const commentIds = all
+        .map((c: any) => {
+          const id = Number(c.id);
+          return !isNaN(id) ? id : null;
+        })
+        .filter((id: number | null): id is number => id !== null);
+      let userLikes: any[] = [];
+      try {
+        userLikes = await fetchUserCommentLikes(commentIds);
+      } catch {}
+      const likedMap = new Set(userLikes.map(like => {
+        if (!like.commentaire) return undefined;
+        if (typeof like.commentaire === 'object' && like.commentaire.id) return Number(like.commentaire.id);
+        if (typeof like.commentaire === 'string') {
+          const idStr = like.commentaire.split('/').pop();
+          const idNum = Number(idStr);
+          return !isNaN(idNum) ? idNum : undefined;
+        }
+        return undefined;
+      }).filter((id): id is number => typeof id === 'number' && !isNaN(id)));
+      const byId: Record<number, Comment> = {};
+      all.forEach((c: any) => {
+        byId[c.id] = { ...c, replies: [], _localLiked: likedMap.has(c.id), _localLikes: c.likeCount };
+      });
+      all.forEach((c: any) => {
+        if (c.parent && byId[c.parent.id]) {
+          byId[c.parent.id].replies!.push(byId[c.id]);
+        }
+      });
+      const roots = Object.values(byId).filter(c => !c.parent);
+      setComments(roots);
+      setLoading(false);
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userLoading) return; // On attend que le contexte utilisateur soit prêt
+    if (!user || !token) {
+      setError('Vous devez être connecté pour voir les commentaires.');
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setLoading(true);
+    fetchComments(token);
+    // eslint-disable-next-line
+  }, [publicationId, user, token, userLoading]);
+
+  const handleReply = (parentId: number, content: string) => {
+    if (!content) return; // Ne rien faire si content est vide
+    // Optimistic update : ajout local immédiat
+    setComments(prev => {
+      const now = new Date();
+      const fakeComment: Comment = {
+        id: Math.random(),
+        content,
+        createdAt: now.toISOString(),
+        user: { username: 'Vous' },
+        replies: [],
+        parent: { id: parentId },
+      };
+      // Ajout dans la bonne branche
+      const addReply = (list: Comment[]): Comment[] =>
+        list.map(c =>
+          c.id === parentId
+            ? { ...c, replies: [...(c.replies || []), fakeComment] }
+            : { ...c, replies: c.replies ? addReply(c.replies) : [] }
+        );
+      return addReply(prev);
+    });
+    // POST réel
+    fetch('/api/commentaires', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        content,
+        publication: `/api/publications/${publicationId}`,
+        parent: `/api/commentaires/${parentId}`,
+      }),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Erreur lors de l\'envoi du commentaire');
+        return res.json();
+      })
+      .then(() => fetchComments(token))
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  };
+
+  if (userLoading) return <div className="comments"><p>Chargement utilisateur...</p></div>;
+  if (!user || !token) return <div className="comments"><p style={{ color: 'red' }}>Vous devez être connecté pour voir les commentaires.</p></div>;
+  if (loading) return <div className="comments"><p>Chargement des commentaires...</p></div>;
+  if (error) return <div className="comments"><p style={{ color: 'red' }}>{error}</p></div>;
+  if (comments.length === 0) return <div className="comments"><p>Aucun commentaire.</p></div>;
+
+  return (
+    <div className="comments">
+      {comments.map(comment => (
+        <CommentItem key={comment.id} comment={comment} onReply={handleReply} />
+      ))}
+    </div>
+  );
+};
+
+export default CommentList; 

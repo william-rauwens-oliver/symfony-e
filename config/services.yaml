@@ -16,5 +16,35 @@ services:
     App\:
         resource: '../src/'
 
+    App\DataPersister\LikeDataPersister:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $tokenStorage: '@security.token_storage'
+        tags: [ 'api_platform.state_processor' ]
+
+    App\DataPersister\CommentaireDataPersister:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $tokenStorage: '@security.token_storage'
+        tags: [ 'api_platform.state_processor' ]
+
+    App\DataPersister\PublicationDataPersister:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $security: '@security.helper'
+        tags: [ 'api_platform.state_processor' ]
+
+    App\DataPersister\FollowDataPersister:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $tokenStorage: '@security.token_storage'
+        tags: [ 'api_platform.state_processor' ]
+
+    App\EventListener\FollowListener:
+        arguments:
+            $security: '@security.helper'
+        tags:
+            - { name: doctrine.orm.entity_listener, event: prePersist, entity: App\Entity\Follow }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

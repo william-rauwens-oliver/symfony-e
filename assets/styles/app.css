@@ -814,6 +814,26 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
 }
 
+/* Styles pour les retweets */
+.publication.repost {
+    border-left: 4px solid var(--primary-blue);
+    background: var(--bg-light);
+}
+
+.repost-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.repost-indicator .icon-retweet {
+    color: var(--primary-blue);
+    font-size: var(--font-size-base);
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
     .trends {
