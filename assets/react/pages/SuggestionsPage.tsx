@@ -9,7 +9,7 @@ import RepostButton from '../components/RepostButton';
 import ShareButton from '../components/ShareButton';
 
 const SuggestionsPage: React.FC = () => {
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +17,21 @@ const SuggestionsPage: React.FC = () => {
   const [followings, setFollowings] = useState<{[userId: number]: boolean}>({});
 
   useEffect(() => {
+    // Attendre que le contexte utilisateur soit initialisé
+    if (userLoading) {
+      return;
+    }
+
+    // Si pas d'utilisateur connecté, ne pas faire l'appel API
+    if (!user) {
+      setError('Vous devez être connecté pour voir les suggestions.');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
+    setError(null);
+    
     fetchWithAuth('/api/suggestions')
       .then(async res => {
         if (res.status === 401) {
@@ -43,7 +57,7 @@ const SuggestionsPage: React.FC = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [user, userLoading]);
 
   // Vérifie le follow pour chaque auteur de publication
   useEffect(() => {
@@ -97,7 +111,8 @@ const SuggestionsPage: React.FC = () => {
       <div className="main-header">
         <h1>Suggestions personnalisées</h1>
       </div>
-      {loading && <p>Chargement des suggestions...</p>}
+      {userLoading && <p>Vérification de l'authentification...</p>}
+      {loading && !userLoading && <p>Chargement des suggestions...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {apiMessage && (
         <div className="publication">
