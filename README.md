@@ -278,10 +278,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **William Rauwens-Oliver** - Full Stack Developer
-- **Symfony Expert** - Backend Architecture
-- **React Specialist** - Frontend Development
-- **UI/UX Designer** - Design System & User Experience
+- **William Rauwens-Oliver** - Full Stack Developer & Project Lead
+- **Chaima** - Backend Development & Database Architecture
+- **William & Chaima** - Collaborative development of SymfoX social network platform
 
 ## 📞 Support
 
