@@ -393,3 +393,11 @@
 [PublicationDataPersister] Mapping PublicationInput vers Publication
 [PublicationDataPersister] Publication persistée avec ID: 54, texte: Hello toi
 [PublicationUploadController] Publication créée avec ID: 54
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Hello
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 55, texte: Hello
+[PublicationUploadController] Publication créée avec ID: 55
