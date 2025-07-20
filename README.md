@@ -1,330 +1,299 @@
-# 🐦 Symfony Social Network - Twitter-like Platform
+# SymfoX - European Social Network Platform
 
-Un réseau social moderne inspiré de Twitter, développé avec Symfony 7.3, offrant une expérience utilisateur complète avec authentification, publications, commentaires, likes, hashtags, et un système de suggestions personnalisées.
+[![Symfony](https://img.shields.io/badge/Symfony-7.3-000000?style=for-the-badge&logo=symfony)](https://symfony.com/)
+[![React](https://img.shields.io/badge/React-18.2-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php)](https://php.net/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Doctrine](https://img.shields.io/badge/Doctrine-ORM-000000?style=for-the-badge&logo=doctrine)](https://www.doctrine-project.org/)
+[![API Platform](https://img.shields.io/badge/API_Platform-3.2-6A4C93?style=for-the-badge&logo=api-platform)](https://api-platform.com/)
 
-## 📋 Table des matières
+## 🌟 Overview
 
-- [Fonctionnalités](#-fonctionnalités)
-- [Technologies utilisées](#-technologies-utilisées)
-- [Prérequis](#-prérequis)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Utilisation](#-utilisation)
-- [Architecture](#-architecture)
-- [Tests](#-tests)
-- [API](#-api)
-- [Conformité GDPR](#-conformité-gdpr)
-- [Structure du projet](#-structure-du-projet)
-- [Contribution](#-contribution)
-- [Licence](#-licence)
+**SymfoX** is a modern, GDPR-compliant social network platform designed as an ethical alternative to traditional social media. Built with Symfony 7.3 and React, it provides a secure, transparent, and user-friendly environment for content sharing and social interaction.
 
-## ✨ Fonctionnalités
+### 🎯 Key Features
 
-### 🔐 Authentification & Sécurité
-- **Inscription/Connexion** avec email et mot de passe
-- **Authentification personnalisée** avec Symfony Security
-- **Protection CSRF** sur tous les formulaires
-- **Sessions sécurisées** avec remember me
-- **Gestion des rôles** (ROLE_USER, ROLE_ADMIN)
-
-### 📱 Interface utilisateur
-- **Design Twitter-like** avec layout 3 colonnes
-- **Interface responsive** adaptée mobile/desktop
-- **Thème moderne** avec couleurs et typographie Twitter
-- **Animations fluides** et transitions CSS
-- **Notifications flash** pour le feedback utilisateur
-
-### 📝 Publications
-- **Création de publications** avec texte, images et vidéos
-- **Upload de médias** (images JPG/PNG, vidéos MP4)
-- **Détection automatique des hashtags** (#hashtag)
-- **Pages dédiées aux hashtags** avec publications liées
-- **Système de likes** avec compteurs en temps réel
-- **Commentaires et réponses** avec interface intuitive
-
-### 👥 Profils utilisateurs
-- **Profils personnalisables** avec avatar et bio
-- **Statistiques utilisateur** (publications, followers, following)
-- **Historique des publications** avec pagination
-- **Édition de profil** avec validation des données
-- **Système de follow/unfollow**
-
-### 🔍 Recherche et découverte
-- **Recherche globale** (utilisateurs, hashtags, publications)
-- **Suggestions personnalisées** basées sur l'activité
-- **Algorithme de scoring** intelligent
-- **Feed personnalisé** selon les interactions
-
-### 🛡️ Conformité légale
-- **Mentions légales** complètes
-- **Politique de confidentialité** GDPR
-- **Gestion des données personnelles**
-- **Droit à l'oubli** (suppression de compte)
-
-## 🛠️ Technologies utilisées
-
-### Backend
-- **Symfony 7.3** - Framework PHP moderne
-- **Doctrine ORM 3.5** - Gestion de la base de données
-- **API Platform** - API REST automatique
-- **Symfony Security** - Authentification et autorisation
-- **Twig** - Moteur de templates
-- **Symfony Forms** - Gestion des formulaires
-- **Symfony Validator** - Validation des données
-
-### Frontend
-- **Twig Templates** - Templates côté serveur
-- **CSS3** - Styles personnalisés Twitter-like
-- **JavaScript ES6+** - Interactions dynamiques
-- **Stimulus.js** - Contrôleurs JavaScript
-- **Asset Mapper** - Gestion des assets
-
-### Base de données
-- **MySQL/PostgreSQL** - Base de données relationnelle
-- **Doctrine Migrations** - Versioning de la base de données
-
-### Tests
-- **PHPUnit** - Tests unitaires et fonctionnels
-- **Symfony Browser Kit** - Tests d'intégration
-
-## 📋 Prérequis
-
-- **PHP 8.2+**
-- **Composer 2.0+**
-- **MySQL 8.0+** ou **PostgreSQL 13+**
-- **Node.js 18+** (pour les assets)
-- **Symfony CLI** (optionnel mais recommandé)
-
-## 🚀 Installation
-
-### 1. Cloner le projet
-```bash
-git clone <repository-url>
-cd symfony-e
-```
-
-### 2. Installer les dépendances
-```bash
-composer install
-npm install
-```
-
-### 3. Configuration de l'environnement
-```bash
-cp .env .env.local
-```
-
-Éditer `.env.local` avec vos paramètres de base de données :
-```env
-DATABASE_URL="mysql://user:password@127.0.0.1:3306/symfony_social?serverVersion=8.0"
-```
-
-### 4. Créer la base de données
-```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-```
-
-### 5. Charger les fixtures (optionnel)
-```bash
-php bin/console doctrine:fixtures:load
-```
-
-### 6. Compiler les assets
-```bash
-npm run build
-```
-
-### 7. Démarrer le serveur
-```bash
-symfony server:start
-```
-
-L'application est accessible sur `http://localhost:8000`
-
-## ⚙️ Configuration
-
-### Configuration de sécurité
-Le fichier `config/packages/security.yaml` contient :
-- Configuration des password hashers
-- Providers d'authentification
-- Firewalls et access control
-- Remember me functionality
-
-### Configuration de la base de données
-- Migrations dans `migrations/`
-- Entités dans `src/Entity/`
-- Repositories dans `src/Repository/`
-
-### Configuration des assets
-- Assets dans `assets/`
-- Configuration dans `importmap.php`
-- Styles dans `assets/styles/app.css`
-
-## 🎯 Utilisation
-
-### Inscription et connexion
-1. Accéder à `/register` pour créer un compte
-2. Se connecter via `/login`
-3. Profiter de toutes les fonctionnalités
-
-### Créer une publication
-1. Cliquer sur "Nouvelle publication"
-2. Rédiger votre contenu avec hashtags
-3. Ajouter des images/vidéos (optionnel)
-4. Publier
-
-### Interagir avec le contenu
-- **Liker** : Cliquer sur le cœur
-- **Commenter** : Cliquer sur l'icône commentaire
-- **Suivre** : Cliquer sur "Suivre" sur un profil
-- **Rechercher** : Utiliser la barre de recherche
-
-### Gérer son profil
-1. Aller sur son profil
-2. Cliquer sur "Modifier le profil"
-3. Mettre à jour les informations
-4. Sauvegarder
+- **🔐 Secure Authentication** - JWT-based authentication with role-based access control
+- **📱 Modern UI/UX** - React frontend with glassmorphism design and responsive layout
+- **📊 Content Management** - Publications, comments, likes, and reposts
+- **🔍 Smart Search** - Advanced search with hashtag support
+- **🤖 AI-Powered Suggestions** - Intelligent content recommendation algorithm
+- **📈 Real-time Analytics** - User engagement tracking and insights
+- **🌍 GDPR Compliant** - European data protection standards compliance
 
 ## 🏗️ Architecture
 
-### Entités principales
-- **User** : Utilisateurs avec authentification
-- **Publication** : Posts avec médias et hashtags
-- **Commentaire** : Commentaires sur les publications
-- **Like** : Système de likes
-- **Follow** : Relations de suivi entre utilisateurs
+### Backend Stack
+- **Framework**: Symfony 7.3
+- **Database**: MySQL with Doctrine ORM
+- **API**: API Platform 3.2 with OpenAPI/Swagger
+- **Authentication**: JWT with LexikJWTAuthenticationBundle
+- **Security**: Symfony Security Bundle with custom authenticators
 
-### Services
-- **SuggestionService** : Algorithme de suggestions personnalisées
-- **AppCustomAuthenticator** : Authentification personnalisée
+### Frontend Stack
+- **Framework**: React 18.2 with TypeScript
+- **Styling**: CSS3 with custom design system
+- **Build Tool**: Vite
+- **State Management**: React Context API
+- **HTTP Client**: Fetch API with custom hooks
 
-### Contrôleurs
-- **HomeController** : Page d'accueil et feed
-- **SecurityController** : Authentification
-- **RegistrationController** : Inscription
-- **ProfileController** : Gestion des profils
-- **LikeController** : Gestion des likes
-- **LegalController** : Pages légales
+## 🚀 Quick Start
 
-### Système de scoring
-Le `SuggestionService` calcule un score pour chaque publication basé sur :
-- **+5 points** par like reçu
-- **+3 points** par commentaire reçu
-- **+10 points** si liké par un utilisateur suivi
-- **+7 points** par hashtag en commun
-- **+15 points** pour interactions récentes
+### Prerequisites
 
-## 🧪 Tests
+- PHP 8.2+
+- Composer 2.0+
+- Node.js 18+
+- MySQL 8.0+
+- Symfony CLI
 
-### Exécuter tous les tests
-```bash
-php bin/phpunit
-```
+### Installation
 
-### Tests unitaires
-```bash
-php bin/phpunit --testsuite=Unit
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/william-rauwens-oliver/symfony-e.git
+   cd symfony-e
+   ```
 
-### Tests fonctionnels
-```bash
-php bin/phpunit --testsuite=Functional
-```
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-### Tests avec couverture
-```bash
-php bin/phpunit --coverage-html var/coverage
-```
+3. **Install Node.js dependencies**
+   ```bash
+   npm install
+   ```
 
-### Structure des tests
-- **Unit** : Tests des entités et services
-- **Functional** : Tests des contrôleurs et formulaires
-- **Fixtures** : Données de test
+4. **Configure environment**
+   ```bash
+   cp .env .env.local
+   # Edit .env.local with your database credentials
+   ```
 
-## 🔌 API
+5. **Setup database**
+   ```bash
+   php bin/console doctrine:database:create
+   php bin/console doctrine:migrations:migrate
+   php bin/console doctrine:fixtures:load
+   ```
 
-L'API REST est automatiquement générée par API Platform :
+6. **Generate JWT keys**
+   ```bash
+   php bin/console lexik:jwt:generate-keypair
+   ```
 
-### Endpoints disponibles
-- `GET /api/users` - Liste des utilisateurs
-- `GET /api/publications` - Liste des publications
-- `GET /api/commentaires` - Liste des commentaires
-- `GET /api/likes` - Liste des likes
+7. **Build frontend assets**
+   ```bash
+   npm run build
+   ```
 
-### Documentation API
-- **Swagger UI** : `/api/docs`
-- **JSON-LD** : `/api/contexts/`
+8. **Start development server**
+   ```bash
+   symfony server:start
+   ```
 
-### Authentification API
-- **JWT** (à configurer)
-- **Session** (par défaut)
+### Development
 
-## 🛡️ Conformité GDPR
+- **Backend**: `http://localhost:8000`
+- **Frontend**: `http://localhost:5173` (Vite dev server)
+- **API Documentation**: `http://localhost:8000/api`
 
-### Mesures implémentées
-- **Mentions légales** complètes
-- **Politique de confidentialité** détaillée
-- **Droit à l'oubli** via suppression de compte
-- **Consentement explicite** lors de l'inscription
-- **Chiffrement des mots de passe**
-- **Protection CSRF** sur tous les formulaires
-
-### Pages légales
-- `/mentions-legales` - Mentions légales
-- `/privacy-policy` - Politique de confidentialité
-
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 symfony-e/
-├── assets/                 # Assets frontend
-│   ├── controllers/       # Contrôleurs Stimulus
-│   └── styles/           # CSS personnalisé
-├── bin/                   # Exécutables Symfony
-├── config/               # Configuration
-│   ├── packages/         # Configuration des bundles
-│   └── routes/           # Configuration des routes
-├── migrations/           # Migrations de base de données
-├── public/              # Fichiers publics
-├── src/                 # Code source
-│   ├── Controller/      # Contrôleurs
-│   ├── Entity/          # Entités Doctrine
-│   ├── Form/            # Formulaires
-│   ├── Repository/      # Repositories
-│   ├── Security/        # Sécurité
-│   └── Service/         # Services métier
-├── templates/           # Templates Twig
-├── tests/              # Tests
-└── var/                # Fichiers temporaires
+├── assets/                 # Frontend assets
+│   ├── react/             # React application
+│   │   ├── components/    # Reusable components
+│   │   ├── pages/         # Page components
+│   │   ├── context/       # React contexts
+│   │   └── api/           # API integration
+│   └── styles/            # Global styles
+├── src/
+│   ├── Controller/        # Symfony controllers
+│   │   └── Api/          # API controllers
+│   ├── Entity/           # Doctrine entities
+│   ├── Repository/       # Data repositories
+│   ├── Service/          # Business logic
+│   ├── Security/         # Authentication & authorization
+│   ├── Form/             # Symfony forms
+│   └── DataPersister/    # API Platform data persisters
+├── config/               # Symfony configuration
+├── migrations/           # Database migrations
+├── templates/            # Twig templates
+└── tests/               # Test suite
 ```
 
-## 🤝 Contribution
+## 🎨 Design System
 
-### Prérequis pour contribuer
-1. Fork du projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit des changements (`git commit -m 'Add AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
+### Color Palette
+- **Primary Green**: `#2d5a27` - Main brand color
+- **Primary Blue**: `#1da1f2` - Twitter-inspired blue
+- **Primary Pink**: `#f91880` - Accent color
+- **Gradient Purple**: `#667eea` - Gradient elements
 
-### Standards de code
-- **PSR-12** pour le PHP
-- **Symfony Coding Standards**
-- **Tests obligatoires** pour les nouvelles fonctionnalités
-- **Documentation** des nouvelles APIs
+### Typography
+- **Font Family**: `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif`
+- **Heading 1**: 32px, weight 800
+- **Heading 2**: 24px, weight 700
+- **Body Text**: 16px, weight 400
 
-### Workflow de développement
-1. **Tests** : Tous les tests doivent passer
-2. **Linting** : Code conforme aux standards
-3. **Documentation** : Mise à jour du README si nécessaire
-4. **Review** : Code review obligatoire
+### Components
+- **Glassmorphism Cards** - Semi-transparent with blur effects
+- **Rounded Corners** - 16px border radius for cards
+- **Drop Shadows** - Subtle shadows for depth
+- **Responsive Design** - Mobile-first approach
 
+## 🔧 API Endpoints
 
-Pour toute question ou problème :
-- **Issues GitHub** : Ouvrir une issue sur le repository
-- **Documentation** : Consulter la documentation Symfony
-- **Tests** : Exécuter les tests pour diagnostiquer les problèmes
+### Authentication
+- `POST /api/login` - User login
+- `POST /api/register` - User registration
+- `POST /api/logout` - User logout
+
+### Publications
+- `GET /api/publications` - List publications
+- `POST /api/publications` - Create publication
+- `GET /api/publications/{id}` - Get publication
+- `PUT /api/publications/{id}` - Update publication
+- `DELETE /api/publications/{id}` - Delete publication
+
+### Comments
+- `GET /api/commentaires` - List comments
+- `POST /api/commentaires` - Create comment
+- `DELETE /api/commentaires/{id}` - Delete comment
+
+### User Management
+- `GET /api/users/{id}` - Get user profile
+- `PUT /api/users/{id}` - Update user profile
+- `GET /api/users/{id}/publications` - User publications
+
+### Search & Suggestions
+- `GET /api/search` - Search publications and users
+- `GET /api/suggestions` - Get content suggestions
+
+## 🤖 Suggestion Algorithm
+
+The platform features an intelligent content recommendation system based on:
+
+- **User Engagement**: +5 points per like received
+- **Social Validation**: +10 points for reposts by followed users
+- **Discussion Quality**: +3 points per comment received
+- **Hashtag Relevance**: +7 points for hashtag matches
+- **Reciprocal Interaction**: +15 points for recent interactions
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+# Unit tests
+php bin/phpunit
+
+# Functional tests
+php bin/phpunit --testsuite=functional
+
+# API tests
+php bin/phpunit --testsuite=api
+```
+
+### Test Coverage
+- **Entity Tests**: User, Publication, Comment validation
+- **Controller Tests**: API endpoint functionality
+- **Service Tests**: Business logic validation
+- **Integration Tests**: End-to-end workflows
+
+## 🔒 Security Features
+
+- **JWT Authentication** - Secure token-based authentication
+- **CSRF Protection** - Cross-site request forgery prevention
+- **Input Validation** - Comprehensive data validation
+- **SQL Injection Prevention** - Doctrine ORM protection
+- **XSS Protection** - Output escaping and sanitization
+- **Rate Limiting** - API request throttling
+
+## 📊 Performance
+
+- **Database Optimization** - Indexed queries and efficient relationships
+- **Caching Strategy** - Redis integration for session and data caching
+- **Asset Optimization** - Minified CSS/JS with Vite
+- **Image Optimization** - Compressed uploads and lazy loading
+- **API Response Caching** - HTTP caching headers
+
+## 🌍 GDPR Compliance
+
+- **Data Minimization** - Only necessary data collection
+- **User Consent** - Explicit consent for data processing
+- **Right to Erasure** - Complete account deletion
+- **Data Portability** - Export user data
+- **Transparency** - Clear privacy policy and data usage
+
+## 🚀 Deployment
+
+### Production Setup
+1. **Environment Configuration**
+   ```bash
+   APP_ENV=prod
+   APP_DEBUG=false
+   ```
+
+2. **Database Migration**
+   ```bash
+   php bin/console doctrine:migrations:migrate --env=prod
+   ```
+
+3. **Asset Compilation**
+   ```bash
+   npm run build
+   ```
+
+4. **Cache Warmup**
+   ```bash
+   php bin/console cache:warmup --env=prod
+   ```
+
+### Docker Support
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow PSR-12 coding standards
+- Write comprehensive tests
+- Update documentation
+- Use conventional commit messages
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **William Rauwens-Oliver** - Full Stack Developer & Project Lead
+- **Chaima** - Backend Development & Database Architecture
+- **William & Chaima** - Collaborative development of SymfoX social network platform
+
+## 📞 Support
+
+- **Documentation**: [Wiki](https://github.com/william-rauwens-oliver/symfony-e/wiki)
+- **Issues**: [GitHub Issues](https://github.com/william-rauwens-oliver/symfony-e/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/william-rauwens-oliver/symfony-e/discussions)
+
+## 🎉 Acknowledgments
+
+- **Symfony Team** - For the amazing framework
+- **React Team** - For the powerful frontend library
+- **API Platform** - For the excellent API development tools
+- **European Union** - For GDPR guidelines and digital sovereignty vision
 
 ---
 
