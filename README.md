@@ -328,4 +328,4 @@ Pour toute question ou problème :
 
 ---
 
-**Développé par William et Chaima** 
+**Developed by William and Chaima** 
