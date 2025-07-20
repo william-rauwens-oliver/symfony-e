@@ -20,7 +20,7 @@ class RegistrationApiController extends AbstractController
             return $this->json(['error' => 'Invalid data'], 400);
         }
 
-        // Vérification unicité email/username
+        // Je vérifie l'unicité email/username
         $existing = $em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
         if ($existing) {
             return $this->json(['error' => 'Email déjà utilisé'], 409);

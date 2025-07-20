@@ -18,6 +18,10 @@ use Doctrine\Common\Collections\Collection;
     operations: [
         new GetCollection(),
         new Get(),
+        new \ApiPlatform\Metadata\Delete(
+            processor: 'App\\DataPersister\\UserDataPersister',
+            security: "is_granted('IS_AUTHENTICATED_FULLY') and object == user"
+        ),
     ]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -62,10 +66,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
     private iterable $reposts;
 
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $commentaires;
+
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Like::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $likes;
+
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentLike::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $commentLikes;
+
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: Follow::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $follows;
+
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: Follow::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[\Symfony\Component\Serializer\Annotation\MaxDepth(1)]
+    private iterable $followers;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
         $this->reposts = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->commentLikes = new ArrayCollection();
+        $this->follows = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,6 +234,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReposts(iterable $reposts): self
     {
         $this->reposts = $reposts;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getCommentaires(): iterable
+    {
+        return $this->commentaires;
+    }
+
+    /**
+     * @param iterable $commentaires
+     * @return self
+     */
+    public function setCommentaires(iterable $commentaires): self
+    {
+        $this->commentaires = $commentaires;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getLikes(): iterable
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param iterable $likes
+     * @return self
+     */
+    public function setLikes(iterable $likes): self
+    {
+        $this->likes = $likes;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getCommentLikes(): iterable
+    {
+        return $this->commentLikes;
+    }
+
+    /**
+     * @param iterable $commentLikes
+     * @return self
+     */
+    public function setCommentLikes(iterable $commentLikes): self
+    {
+        $this->commentLikes = $commentLikes;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getFollows(): iterable
+    {
+        return $this->follows;
+    }
+
+    /**
+     * @param iterable $follows
+     * @return self
+     */
+    public function setFollows(iterable $follows): self
+    {
+        $this->follows = $follows;
+        return $this;
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getFollowers(): iterable
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @param iterable $followers
+     * @return self
+     */
+    public function setFollowers(iterable $followers): self
+    {
+        $this->followers = $followers;
         return $this;
     }
 }

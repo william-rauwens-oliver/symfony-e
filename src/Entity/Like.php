@@ -44,7 +44,7 @@ class Like
 
     #[Groups(['like:read', 'publication:read', 'like:write'])]
     #[ORM\ManyToOne(targetEntity: Publication::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Publication $publication = null;
 
     public function getId(): ?int

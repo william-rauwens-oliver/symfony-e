@@ -2,83 +2,90 @@
 
 namespace App\DataPersister;
 
+use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use ApiPlatform\Exception\InvalidArgumentException;
 
 class UserDataPersister implements ProcessorInterface
 {
-    private $entityManager;
-    private $tokenStorage;
-    private $passwordHasher;
-
     public function __construct(
-        EntityManagerInterface $entityManager, 
-        TokenStorageInterface $tokenStorage,
-        UserPasswordHasherInterface $passwordHasher
-    ) {
-        $this->entityManager = $entityManager;
-        $this->tokenStorage = $tokenStorage;
-        $this->passwordHasher = $passwordHasher;
+        private EntityManagerInterface $entityManager,
+        private TokenStorageInterface $tokenStorage
+    ) {}
+
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
+    {
+        if ($operation instanceof \ApiPlatform\Metadata\Delete) {
+            $this->deleteUser($data);
+        }
     }
 
-    public function process(mixed $data, \ApiPlatform\Metadata\Operation $operation, array $uriVariables = [], array $context = []): mixed
+    private function deleteUser(User $user): void
     {
-        if ($data instanceof User && $operation instanceof \ApiPlatform\Metadata\Put) {
-            // Debug logs
-            error_log('DEBUG USER DATA PERSISTER - Operation: ' . get_class($operation));
-            error_log('DEBUG USER DATA PERSISTER - URI Variables: ' . json_encode($uriVariables));
-            error_log('DEBUG USER DATA PERSISTER - Data ID: ' . ($data->getId() ?? 'null'));
-            
-            // Récupérer l'ID depuis les variables d'URI
-            $userId = $uriVariables['id'] ?? null;
-            if (!$userId) {
-                error_log('DEBUG USER DATA PERSISTER - No user ID in URI variables');
-                throw new InvalidArgumentException('ID utilisateur manquant.');
-            }
+        // 1. Supprimer tous les likes de l'utilisateur
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Like', 'l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            error_log('DEBUG USER DATA PERSISTER - Looking for user with ID: ' . $userId);
-            
-            // Récupérer l'utilisateur existant
-            $existingUser = $this->entityManager->getRepository(User::class)->find($userId);
-            if (!$existingUser) {
-                error_log('DEBUG USER DATA PERSISTER - User not found with ID: ' . $userId);
-                throw new InvalidArgumentException('Utilisateur non trouvé.');
-            }
+        // 2. Supprimer tous les likes de commentaires de l'utilisateur
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\CommentLike', 'cl')
+            ->where('cl.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            error_log('DEBUG USER DATA PERSISTER - User found: ' . $existingUser->getUsername());
+        // 3. Supprimer tous les follows où l'utilisateur est follower
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Follow', 'f')
+            ->where('f.follower = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            // Vérifier que l'utilisateur connecté modifie son propre profil
-            $currentUser = $this->tokenStorage->getToken()?->getUser();
-            if (!$currentUser || $currentUser->getId() !== $existingUser->getId()) {
-                throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('Vous ne pouvez modifier que votre propre profil.');
-            }
+        // 4. Supprimer tous les follows où l'utilisateur est followed
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Follow', 'f')
+            ->where('f.followed = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            // Mettre à jour les champs fournis
-            if ($data->getEmail() !== null) {
-                $existingUser->setEmail($data->getEmail());
-            }
+        // 5. Supprimer tous les commentaires de l'utilisateur
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Commentaire', 'c')
+            ->where('c.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            if ($data->getUsername() !== null) {
-                $existingUser->setUsername($data->getUsername());
-            }
+        // 6. Supprimer tous les reposts de l'utilisateur
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Repost', 'r')
+            ->where('r.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            // Gérer le mot de passe seulement s'il est fourni et non vide
-            if ($data->getPassword() !== null && $data->getPassword() !== '') {
-                $hashedPassword = $this->passwordHasher->hashPassword($existingUser, $data->getPassword());
-                $existingUser->setPassword($hashedPassword);
-            }
-            // Si le mot de passe n'est pas fourni, on garde l'ancien
+        // 7. Supprimer toutes les publications de l'utilisateur
+        // (cela supprimera automatiquement les likes et commentaires associés grâce aux cascades)
+        $this->entityManager->createQueryBuilder()
+            ->delete('App\Entity\Publication', 'p')
+            ->where('p.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
 
-            $this->entityManager->persist($existingUser);
-            $this->entityManager->flush();
+        // 8. Supprimer l'utilisateur lui-même
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
 
-            return $existingUser;
-        }
-
-        return $data;
+        // 9. Invalider la session
+        $this->tokenStorage->setToken(null);
     }
 } 

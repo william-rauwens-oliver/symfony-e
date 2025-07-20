@@ -96,8 +96,23 @@ export async function getCurrentUser() {
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = getToken();
   const headers: Record<string, string> = {};
-  if (token) headers.Authorization = `Bearer ${token}`;
-  if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+  
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  
+  // Ne pas ajouter Content-Type pour FormData, laissez le navigateur le gérer
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+  
+  // Fusionner les headers avec ceux fournis dans options
   const finalHeaders = { ...headers, ...options.headers };
+  
+  console.log('🔧 fetchWithAuth - URL:', url);
+  console.log('🔧 fetchWithAuth - Method:', options.method || 'GET');
+  console.log('🔧 fetchWithAuth - Headers:', finalHeaders);
+  console.log('🔧 fetchWithAuth - Body type:', options.body instanceof FormData ? 'FormData' : typeof options.body);
+  
   return fetch(url, { ...options, headers: finalHeaders });
 } 

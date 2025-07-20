@@ -55,7 +55,7 @@ class Commentaire
 
     #[Groups(['commentaire:read', 'commentaire:write', 'publication:read'])]
     #[ORM\ManyToOne(targetEntity: Publication::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Publication $publication = null;
 
     #[Groups(['commentaire:read', 'commentaire:write', 'publication:read'])]

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchWithAuth, getToken } from '../api/auth';
+import CommentLikeButton from './CommentLikeButton';
+import CommentDeleteButton from './CommentDeleteButton';
+import { useUser } from '../context/UserContext';
 
 interface Comment {
   id: number;
@@ -14,6 +17,8 @@ interface Comment {
   } | string;
   replies?: Comment[] | string[];
   parent?: number;
+  likeCount?: number;
+  likedByCurrentUser?: boolean;
 }
 
 interface CommentListProps {
@@ -26,15 +31,15 @@ const CommentList: React.FC<CommentListProps> = ({ publicationId }) => {
   const [error, setError] = useState<string | null>(null);
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const { user } = useUser();
 
   const fetchComments = async () => {
     try {
       setLoading(true);
       console.log('DEBUG COMMENT LIST - Fetching comments for publicationId:', publicationId);
       
-      const response = await fetchWithAuth(`/api/commentaires?publication=${publicationId}`);
-      const data = await response.json();
-      const allComments = data['hydra:member'] || data.member || [];
+      const response = await fetchWithAuth(`/api/commentaires-with-likes?publication=${publicationId}`);
+      const allComments = await response.json();
       
       console.log('DEBUG COMMENT LIST - All comments received:', allComments);
       console.log('DEBUG COMMENT LIST - Comments count:', allComments.length);
@@ -128,45 +133,56 @@ const CommentList: React.FC<CommentListProps> = ({ publicationId }) => {
 
   if (loading) {
     return (
-      <div className="comments">
-        <p>Chargement des commentaires...</p>
+      <div className="comments-section">
+        <h3>💬 Commentaires</h3>
+        <div className="glass-loading">
+          <div className="loading-spinner"></div>
+          <p style={{marginLeft: '12px', color: 'var(--text-secondary)'}}>Chargement des commentaires...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="comments">
-        <p>Erreur: {error}</p>
+      <div className="comments-section">
+        <h3>💬 Commentaires</h3>
+        <div className="glass-error">
+          ❌ Erreur: {error}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="comments">
+    <div className="comments-section">
+      <h3>💬 Commentaires</h3>
+      
       {/* Formulaire pour ajouter un nouveau commentaire */}
       <form onSubmit={handleSubmitComment} className="comment-form">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Partagez votre pensée..."
-          className="comment-input"
           rows={3}
           disabled={submitting}
         />
         <button 
           type="submit" 
-          className="comment-submit-btn"
           disabled={submitting || !newComment.trim()}
         >
-          {submitting ? 'Envoi...' : 'Publier le commentaire'}
+          {submitting ? '⏳ Envoi...' : '✨ Publier le commentaire'}
         </button>
       </form>
 
       {/* Liste des commentaires */}
       <div className="comments-list">
         {comments.length === 0 ? (
-          <p>Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+          <div className="glass-card" style={{textAlign: 'center', padding: '32px'}}>
+            <p style={{color: 'var(--text-secondary)', fontSize: '1rem'}}>
+              💭 Aucun commentaire pour le moment. Soyez le premier à commenter !
+            </p>
+          </div>
         ) : (
           comments.map((comment) => (
             <CommentItem 
@@ -174,6 +190,7 @@ const CommentList: React.FC<CommentListProps> = ({ publicationId }) => {
               comment={comment} 
               onCommentAdded={fetchComments}
               publicationId={publicationId}
+              currentUserId={user?.id}
             />
           ))
         )}
@@ -186,20 +203,46 @@ interface CommentItemProps {
   comment: Comment;
   onCommentAdded: () => void;
   publicationId: number;
+  currentUserId?: number;
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publicationId }) => {
+const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publicationId, currentUserId }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState<Comment[]>([]);
+  const [replyCount, setReplyCount] = useState<number>(0);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [submittingReply, setSubmittingReply] = useState(false);
   const [loadingReplies, setLoadingReplies] = useState(false);
 
+  // Fonction pour récupérer le nombre de réponses
+  const fetchReplyCount = async () => {
+    try {
+      const response = await fetchWithAuth(`/api/commentaires-with-likes?publication=${publicationId}&parent=${comment.id}`);
+      const repliesData = await response.json();
+      setReplyCount(repliesData.length);
+      console.log('📊 Nombre de réponses pour le commentaire', comment.id, ':', repliesData.length);
+    } catch (err) {
+      console.error('Erreur lors du comptage des réponses:', err);
+      setReplyCount(0);
+    }
+  };
+
+  // Charger le nombre de réponses au montage du composant
+  useEffect(() => {
+    fetchReplyCount();
+  }, [comment.id, publicationId]);
+
   const handleShowReplies = async () => {
+    console.log('🔄 handleShowReplies appelé pour le commentaire:', comment.id);
+    console.log('🔄 showReplies actuel:', showReplies);
+    console.log('🔄 replies.length actuel:', replies.length);
+    console.log('🔄 comment.replies:', comment.replies);
+    
     if (!showReplies) {
       // Si les réponses ne sont pas encore chargées
       if (replies.length === 0) {
+        console.log('🔄 Chargement des réponses depuis l\'API...');
         setLoadingReplies(true);
         try {
           // Vérifier d'abord si les réponses sont déjà dans le commentaire
@@ -244,18 +287,21 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
             }
           } else {
             // Sinon, récupérer depuis l'API
-            const response = await fetchWithAuth(`/api/commentaires?publication=${publicationId}&parent=${comment.id}`);
-            const data = await response.json();
-            const repliesData = data['hydra:member'] || data.member || [];
+            console.log('🔄 Appel API pour récupérer les réponses...');
+            const response = await fetchWithAuth(`/api/commentaires-with-likes?publication=${publicationId}&parent=${comment.id}`);
+            const repliesData = await response.json();
             console.log('DEBUG REPLIES - Réponses récupérées depuis API:', repliesData);
             console.log('DEBUG REPLIES - Structure d\'une réponse:', repliesData[0]);
             setReplies(repliesData);
+            setReplyCount(repliesData.length);
           }
         } catch (err) {
           console.error('Erreur lors du chargement des réponses:', err);
         } finally {
           setLoadingReplies(false);
         }
+      } else {
+        console.log('🔄 Réponses déjà chargées, pas besoin de recharger');
       }
     }
     setShowReplies(!showReplies);
@@ -288,7 +334,25 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
       if (response.ok) {
         setReplyContent('');
         setShowReplyForm(false);
-        await onCommentAdded(); // Recharger tous les commentaires
+        
+        // Recharger les réponses de ce commentaire spécifiquement
+        try {
+          const responseReplies = await fetchWithAuth(`/api/commentaires-with-likes?publication=${publicationId}&parent=${comment.id}`);
+          const repliesData = await responseReplies.json();
+          setReplies(repliesData);
+          setReplyCount(repliesData.length);
+          
+          // Forcer l'affichage des réponses
+          setShowReplies(true);
+          
+          console.log('✅ Réponse ajoutée et réponses rechargées:', repliesData);
+          console.log('📊 Nouveau nombre de réponses:', repliesData.length);
+        } catch (err) {
+          console.error('Erreur lors du rechargement des réponses:', err);
+        }
+        
+        // Recharger aussi tous les commentaires pour mettre à jour le compteur
+        await onCommentAdded();
       } else {
         throw new Error('Erreur lors de l\'ajout de la réponse');
       }
@@ -335,7 +399,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
   };
 
   return (
-    <div className="comment-item">
+    <div className="glass-comment">
       <div className="comment-header">
         <div className="comment-avatar">
           {getInitials(typeof comment.user === 'object' ? comment.user.username : 'Utilisateur')}
@@ -346,72 +410,76 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
         </div>
       </div>
       
-      {/* Debug info pour les réponses - à supprimer plus tard */}
-      {process.env.NODE_ENV === 'development' && comment.parent && (
-        <div style={{fontSize: '10px', color: 'orange', marginTop: '5px'}}>
-          DEBUG REPONSE: user={JSON.stringify(comment.user)}, createdAt={JSON.stringify(comment.createdAt)}
-        </div>
-      )}
-      
       <div className="comment-content">
         {comment.content}
       </div>
       
       <div className="comment-actions">
+        <CommentLikeButton
+          commentId={comment.id}
+          initialCount={comment.likeCount || 0}
+          initiallyLiked={comment.likedByCurrentUser || false}
+          onLike={onCommentAdded}
+        />
+        
         <button 
-          className="comment-action-btn reply-btn"
+          className="comment-action-btn"
           onClick={(e) => {
             e.preventDefault();
             setShowReplyForm(!showReplyForm);
           }}
         >
-          💬
-          Répondre
+          💬 Répondre
         </button>
         
-        {comment.replies && comment.replies.length > 0 && (
+        {replyCount > 0 && (
           <button 
-            className="comment-action-btn show-replies-btn"
+            className="comment-action-btn"
             onClick={(e) => {
               e.preventDefault();
               handleShowReplies();
             }}
           >
-            {showReplies ? '👆' : '👇'}
-            {showReplies ? 'Masquer' : 'Afficher'} {comment.replies.length} réponse{comment.replies.length > 1 ? 's' : ''}
+            {showReplies ? '👆' : '👇'} {showReplies ? 'Masquer' : 'Afficher'} {replyCount} réponse{replyCount > 1 ? 's' : ''}
           </button>
+        )}
+        
+        {/* Bouton de suppression pour nos propres commentaires */}
+        {currentUserId && typeof comment.user === 'object' && comment.user.id === currentUserId && (
+          <CommentDeleteButton
+            commentId={comment.id}
+            onDelete={onCommentAdded}
+          />
         )}
       </div>
       
       {/* Formulaire de réponse */}
       {showReplyForm && (
-        <form onSubmit={handleSubmitReply} className="reply-form">
+        <form onSubmit={handleSubmitReply} className="comment-form" style={{marginTop: '12px', marginLeft: '20px'}}>
           <textarea
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
             placeholder="Écrivez votre réponse..."
-            className="reply-input"
             rows={2}
             disabled={submittingReply}
           />
-          <div className="reply-form-actions">
+          <div style={{display: 'flex', gap: '8px', marginTop: '8px'}}>
             <button 
               type="submit" 
-              className="reply-submit-btn"
               disabled={submittingReply || !replyContent.trim()}
             >
-              {submittingReply ? 'Envoi...' : 'Publier la réponse'}
+              {submittingReply ? '⏳ Envoi...' : '✨ Publier'}
             </button>
             <button 
               type="button" 
-              className="reply-cancel-btn"
+              className="glass-button"
               onClick={() => {
                 setShowReplyForm(false);
                 setReplyContent('');
               }}
               disabled={submittingReply}
             >
-              Annuler
+              ❌ Annuler
             </button>
           </div>
         </form>
@@ -419,9 +487,12 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
 
       {/* Affichage des réponses */}
       {showReplies && (
-        <div className="replies">
+        <div className="replies" style={{marginLeft: '20px', marginTop: '12px'}}>
           {loadingReplies ? (
-            <p className="loading-message">Chargement des réponses...</p>
+            <div className="glass-loading">
+              <div className="loading-spinner"></div>
+              <p style={{marginLeft: '8px', color: 'var(--text-secondary)'}}>Chargement des réponses...</p>
+            </div>
           ) : replies.length > 0 ? (
             replies.map((reply) => (
               <CommentItem 
@@ -429,10 +500,15 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onCommentAdded, publ
                 comment={reply} 
                 onCommentAdded={onCommentAdded}
                 publicationId={publicationId}
+                currentUserId={currentUserId}
               />
             ))
           ) : (
-            <p>Aucune réponse pour le moment</p>
+            <div className="glass-card" style={{textAlign: 'center', padding: '16px'}}>
+              <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
+                💭 Aucune réponse pour le moment
+              </p>
+            </div>
           )}
         </div>
       )}

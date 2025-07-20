@@ -37,7 +37,7 @@ class Repost
 
     #[Groups(['repost:read', 'publication:read'])]
     #[ORM\ManyToOne(targetEntity: Publication::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Publication $publication = null;
 
     #[Groups(['repost:read', 'user:read'])]

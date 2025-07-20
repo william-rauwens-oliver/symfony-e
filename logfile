@@ -250,3 +250,130 @@
 2025-07-19 12:11:18.558 CEST [52988] LOG:  background worker "logical replication launcher" (PID 53001) exited with exit code 1
 2025-07-19 12:11:18.558 CEST [52996] LOG:  shutting down
 2025-07-19 12:11:18.583 CEST [52988] LOG:  database system is shut down
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Test publication avec image
+[PublicationUploadController] Image: test_image.jpg
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: test_image.jpg
+[PublicationDataPersister] Upload vers: /Users/williamrauwensoliver/Downloads/symfony-e/src/DataPersister/../../public/uploads/images/img_687c279693821.jpg
+[PublicationDataPersister] Image uploadée avec succès: img_687c279693821.jpg
+[PublicationDataPersister] Publication persistée avec ID: 39, texte: Test publication avec image
+[PublicationUploadController] Publication créée avec ID: 39
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: tety
+[PublicationUploadController] Image: IMG_1037.JPG
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: IMG_1037.JPG
+[PublicationDataPersister] ERREUR: Fichier image invalide
+[PublicationDataPersister] ERREUR upload image: Le fichier image est invalide
+[PublicationUploadController] ERREUR: Le fichier image est invalide
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: tety
+[PublicationUploadController] Image: IMG_1037.JPG
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: IMG_1037.JPG
+[PublicationDataPersister] ERREUR: Fichier image invalide
+[PublicationDataPersister] ERREUR upload image: Le fichier image est invalide
+[PublicationUploadController] ERREUR: Le fichier image est invalide
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: dfdf
+[PublicationUploadController] Image: IMG_1037.JPG
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: IMG_1037.JPG
+[PublicationDataPersister] ERREUR: Fichier image invalide
+[PublicationDataPersister] ERREUR upload image: Le fichier image est invalide
+[PublicationUploadController] ERREUR: Le fichier image est invalide
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Test publication avec vraie image
+[PublicationUploadController] Image: test_real_image.jpg
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: test_real_image.jpg
+[PublicationDataPersister] Taille image: 29617 bytes
+[PublicationDataPersister] Type MIME: image/jpeg
+[PublicationDataPersister] Erreur upload: 0
+[PublicationDataPersister] isValid(): true
+[PublicationDataPersister] Upload vers: /Users/williamrauwensoliver/Downloads/symfony-e/src/DataPersister/../../public/uploads/images/img_687c2846785a7.jpg
+[PublicationDataPersister] Image uploadée avec succès: img_687c2846785a7.jpg
+[PublicationDataPersister] Publication persistée avec ID: 40, texte: Test publication avec vraie image
+[PublicationUploadController] Publication créée avec ID: 40
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: rdhh
+[PublicationUploadController] Image: IMG_1037 - Petite.jpeg
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Traitement image: IMG_1037 - Petite.jpeg
+[PublicationDataPersister] Taille image: 34977 bytes
+[PublicationDataPersister] Type MIME: image/jpeg
+[PublicationDataPersister] Erreur upload: 0
+[PublicationDataPersister] isValid(): true
+[PublicationDataPersister] Upload vers: /Users/williamrauwensoliver/Downloads/symfony-e/src/DataPersister/../../public/uploads/images/img_687c28e65f1e6.jpg
+[PublicationDataPersister] Image uploadée avec succès: img_687c28e65f1e6.jpg
+[PublicationDataPersister] Publication persistée avec ID: 41, texte: rdhh
+[PublicationUploadController] Publication créée avec ID: 41
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: sghshhs
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 42, texte: sghshhs
+[PublicationUploadController] Publication créée avec ID: 42
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: test
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 44, texte: test
+[PublicationUploadController] Publication créée avec ID: 44
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: qggg
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 45, texte: qggg
+[PublicationUploadController] Publication créée avec ID: 45
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: qfqfqf
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 49, texte: qfqfqf
+[PublicationUploadController] Publication créée avec ID: 49
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: qfqf
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 50, texte: qfqf
+[PublicationUploadController] Publication créée avec ID: 50
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: gkgkgk
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 51, texte: gkgkgk
+[PublicationUploadController] Publication créée avec ID: 51
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: dhdh
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 52, texte: dhdh
+[PublicationUploadController] Publication créée avec ID: 52

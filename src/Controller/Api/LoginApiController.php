@@ -30,7 +30,7 @@ class LoginApiController extends AbstractController
             return $this->json(['error' => 'Mot de passe incorrect'], 401);
         }
 
-        // Générer un JWT
+                    // Je génère un JWT
         $jwtSecret = $_ENV['JWT_SECRET'] ?? $_SERVER['JWT_SECRET'] ?? 'default_jwt_secret';
         $payload = [
             'user_id' => $user->getId(),
@@ -39,7 +39,7 @@ class LoginApiController extends AbstractController
         ];
         $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
 
-        // Debug: Log les informations de connexion
+        // Je log les infos de connexion pour débugger
         error_log("DEBUG API LOGIN - User authenticated: " . $user->getEmail());
         error_log("DEBUG API LOGIN - JWT generated: " . substr($jwt, 0, 20) . "...");
 
@@ -91,7 +91,7 @@ class LoginApiController extends AbstractController
     #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(): JsonResponse
     {
-        // Pour JWT, la déconnexion se fait côté client en supprimant le token
+        // Pour JWT, je laisse la déconnexion se faire côté client en supprimant le token
         return $this->json(['success' => true, 'message' => 'Déconnexion réussie']);
     }
 } 

@@ -18,7 +18,7 @@ use App\Service\SuggestionService;
 
 class HomeController extends AbstractController
 {
-    // Route désactivée car gérée par React
+    // J'ai désactivé cette route car elle est gérée par React
     // #[Route('/', name: 'app_home')]
     // public function index(
     //     PublicationRepository $publicationRepository,
@@ -84,7 +84,7 @@ class HomeController extends AbstractController
         if (!$user) {
             return $this->redirect('/login');
         }
-        // Service de suggestion manquant, on retourne une liste vide ou un message explicite
+        // Le service de suggestion manque, je retourne une liste vide ou un message explicite
         $suggestions = [];
         $message = 'Le service de suggestion est temporairement indisponible.';
         return $this->render('home/suggested.html.twig', [

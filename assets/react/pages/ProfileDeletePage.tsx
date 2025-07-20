@@ -25,22 +25,71 @@ const ProfileDeletePage: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="main-header">
-        <h1>Supprimer mon compte</h1>
+    <div className="profile-delete-container">
+      <div className="glass-header">
+        <h1>🗑️ Supprimer mon compte</h1>
+        <p>Action irréversible - Réfléchissez bien</p>
       </div>
-      <div className="auth-container">
-        <div className="auth-form">
-          <p>
-            Êtes-vous sûr de vouloir supprimer votre compte ? <br /><strong>Cette action est irréversible.</strong>
+      
+      <div className="glass-form">
+        <div className="glass-card" style={{
+          background: 'rgba(255, 59, 48, 0.1)',
+          borderColor: 'rgba(255, 59, 48, 0.2)',
+          marginBottom: '24px',
+          textAlign: 'center',
+          padding: '24px'
+        }}>
+          <div style={{fontSize: '3rem', marginBottom: '16px'}}>⚠️</div>
+          <h3 style={{color: '#FF3B30', marginBottom: '12px'}}>Attention !</h3>
+          <p style={{color: 'var(--text-secondary)', lineHeight: '1.6'}}>
+            Êtes-vous absolument sûr de vouloir supprimer votre compte ?<br />
+            <strong style={{color: '#FF3B30'}}>Cette action est irréversible.</strong>
           </p>
-          <form onSubmit={handleDelete}>
-            <button type="submit" className="btn" style={{ background: '#e0245e' }}>Oui, supprimer mon compte</button>
-            <a href={`/profile/${user?.id}`} className="btn" style={{ background: '#657786', marginLeft: 10 }}>Annuler</a>
-          </form>
+          <ul style={{
+            textAlign: 'left',
+            marginTop: '16px',
+            color: 'var(--text-secondary)',
+            paddingLeft: '20px'
+          }}>
+            <li>Toutes vos publications seront supprimées</li>
+            <li>Tous vos commentaires seront supprimés</li>
+            <li>Tous vos likes seront supprimés</li>
+            <li>Votre profil sera définitivement effacé</li>
+          </ul>
         </div>
+        
+        <form onSubmit={handleDelete}>
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="glass-button" 
+              style={{
+                background: 'rgba(255, 59, 48, 0.9)',
+                borderColor: 'rgba(255, 59, 48, 0.3)',
+                color: 'white',
+                fontSize: '1.1rem',
+                padding: '12px 24px'
+              }}
+            >
+              💀 Oui, supprimer définitivement mon compte
+            </button>
+            
+            <a 
+              href={`/profile/${user?.id}`} 
+              className="glass-button"
+              style={{
+                background: 'rgba(255, 255, 255, 0.9)',
+                color: 'var(--text-primary)',
+                fontSize: '1.1rem',
+                padding: '12px 24px'
+              }}
+            >
+              🔙 Annuler et retourner au profil
+            </a>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

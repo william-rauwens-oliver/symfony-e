@@ -18,15 +18,50 @@ const PublicationForm: React.FC<Props> = ({ onPublish }) => {
 
   if (!user) return null;
 
+  const validateFile = (file: File): string | null => {
+    // Vérifier la taille (2MB max)
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSize) {
+      return `Le fichier est trop volumineux. Taille maximale: 2 MB (votre fichier: ${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+    }
+    
+    // Vérifier le type
+    if (file.type && !file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+      return 'Type de fichier non supporté. Utilisez des images ou des vidéos.';
+    }
+    
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setSuccess('');
+    
     if (!texte.trim()) {
       setError('Le texte ne doit pas être vide.');
       setLoading(false);
       return;
+    }
+    
+    // Valider les fichiers
+    if (image) {
+      const imageError = validateFile(image);
+      if (imageError) {
+        setError(imageError);
+        setLoading(false);
+        return;
+      }
+    }
+    
+    if (video) {
+      const videoError = validateFile(video);
+      if (videoError) {
+        setError(videoError);
+        setLoading(false);
+        return;
+      }
     }
     try {
       const formData = new FormData();
@@ -54,35 +89,45 @@ const PublicationForm: React.FC<Props> = ({ onPublish }) => {
   };
 
   return (
-    <form className="publication-form" onSubmit={handleSubmit}>
-      <textarea
-        className="publication-textarea"
-        placeholder="Quoi de neuf ?"
-        value={texte}
-        onChange={e => setTexte(e.target.value)}
-        maxLength={500}
-        required
-      />
-      <div className="publication-media-inputs">
-        <label className="publication-media-label">
-          Image
-          <input type="file" accept="image/*" onChange={e => setImage(e.target.files?.[0] || null)} />
-        </label>
-        <label className="publication-media-label">
-          Vidéo
-          <input type="file" accept="video/*" onChange={e => setVideo(e.target.files?.[0] || null)} />
-        </label>
-      </div>
-      <div className="publication-media-preview">
-        {image && <img src={URL.createObjectURL(image)} alt="Aperçu" className="publication-image-preview" />}
-        {video && <video src={URL.createObjectURL(video)} controls className="publication-video-preview" />}
-      </div>
-      <button className="publication-submit-btn" type="submit" disabled={loading}>
-        {loading ? 'Publication...' : 'Publier'}
-      </button>
-      {error && <div className="publication-error">{error}</div>}
-      {success && <div className="publication-success">{success}</div>}
-    </form>
+    <div className="glass-form">
+      <form onSubmit={handleSubmit}>
+        <textarea
+          className="glass-input"
+          placeholder="Quoi de neuf ?"
+          value={texte}
+          onChange={e => setTexte(e.target.value)}
+          maxLength={500}
+          required
+          style={{ minHeight: '120px', resize: 'vertical' }}
+        />
+        <div className="form-actions">
+          <div className="media-upload">
+            <label className="glass-button">
+              📷 Image
+              <input type="file" accept="image/*" onChange={e => setImage(e.target.files?.[0] || null)} style={{ display: 'none' }} />
+            </label>
+            <label className="glass-button">
+              🎥 Vidéo
+              <input type="file" accept="video/*" onChange={e => setVideo(e.target.files?.[0] || null)} style={{ display: 'none' }} />
+            </label>
+          </div>
+          <div className="upload-info">
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+              📏 Taille maximale: 2 MB par fichier
+            </small>
+          </div>
+          <button className="glass-button primary" type="submit" disabled={loading}>
+            {loading ? '⏳ Publication...' : '✨ Publier'}
+          </button>
+        </div>
+        <div className="media-preview">
+          {image && <img src={URL.createObjectURL(image)} alt="Aperçu" style={{ maxWidth: '200px', borderRadius: '12px', marginTop: '12px' }} />}
+          {video && <video src={URL.createObjectURL(video)} controls style={{ maxWidth: '200px', borderRadius: '12px', marginTop: '12px' }} />}
+        </div>
+        {error && <div className="glass-error">{error}</div>}
+        {success && <div className="glass-success">{success}</div>}
+      </form>
+    </div>
   );
 };
 

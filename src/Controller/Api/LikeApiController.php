@@ -27,13 +27,13 @@ class LikeApiController extends AbstractController
             return $this->json(['error' => 'Publication ID required'], 400);
         }
         
-        // Récupérer la publication
+        // Je récupère la publication
         $publication = $publicationRepository->find($publicationId);
         if (!$publication) {
             return $this->json(['error' => 'Publication not found'], 404);
         }
         
-        // Récupérer le like de l'utilisateur courant pour cette publication
+        // Je récupère le like de l'utilisateur courant pour cette publication
         $like = $likeRepository->findOneBy([
             'user' => $user,
             'publication' => $publication
@@ -61,13 +61,13 @@ class LikeApiController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Récupérer la publication
+        // Je récupère la publication
         $publication = $publicationRepository->find($publicationId);
         if (!$publication) {
             return $this->json(['error' => 'Publication not found'], 404);
         }
         
-        // Récupérer le like de l'utilisateur courant pour cette publication
+        // Je récupère le like de l'utilisateur courant pour cette publication
         $like = $likeRepository->findOneBy([
             'user' => $user,
             'publication' => $publication

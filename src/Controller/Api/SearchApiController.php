@@ -28,10 +28,10 @@ class SearchApiController extends AbstractController
         $error = null;
         try {
             if ($query === '#') {
-                // Afficher tous les hashtags
+                // J'affiche tous les hashtags
                 $hashtags = $publicationRepository->findAllHashtags(50);
             } elseif ($query !== '' && $query[0] === '#') {
-                // Recherche hashtag
+                // Je recherche le hashtag
                 $hashtag = mb_substr($query, 1);
                 if ($hashtag === '') {
                     $hashtags = $publicationRepository->findAllHashtags(50);

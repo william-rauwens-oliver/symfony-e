@@ -26,19 +26,19 @@ class LikeController extends AbstractController
             return $this->redirectToRoute('react_home');
         }
 
-        // Vérifie si l'utilisateur a déjà liké cette publication
+        // Je vérifie si l'utilisateur a déjà liké cette publication
         $existingLike = $likeRepository->findOneBy([
             'user' => $user,
             'publication' => $publication,
         ]);
 
         if ($existingLike) {
-            // Si déjà liké, on retire le like (toggle)
+            // Si déjà liké, je retire le like (toggle)
             $entityManager->remove($existingLike);
             $entityManager->flush();
             $this->addFlash('info', 'Like retiré.');
         } else {
-            // Sinon, on ajoute un like
+            // Sinon, j'ajoute un like
             $like = new Like();
             $like->setUser($user);
             $like->setPublication($publication);

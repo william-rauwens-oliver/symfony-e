@@ -69,38 +69,87 @@ const ProfileEditPage: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="main-header">
-        <h1>Modifier le profil</h1>
+    <div className="profile-edit-container">
+      <div className="glass-header">
+        <h1>✏️ Modifier le profil</h1>
+        <p>Mettez à jour vos informations personnelles</p>
       </div>
-      <div className="auth-container">
-        <div className="auth-form">
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Nom d'utilisateur</label>
-              <input className="form-control" type="text" value={username} onChange={e => setUsername(e.target.value)} required disabled={loading} />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input className="form-control" type="email" value={email} onChange={e => setEmail(e.target.value)} required disabled={loading} />
-            </div>
-            <div className="form-group">
-              <label>Nouveau mot de passe</label>
-              <input className="form-control" type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={loading} />
-            </div>
-            <div className="form-group">
-              <label>Répéter le mot de passe</label>
-              <input className="form-control" type="password" value={password2} onChange={e => setPassword2(e.target.value)} disabled={loading} />
-            </div>
-            <button type="submit" className="btn" disabled={loading}>{loading ? 'Sauvegarde...' : 'Sauvegarder'}</button>
-            {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
-          </form>
-          <div className="form-links" style={{ marginTop: 16 }}>
-            <a href={`/profile/${user?.id}`}>Retour au profil</a>
+      
+      <div className="glass-form">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>👤 Nom d'utilisateur</label>
+            <input 
+              className="glass-input" 
+              type="text" 
+              value={username} 
+              onChange={e => setUsername(e.target.value)} 
+              required 
+              disabled={loading} 
+            />
           </div>
-        </div>
+          
+          <div className="form-group">
+            <label>📧 Email</label>
+            <input 
+              className="glass-input" 
+              type="email" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required 
+              disabled={loading} 
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>🔒 Nouveau mot de passe (optionnel)</label>
+            <input 
+              className="glass-input" 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              disabled={loading}
+              placeholder="Laissez vide pour ne pas changer"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>🔐 Répéter le mot de passe</label>
+            <input 
+              className="glass-input" 
+              type="password" 
+              value={password2} 
+              onChange={e => setPassword2(e.target.value)} 
+              disabled={loading}
+              placeholder="Confirmez le nouveau mot de passe"
+            />
+          </div>
+          
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="glass-button primary" 
+              disabled={loading}
+            >
+              {loading ? '⏳ Sauvegarde...' : '💾 Sauvegarder'}
+            </button>
+            
+            <a 
+              href={`/profile/${user?.id}`} 
+              className="glass-button"
+            >
+              🔙 Retour au profil
+            </a>
+          </div>
+          
+          {error && (
+            <div className="glass-error">
+              ❌ {error}
+            </div>
+          )}
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

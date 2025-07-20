@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useUser } from '../context/UserContext';
 import PublicationForm from '../components/PublicationForm';
 import PublicationList from '../components/PublicationList';
+import PublicationDeleteButton from '../components/PublicationDeleteButton';
 import './Feed.css';
 import { fetchWithAuth } from '../api/auth';
 import { fetchRepostsByUser } from '../api/publication';
@@ -20,6 +21,7 @@ const FeedPage: React.FC = () => {
   const [reposts, setReposts] = useState<any[]>([]);
   const [publications, setPublications] = useState<any[]>([]);
   const [followings, setFollowings] = useState<{[userId: number]: boolean}>({});
+
 
   console.log('DEBUG FEEDPAGE - Component mounted');
 
@@ -123,14 +125,18 @@ const FeedPage: React.FC = () => {
     }
   };
 
+  const handleDeletePublication = () => {
+    setRefresh(r => !r); // Rafraîchir les publications
+  };
+
   console.log('DEBUG FEED - publications', publications);
   console.log('DEBUG FEED - reposts', reposts);
 
   return (
     <div className="feed-container">
-      <div className="feed-header">
-        <h1 className="feed-title">Accueil</h1>
-        <p className="feed-subtitle">
+      <div className="glass-header">
+        <h1>🏠 Accueil</h1>
+        <p>
           {user ? `Bienvenue ${user.username} !` : 'Bienvenue sur le réseau'}
         </p>
       </div>
@@ -139,7 +145,7 @@ const FeedPage: React.FC = () => {
       {[...publications, ...reposts.map(r => ({...r.publication, reposted: true, repostedBy: r.user, repostedAt: r.createdAt}))]
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .map(pub => (
-          <article className={`publication${pub.reposted ? ' reposted' : ''}`} key={pub.id + (pub.reposted ? '-repost' : '')} style={pub.reposted ? {borderLeft:'4px solid #4caf50',background:'#f6fff6'} : {}}>
+          <article className={`glass-publication${pub.reposted ? ' reposted' : ''}`} key={pub.id + (pub.reposted ? '-repost' : '')} style={pub.reposted ? {borderLeft:'4px solid #34C759',background:'rgba(52, 199, 89, 0.1)'} : {}}>
             <div className="publication-header">
               {pub.reposted && (
                 <span className="repost-label" style={{color:'#388e3c',fontWeight:'bold',marginRight:8}}>Reposté</span>
@@ -165,7 +171,16 @@ const FeedPage: React.FC = () => {
               {pub.texte || pub.content || 'AUCUN CONTENU'}
               {pub.image && (
                 <div className="publication-media">
-                  <img src={pub.image.startsWith('http') ? pub.image : `/uploads/images/${pub.image}`} alt="Image" style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }} />
+                  <img 
+                    src={pub.image.startsWith('http') ? pub.image : pub.image} 
+                    alt="Image" 
+                    style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }}
+                    onLoad={() => console.log('✅ Image chargée dans FeedPage:', pub.image)}
+                    onError={(e) => {
+                      console.error('❌ Erreur image dans FeedPage:', pub.image, e);
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
                 </div>
               )}
               {pub.video && (
@@ -180,12 +195,21 @@ const FeedPage: React.FC = () => {
             <div className="publication-actions">
               <LikeButton publicationId={pub.id} initialCount={pub.likeCount || 0} initiallyLiked={pub.likedByCurrentUser || false} />
               <RepostButton publicationId={pub.id} />
+              {/* Bouton de suppression pour nos propres publications */}
+              {user && pub.user?.id === user.id && (
+                <PublicationDeleteButton
+                  publicationId={pub.id}
+                  onDelete={handleDeletePublication}
+                />
+              )}
             </div>
             <div className="publication-comments">
               <CommentList publicationId={pub.id} />
             </div>
           </article>
         ))}
+      
+
     </div>
   );
 };

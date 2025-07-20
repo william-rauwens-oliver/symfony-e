@@ -8,6 +8,7 @@ import RepostButton from '../components/RepostButton';
 import LikeButton from '../components/LikeButton';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
+import PublicationDeleteButton from '../components/PublicationDeleteButton';
 
 const ProfilePage: React.FC = () => {
   console.log('DEBUG PROFILE PAGE - Component mounted (top of function)');
@@ -27,6 +28,7 @@ const ProfilePage: React.FC = () => {
   const [reposts, setReposts] = useState<any[]>([]);
   const [followersCount, setFollowersCount] = useState<number>(0);
   const [followingsCount, setFollowingsCount] = useState<number>(0);
+
 
   console.log('DEBUG PROFILE PAGE - Composant monté, id:', id);
   console.log('DEBUG PROFILE PAGE - id from params:', id);
@@ -245,6 +247,11 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleDeletePublication = () => {
+    // Rafraîchir les données du profil
+    window.location.reload();
+  };
+
   console.log('DEBUG PROFILE PAGE - Juste avant return, id:', id);
   console.log('DEBUG PROFILE PAGE - Render state - loading:', loading, 'error:', error, 'profile:', profile);
   console.log('DEBUG PUBLICATION COUNT:', publicationCount);
@@ -258,15 +265,9 @@ const ProfilePage: React.FC = () => {
     console.log('DEBUG PROFILE PAGE - Rendering loading state');
     return (
       <div className="profile-container">
-        <div className="profile-header">
-          <div className="empty-profile">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeOpacity="0.3"/>
-              <path d="M12 2C6.47715 2 2 6.47715 2 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-            <h4>Chargement...</h4>
-            <p>Récupération des informations du profil</p>
-          </div>
+        <div className="glass-loading">
+          <div className="loading-spinner"></div>
+          <p style={{marginLeft: '12px', color: 'var(--text-secondary)'}}>Chargement du profil...</p>
         </div>
       </div>
     );
@@ -276,16 +277,8 @@ const ProfilePage: React.FC = () => {
     console.log('DEBUG PROFILE PAGE - Rendering error state');
     return (
       <div className="profile-container">
-        <div className="profile-header">
-          <div className="empty-profile">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-              <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" strokeWidth="2"/>
-              <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" strokeWidth="2"/>
-            </svg>
-            <h4>Erreur</h4>
-            <p>{error || 'Profil introuvable'}</p>
-          </div>
+        <div className="glass-error">
+          ❌ {error || 'Profil introuvable'}
         </div>
       </div>
     );
@@ -297,87 +290,82 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-banner"></div>
+      <div className="glass-profile">
+        <div className="profile-avatar">
+          {getInitials(profile.username)}
+        </div>
         
-        {user && user.id === profile.id && (
-          <div className="profile-actions">
-            <Link to="/profile/edit" className="profile-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Modifier
-            </Link>
-            <Link to="/profile/delete" className="profile-btn danger">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="3,6 5,6 21,6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M19,6V20C19,20.5304 18.7893,21.0391 18.4142,21.4142C18.0391,21.7893 17.5304,22 17,22H7C6.46957,22 5.96086,21.7893 5.58579,21.4142C5.21071,21.0391 5,20.5304 5,20V6M8,6V4C8,3.46957 8.21071,2.96086 8.58579,2.58579C8.96086,2.21071 9.46957,2 10,2H14C14.5304,2 15.0391,2.21071 15.4142,2.58579C15.7893,2.96086 16,3.46957 16,4V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Supprimer
-            </Link>
-          </div>
-        )}
-        
-        <div className="profile-info">
-          <div className="profile-avatar">
-            {getInitials(profile.username)}
-          </div>
-          <div className="profile-details">
-            <h2 className="profile-name">{profile.username}</h2>
-            <p className="profile-username">@{profile.username}</p>
-            <p className="profile-email">{profile.email}</p>
-            <div className="profile-follow-stats">
-              <div className="profile-follow-stat">
-                <span className="profile-follow-number">{followingsCount}</span>
-                <span className="profile-follow-label">Abonnement{followingsCount === 1 ? '' : 's'}</span>
-              </div>
-              <div className="profile-follow-stat">
-                <span className="profile-follow-number">{followersCount}</span>
-                <span className="profile-follow-label">Abonné{followersCount === 1 ? '' : 's'}</span>
-              </div>
+        <div className="profile-details">
+          <h2 className="profile-name">{profile.username}</h2>
+          <p className="profile-username">@{profile.username}</p>
+          <p className="profile-email">{profile.email}</p>
+          
+          <div className="profile-follow-stats">
+            <div className="profile-follow-stat">
+              <span className="profile-follow-number">{followingsCount}</span>
+              <span className="profile-follow-label">Abonnement{followingsCount === 1 ? '' : 's'}</span>
             </div>
-
-            {/* Bouton Follow/Unfollow si ce n'est pas mon profil */}
-            {user && user.id !== profile.id && (
-              <button className="profile-btn" onClick={handleFollow} disabled={followLoading} style={{margin:'1em 0'}}>
-                {isFollowing ? 'Ne plus suivre' : 'Suivre'}
-              </button>
-            )}
-            <div className="profile-stats">
-              <div className="profile-stat">
-                <span className="profile-stat-number">{profile.publicationCount ?? '...'}</span>
-                <span className="profile-stat-label">Publications</span>
-              </div>
-              <div className="profile-stat">
-                <span className="profile-stat-number">👥 {followingsCount}</span>
-                <span className="profile-stat-label">Abonnements</span>
-              </div>
-              <div className="profile-stat">
-                <span className="profile-stat-number">👤 {followersCount}</span>
-                <span className="profile-stat-label">Abonnés</span>
-              </div>
-
-              <div className="profile-stat">
-                <span className="profile-stat-number">{totalLikes}</span>
-                <span className="profile-stat-label">Likes totaux</span>
-              </div>
-              <div className="profile-stat">
-                <span className="profile-stat-number">{likedPublicationsCount}</span>
-                <span className="profile-stat-label">Tweets likés</span>
-              </div>
-              <div className="profile-stat">
-                <span className="profile-stat-number">{likedCommentsCount}</span>
-                <span className="profile-stat-label">Commentaires likés</span>
-              </div>
-              <div className="profile-stat">
-                <span className="profile-stat-number">{profile.commentaires?.length || 0}</span>
-                <span className="profile-stat-label">Commentaires</span>
-              </div>
+            <div className="profile-follow-stat">
+              <span className="profile-follow-number">{followersCount}</span>
+              <span className="profile-follow-label">Abonné{followersCount === 1 ? '' : 's'}</span>
             </div>
+          </div>
+
+          {/* Bouton Follow/Unfollow si ce n'est pas mon profil */}
+          {user && user.id !== profile.id && (
+            <button className="glass-button primary" onClick={handleFollow} disabled={followLoading} style={{margin:'1em 0'}}>
+              {isFollowing ? '🚫 Ne plus suivre' : '✨ Suivre'}
+            </button>
+          )}
+          
+          {/* Actions pour mon propre profil */}
+          {user && user.id === profile.id && (
+            <div className="profile-actions">
+              <Link to="/profile/edit" className="glass-button">
+                ✏️ Modifier
+              </Link>
+              <Link to="/profile/delete" className="glass-button" style={{background: 'rgba(255, 59, 48, 0.1)', borderColor: 'rgba(255, 59, 48, 0.2)', color: '#FF3B30'}}>
+                🗑️ Supprimer
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Statistiques détaillées */}
+      <div className="glass-card" style={{marginTop: '24px'}}>
+        <h3 style={{color: 'var(--text-primary)', marginBottom: '16px', fontSize: '1.2rem'}}>📊 Statistiques</h3>
+        <div className="profile-stats">
+          <div className="profile-stat">
+            <span className="profile-stat-number">{profile.publicationCount ?? '...'}</span>
+            <span className="profile-stat-label">Publications</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">👥 {followingsCount}</span>
+            <span className="profile-stat-label">Abonnements</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">👤 {followersCount}</span>
+            <span className="profile-stat-label">Abonnés</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">❤️ {totalLikes}</span>
+            <span className="profile-stat-label">Likes totaux</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">📝 {likedPublicationsCount}</span>
+            <span className="profile-stat-label">Tweets likés</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">💬 {likedCommentsCount}</span>
+            <span className="profile-stat-label">Commentaires likés</span>
+          </div>
+          <div className="profile-stat">
+            <span className="profile-stat-number">💭 {profile.commentaires?.length || 0}</span>
+            <span className="profile-stat-label">Commentaires</span>
           </div>
         </div>
-      </div> {/* .profile-header */}
+      </div>
 
       {/* Debug JSON des publications et reposts */}
       {process.env.NODE_ENV !== 'production' && (
@@ -389,8 +377,8 @@ const ProfilePage: React.FC = () => {
         </div>
       )}
       {/* Liste des publications et retweets de l'utilisateur */}
-      <div className="profile-publications">
-        <h3>Publications et retweets</h3>
+      <div className="profile-publications" style={{marginTop: '24px'}}>
+        <h3 style={{color: 'var(--text-primary)', marginBottom: '16px', fontSize: '1.2rem'}}>📝 Publications et retweets</h3>
         {(() => {
           // Combiner les publications et reposts
           const allContent: Array<{
@@ -422,10 +410,10 @@ const ProfilePage: React.FC = () => {
           
           if (allContent.length === 0) {
             return (
-              <div className="publication">
-                <div className="publication-content">
-                  <p>Aucune publication ou retweet pour le moment.</p>
-                </div>
+              <div className="glass-card" style={{textAlign: 'center', padding: '32px'}}>
+                <p style={{color: 'var(--text-secondary)', fontSize: '1rem'}}>
+                  💭 Aucune publication ou retweet pour le moment.
+                </p>
               </div>
             );
           }
@@ -434,7 +422,7 @@ const ProfilePage: React.FC = () => {
             if (item.type === 'publication') {
               const pub = item.content;
               return (
-                <article className="publication" key={`pub-${pub.id}`}>
+                <article className="glass-publication" key={`pub-${pub.id}`}>
                   <div className="publication-header">
                     <span className="publication-author">{pub.user?.username || 'Utilisateur inconnu'}</span>
                     <span className="publication-username">@{pub.user?.username || 'user'}</span>
@@ -444,7 +432,16 @@ const ProfilePage: React.FC = () => {
                     {pub.texte || pub.content || 'AUCUN CONTENU'}
                     {pub.image && (
                       <div className="publication-media">
-                        <img src={pub.image.startsWith('http') ? pub.image : `/uploads/images/${pub.image}`} alt="Image" style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }} />
+                        <img 
+                          src={pub.image.startsWith('http') ? pub.image : pub.image} 
+                          alt="Image" 
+                          style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }}
+                          onLoad={() => console.log('✅ Image chargée dans ProfilePage:', pub.image)}
+                          onError={(e) => {
+                            console.error('❌ Erreur image dans ProfilePage:', pub.image, e);
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
                       </div>
                     )}
                     {pub.video && (
@@ -459,6 +456,13 @@ const ProfilePage: React.FC = () => {
                   <div className="publication-actions">
                     <LikeButton publicationId={pub.id} initialCount={pub.likeCount || 0} initiallyLiked={pub.likedByCurrentUser || false} />
                     <RepostButton publicationId={pub.id} />
+                    {/* Bouton de suppression pour nos propres publications */}
+                    {user && pub.user?.id === user.id && (
+                      <PublicationDeleteButton
+                        publicationId={pub.id}
+                        onDelete={handleDeletePublication}
+                      />
+                    )}
                   </div>
                   <div className="publication-comments">
                     <CommentForm publicationId={pub.id} onSuccess={() => {}} />
@@ -469,7 +473,7 @@ const ProfilePage: React.FC = () => {
             } else {
               const repost = item.content;
               return (
-                <article className="publication reposted" key={`repost-${repost.id}`} style={{borderLeft:'4px solid #4caf50',background:'#f6fff6'}}>
+                <article className="glass-publication reposted" key={`repost-${repost.id}`} style={{borderLeft:'4px solid #34C759',background:'rgba(52, 199, 89, 0.1)'}}>
                   <div className="publication-header">
                     <div className="repost-indicator" style={{display:'flex',alignItems:'center',gap:'4px',color:'#388e3c',fontSize:'0.9em',marginBottom:'8px'}}>
                       <span style={{fontSize:'1.2em'}}>🔄</span>
@@ -483,7 +487,16 @@ const ProfilePage: React.FC = () => {
                     {repost.publication?.texte || repost.publication?.content || 'AUCUN CONTENU'}
                     {repost.publication?.image && (
                       <div className="publication-media">
-                        <img src={repost.publication.image.startsWith('http') ? repost.publication.image : `/uploads/images/${repost.publication.image}`} alt="Image" style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }} />
+                        <img 
+                          src={repost.publication.image.startsWith('http') ? repost.publication.image : repost.publication.image} 
+                          alt="Image" 
+                          style={{ maxWidth: '100%', borderRadius: '12px', marginTop: '10px' }}
+                          onLoad={() => console.log('✅ Image chargée dans ProfilePage (repost):', repost.publication.image)}
+                          onError={(e) => {
+                            console.error('❌ Erreur image dans ProfilePage (repost):', repost.publication.image, e);
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
                       </div>
                     )}
                     {repost.publication?.video && (
@@ -505,6 +518,7 @@ const ProfilePage: React.FC = () => {
         })()}
       </div>
       
+
     </div>
   );
 };

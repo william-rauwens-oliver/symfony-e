@@ -17,7 +17,7 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function profile(Request $request): Response
     {
-        // Debug: Log les informations de session
+        // Je log les infos de session pour débugger
         error_log("DEBUG PROFILE - Session ID: " . $request->getSession()->getId());
         error_log("DEBUG PROFILE - User: " . ($this->getUser() ? $this->getUser()->getEmail() : 'NULL'));
         
@@ -29,14 +29,14 @@ class ProfileController extends AbstractController
         
         error_log("DEBUG PROFILE - Access granted for user: " . $user->getEmail());
         
-        // Récupérer les publications et retweets de l'utilisateur
+        // Je récupère les publications et retweets de l'utilisateur
         $publications = $user->getPublications();
         $reposts = $user->getReposts();
         
-        // Combiner les publications et retweets, triés par date
+        // Je combine les publications et retweets, triés par date
         $allContent = [];
         
-        // Ajouter les publications
+        // J'ajoute les publications
         foreach ($publications as $publication) {
             $allContent[] = [
                 'type' => 'publication',
@@ -45,16 +45,19 @@ class ProfileController extends AbstractController
             ];
         }
         
-        // Ajouter les retweets
+        // J'ajoute les retweets (seulement ceux avec des publications valides)
         foreach ($reposts as $repost) {
-            $allContent[] = [
-                'type' => 'repost',
-                'content' => $repost,
-                'date' => $repost->getCreatedAt()
-            ];
+            // Je vérifie que la publication du repost existe encore
+            if ($repost->getPublication() && $repost->getPublication()->getId()) {
+                $allContent[] = [
+                    'type' => 'repost',
+                    'content' => $repost,
+                    'date' => $repost->getCreatedAt()
+                ];
+            }
         }
         
-        // Trier par date décroissante
+        // Je trie par date décroissante
         usort($allContent, function($a, $b) {
             return $b['date'] <=> $a['date'];
         });
@@ -79,11 +82,14 @@ class ProfileController extends AbstractController
             ];
         }
         foreach ($reposts as $repost) {
-            $allContent[] = [
-                'type' => 'repost',
-                'content' => $repost,
-                'date' => $repost->getCreatedAt()
-            ];
+            // Je vérifie que la publication du repost existe encore
+            if ($repost->getPublication() && $repost->getPublication()->getId()) {
+                $allContent[] = [
+                    'type' => 'repost',
+                    'content' => $repost,
+                    'date' => $repost->getCreatedAt()
+                ];
+            }
         }
         usort($allContent, function($a, $b) {
             return $b['date'] <=> $a['date'];
@@ -131,15 +137,15 @@ class ProfileController extends AbstractController
             throw $this->createAccessDeniedException();
         }
         if ($request->isMethod('POST')) {
-            // Supprimer les likes de l'utilisateur
+            // Je supprime les likes de l'utilisateur
             foreach ($user->getLikes() as $like) {
                 $em->remove($like);
             }
-            // Supprimer les commentaires de l'utilisateur
+            // Je supprime les commentaires de l'utilisateur
             foreach ($user->getCommentaires() as $commentaire) {
                 $em->remove($commentaire);
             }
-            // Supprimer toute logique liée aux publications de l'utilisateur
+            // Je supprime toute logique liée aux publications de l'utilisateur
             $em->remove($user);
             $em->flush();
             $this->container->get('security.token_storage')->setToken(null);

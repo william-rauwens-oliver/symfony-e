@@ -144,18 +144,48 @@ class PublicationApiController extends AbstractController
             return $this->json(['error' => 'Non autorisé'], 403);
         }
 
-        $data = json_decode($request->getContent(), true);
-        
-        if (isset($data['texte'])) {
-            $publication->setTexte($data['texte']);
+        // Gestion des données (FormData ou JSON)
+        $contentType = $request->headers->get('Content-Type');
+        $texte = null;
+        $image = null;
+        $video = null;
+
+        if (strpos($contentType, 'multipart/form-data') !== false) {
+            // FormData (frontend React)
+            $texte = $request->request->get('texte');
+            $imageFile = $request->files->get('image');
+            $videoFile = $request->files->get('video');
+            
+            // Gestion des fichiers uploadés
+            if ($imageFile) {
+                $filename = uniqid('img_') . '.' . $imageFile->guessExtension();
+                $imageFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/images', $filename);
+                $image = '/uploads/images/' . $filename;
+            }
+            
+            if ($videoFile) {
+                $filename = uniqid('vid_') . '.' . $videoFile->guessExtension();
+                $videoFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/videos', $filename);
+                $video = '/uploads/videos/' . $filename;
+            }
+        } else {
+            // JSON
+            $data = json_decode($request->getContent(), true);
+            $texte = $data['texte'] ?? null;
+            $image = $data['image'] ?? null;
+            $video = $data['video'] ?? null;
         }
         
-        if (isset($data['image'])) {
-            $publication->setImage($data['image']);
+        if (isset($texte)) {
+            $publication->setTexte($texte);
         }
         
-        if (isset($data['video'])) {
-            $publication->setVideo($data['video']);
+        if (isset($image)) {
+            $publication->setImage($image);
+        }
+        
+        if (isset($video)) {
+            $publication->setVideo($video);
         }
 
         $em->flush();
@@ -165,6 +195,12 @@ class PublicationApiController extends AbstractController
             'texte' => $publication->getTexte(),
             'image' => $publication->getImage(),
             'video' => $publication->getVideo(),
+            'user' => [
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+            ],
+            'createdAt' => $publication->getCreatedAt()?->format('c'),
         ]);
     }
 

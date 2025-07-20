@@ -29,7 +29,7 @@ export const fetchPublications = async (token?: string) => {
 };
 
 export const createPublication = async (data: FormData, token: string) => {
-  const res = await axios.post(`${API_URL}/publications`, data, {
+  const res = await axios.post(`${API_URL}/publications/upload`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',

@@ -43,6 +43,12 @@ const PublicationList: React.FC<PublicationListProps> = ({ userId, refresh }) =>
   });
 
   console.log('DEBUG publications:', publications);
+  console.log('DEBUG publications avec images:', publications.filter(pub => pub.image).map(pub => ({
+    id: pub.id,
+    texte: pub.texte,
+    image: pub.image,
+    video: pub.video
+  })));
 
   return (
     <div className="publication-list">
@@ -61,8 +67,34 @@ const PublicationList: React.FC<PublicationListProps> = ({ userId, refresh }) =>
             </div>
           </div>
           <div className="publication-content">{pub.texte}</div>
-          {pub.image && <img src={pub.image} alt="media" className="publication-image" />}
-          {pub.video && <video src={pub.video} controls className="publication-video" />}
+          {pub.image && (
+            <div className="publication-media">
+              <img 
+                src={pub.image} 
+                alt="Publication media" 
+                className="publication-image" 
+                onLoad={() => console.log('Image chargée:', pub.image)}
+                onError={(e) => {
+                  console.error('Erreur chargement image:', pub.image, e);
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+          {pub.video && (
+            <div className="publication-media">
+              <video 
+                src={pub.video} 
+                controls 
+                className="publication-video"
+                onLoadStart={() => console.log('Vidéo en cours de chargement:', pub.video)}
+                onError={(e) => {
+                  console.error('Erreur chargement vidéo:', pub.video, e);
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
           <div className="publication-actions">
             <LikeButton 
               publicationId={pub.id} 

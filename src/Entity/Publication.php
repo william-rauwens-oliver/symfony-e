@@ -24,8 +24,7 @@ use Symfony\Component\Serializer\Annotation\ApiSubresource;
     operations: [
         new GetCollection(),
         new Get(),
-        // POST désactivé, géré par un contrôleur custom
-        new Put(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
+        // POST et PUT désactivés, gérés par des contrôleurs custom
         new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
         new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"),
     ],

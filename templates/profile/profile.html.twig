@@ -172,7 +172,8 @@
                     </article>
                 {% elseif item.type == 'repost' %}
                     {% set repost = item.content %}
-                    {% set publication = repost.publication %}
+                    {% if repost.publication is defined and repost.publication is not null %}
+                        {% set publication = repost.publication %}
                     <article class="publication repost">
                         <div class="publication-header">
                             <div class="repost-indicator">
@@ -229,6 +230,7 @@
                             </button>
                         </div>
                     </article>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% else %}
