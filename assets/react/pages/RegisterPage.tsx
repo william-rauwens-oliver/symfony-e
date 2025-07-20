@@ -57,16 +57,16 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form liquid-glass" onSubmit={handleSubmit}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+    <div className="auth-container" style={{ color: '#fff' }}>
+      <form className="auth-form liquid-glass" onSubmit={handleSubmit} style={{ color: '#fff' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem', color: '#fff' }}>
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '64px', height: '64px', marginBottom: '1rem' }}>
             <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#2d5a27"/>
             <path d="M2 17L12 22L22 17" stroke="#2d5a27" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="#2d5a27" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <h1>Rejoindre SymfoX</h1>
-          <p style={{ color: 'rgba(45, 90, 39, 0.7)', margin: 0 }}>Créez votre compte éthique</p>
+          <h1 style={{ color: '#fff' }}>Rejoindre SymfoX</h1>
+          <p style={{ color: '#fff', margin: 0 }}>Créez votre compte éthique</p>
         </div>
         
         {error && (
@@ -81,8 +81,8 @@ const RegisterPage: React.FC = () => {
           </div>
         )}
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
@@ -100,8 +100,8 @@ const RegisterPage: React.FC = () => {
           />
         </div>
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -119,8 +119,8 @@ const RegisterPage: React.FC = () => {
           />
         </div>
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
               <circle cx="12" cy="16" r="1" stroke="currentColor" strokeWidth="2"/>
@@ -139,8 +139,8 @@ const RegisterPage: React.FC = () => {
           />
         </div>
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
               <circle cx="12" cy="16" r="1" stroke="currentColor" strokeWidth="2"/>
@@ -159,8 +159,8 @@ const RegisterPage: React.FC = () => {
           />
         </div>
         
-        <div className="form-group">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="form-group" style={{ color: '#fff' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff' }}>
             <input
               type="checkbox"
               id="agreeTerms"
@@ -178,11 +178,11 @@ const RegisterPage: React.FC = () => {
             <label htmlFor="agreeTerms" style={{ 
               margin: 0, 
               fontSize: '0.9rem',
-              color: '#2d5a27',
+              color: '#fff',
               cursor: loading ? 'not-allowed' : 'pointer'
             }}>
               J'accepte les{' '}
-              <Link to="/legal" style={{ color: '#4a7c59', textDecoration: 'none' }}>
+              <Link to="/legal" style={{ color: '#fff', textDecoration: 'none' }}>
                 conditions d'utilisation
               </Link>
             </label>
@@ -193,6 +193,7 @@ const RegisterPage: React.FC = () => {
           type="submit" 
           className="form-button" 
           disabled={loading || !username || !email || !password || !password2 || !agree}
+          style={{ color: '#fff' }}
         >
           {loading ? (
             <>
@@ -226,8 +227,8 @@ const RegisterPage: React.FC = () => {
           </button>
         </div>
         
-        <p style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <Link to="/login" className="auth-link">
+        <p style={{ textAlign: 'center', marginTop: '2rem', color: '#fff' }}>
+          <Link to="/login" className="auth-link" style={{ color: '#fff' }}>
             Déjà un compte ? Se connecter
           </Link>
         </p>

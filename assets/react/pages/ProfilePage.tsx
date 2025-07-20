@@ -411,7 +411,6 @@ const ProfilePage: React.FC = () => {
                     )}
                   </div>
                   <div className="publication-comments">
-                    <CommentForm publicationId={pub.id} onSuccess={() => {}} />
                     <CommentList publicationId={pub.id} />
                   </div>
                 </article>

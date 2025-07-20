@@ -401,3 +401,19 @@
 [PublicationDataPersister] Mapping PublicationInput vers Publication
 [PublicationDataPersister] Publication persistée avec ID: 55, texte: Hello
 [PublicationUploadController] Publication créée avec ID: 55
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: #symfony
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 56, texte: #symfony
+[PublicationUploadController] Publication créée avec ID: 56
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Test
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 57, texte: Test
+[PublicationUploadController] Publication créée avec ID: 57

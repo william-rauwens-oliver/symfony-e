@@ -49,16 +49,16 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form liquid-glass" onSubmit={handleSubmit}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+    <div className="auth-container" style={{ color: '#fff' }}>
+      <form className="auth-form liquid-glass" onSubmit={handleSubmit} style={{ color: '#fff' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem', color: '#fff' }}>
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '64px', height: '64px', marginBottom: '1rem' }}>
             <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#2d5a27"/>
             <path d="M2 17L12 22L22 17" stroke="#2d5a27" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="#2d5a27" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <h1>Connexion</h1>
-          <p style={{ color: 'rgba(45, 90, 39, 0.7)', margin: 0 }}>Bienvenue sur SymfoX</p>
+          <h1 style={{ color: '#fff' }}>Connexion</h1>
+          <p style={{ color: '#fff', margin: 0 }}>Bienvenue sur SymfoX</p>
         </div>
         
         {error && (
@@ -67,8 +67,8 @@ const LoginPage: React.FC = () => {
           </div>
         )}
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -86,8 +86,8 @@ const LoginPage: React.FC = () => {
           />
         </div>
         
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group" style={{ color: '#fff' }}>
+          <label className="form-label" style={{ color: '#fff' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '0.5rem' }}>
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
               <circle cx="12" cy="16" r="1" stroke="currentColor" strokeWidth="2"/>
@@ -110,6 +110,7 @@ const LoginPage: React.FC = () => {
           type="submit" 
           className="form-button" 
           disabled={loading || !email || !password}
+          style={{ color: '#fff' }}
         >
           {loading ? (
             <>
@@ -131,10 +132,10 @@ const LoginPage: React.FC = () => {
           )}
         </button>
         
-        <div className="auth-divider">ou</div>
+        <div className="auth-divider" style={{ color: '#fff' }}>ou</div>
         
-        <div className="social-auth">
-          <button type="button" className="social-button">
+        <div className="social-auth" style={{ color: '#fff' }}>
+          <button type="button" className="social-button" style={{ color: '#fff' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="2"/>
               <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -144,8 +145,8 @@ const LoginPage: React.FC = () => {
           </button>
         </div>
         
-        <p style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <Link to="/register" className="auth-link">
+        <p style={{ textAlign: 'center', marginTop: '2rem', color: '#fff' }}>
+          <Link to="/register" className="auth-link" style={{ color: '#fff' }}>
             Pas de compte ? S'inscrire
           </Link>
         </p>
