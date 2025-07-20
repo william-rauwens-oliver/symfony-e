@@ -377,3 +377,19 @@
 [PublicationDataPersister] Mapping PublicationInput vers Publication
 [PublicationDataPersister] Publication persistée avec ID: 52, texte: dhdh
 [PublicationUploadController] Publication créée avec ID: 52
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: gssg
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 53, texte: gssg
+[PublicationUploadController] Publication créée avec ID: 53
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Hello toi
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 54, texte: Hello toi
+[PublicationUploadController] Publication créée avec ID: 54

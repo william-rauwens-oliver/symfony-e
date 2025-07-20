@@ -14,7 +14,6 @@ interface PublicationListProps {
 }
 
 const PublicationList: React.FC<PublicationListProps> = ({ userId, refresh }) => {
-  console.log('PublicationList mounted');
   const [publications, setPublications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -42,13 +41,7 @@ const PublicationList: React.FC<PublicationListProps> = ({ userId, refresh }) =>
     return dateB - dateA;
   });
 
-  console.log('DEBUG publications:', publications);
-  console.log('DEBUG publications avec images:', publications.filter(pub => pub.image).map(pub => ({
-    id: pub.id,
-    texte: pub.texte,
-    image: pub.image,
-    video: pub.video
-  })));
+
 
   return (
     <div className="publication-list">

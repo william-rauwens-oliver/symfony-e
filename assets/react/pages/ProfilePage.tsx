@@ -61,7 +61,6 @@ const ProfilePage: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log('DEBUG REPOSTS - useEffect triggered, id:', id);
     if (!id) return;
     
     // Récupérer les publications
@@ -69,39 +68,31 @@ const ProfilePage: React.FC = () => {
       .then(res => res.json())
       .then(data => {
         const pubs = data['hydra:member'] || data.member || [];
-        console.log('DEBUG PUBLICATIONS - Received:', pubs.length, 'publications');
         setPublications(pubs);
       });
       
     // Récupérer les reposts
-    console.log('DEBUG REPOSTS - Fetching reposts for user', id);
-    console.log('DEBUG REPOSTS - fetchRepostsByUser function:', typeof fetchRepostsByUser);
-    
-    // Test direct de l'API
     fetch(`/api/reposts?user=${id}`)
       .then(res => res.json())
       .then(data => {
-        console.log('DEBUG REPOSTS - Direct API call result:', data);
         const repostsData = data['hydra:member'] || data.member || [];
-        console.log('DEBUG REPOSTS - Direct API call reposts count:', repostsData.length);
         setReposts(repostsData);
       })
       .catch(err => {
-        console.error('DEBUG REPOSTS - Error with direct API call:', err);
+        console.error('Error fetching reposts:', err);
       });
       
     // Essayer aussi avec la fonction importée
     try {
       fetchRepostsByUser(Number(id))
         .then(data => {
-          console.log('DEBUG REPOSTS - Function call data received:', data);
           setReposts(data);
         })
         .catch(err => {
-          console.error('DEBUG REPOSTS - Error with function call:', err);
+          console.error('Error with function call:', err);
         });
     } catch (err) {
-      console.error('DEBUG REPOSTS - Error calling fetchRepostsByUser:', err);
+      console.error('Error calling fetchRepostsByUser:', err);
     }
   }, [id]);
 
@@ -131,117 +122,83 @@ const ProfilePage: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log('DEBUG FOLLOW CHECK - useEffect triggered');
-    console.log('DEBUG FOLLOW CHECK - user:', user);
-    console.log('DEBUG FOLLOW CHECK - profile:', profile);
-    console.log('DEBUG FOLLOW CHECK - user.id === profile.id:', user?.id === profile?.id);
-    
     if (!user || !profile) {
-      console.log('DEBUG FOLLOW CHECK - Missing user or profile, returning');
       return;
     }
     
     if (user.id === profile.id) {
-      console.log('DEBUG FOLLOW CHECK - Same user, setting isFollowing to false');
       setIsFollowing(false);
       return;
     }
     
     const token = getToken();
     if (!token) {
-      console.log('DEBUG FOLLOW CHECK - No token, returning');
       return;
     }
     
-    console.log('DEBUG FOLLOW CHECK - Calling isFollowingUser with profile.id:', profile.id);
     isFollowingUser(profile.id, token, user.id)
       .then(result => {
-        console.log('DEBUG FOLLOW CHECK - isFollowingUser result:', result);
         setIsFollowing(result);
       })
       .catch(err => {
-        console.error('DEBUG FOLLOW CHECK - Error checking follow status:', err);
+        console.error('Error checking follow status:', err);
         setIsFollowing(false);
       });
   }, [user, profile]);
 
   useEffect(() => {
     if (!id) return;
-    console.log('DEBUG FOLLOWS - Fetching follows for user:', id);
     
     // Followers (ceux qui me suivent)
     fetch(`/api/follows?followed=${id}`)
-      .then(res => {
-        console.log('DEBUG FOLLOWS - Followers response status:', res.status);
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
-        console.log('DEBUG FOLLOWS - Followers data:', data);
         const arr = data['hydra:member'] || data.member || data;
-        console.log('DEBUG FOLLOWS - Followers count:', arr.length);
         setFollowersCount(arr.length);
       })
       .catch(err => {
-        console.error('DEBUG FOLLOWS - Error fetching followers:', err);
+        console.error('Error fetching followers:', err);
       });
       
     // Followings (ceux que je suis)
     fetch(`/api/follows?follower=${id}`)
-      .then(res => {
-        console.log('DEBUG FOLLOWS - Followings response status:', res.status);
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
-        console.log('DEBUG FOLLOWS - Followings data:', data);
         const arr = data['hydra:member'] || data.member || data;
-        console.log('DEBUG FOLLOWS - Followings count:', arr.length);
         setFollowingsCount(arr.length);
       })
       .catch(err => {
-        console.error('DEBUG FOLLOWS - Error fetching followings:', err);
+        console.error('Error fetching followings:', err);
       });
   }, [id]);
 
   const handleFollow = async () => {
-    console.log('DEBUG HANDLE FOLLOW - Function called');
-    console.log('DEBUG HANDLE FOLLOW - user:', user);
-    console.log('DEBUG HANDLE FOLLOW - profile:', profile);
-    console.log('DEBUG HANDLE FOLLOW - current isFollowing:', isFollowing);
-    
     if (!user || !profile) {
-      console.log('DEBUG HANDLE FOLLOW - Missing user or profile, returning');
       return;
     }
     
     setFollowLoading(true);
     const token = getToken();
     if (!token) {
-      console.log('DEBUG HANDLE FOLLOW - No token, returning');
       setFollowLoading(false);
       return;
     }
     
     try {
       if (isFollowing) {
-        console.log('DEBUG HANDLE FOLLOW - Unfollowing user:', profile.id);
         await unfollowUser(profile.id, token, user.id);
-        console.log('DEBUG HANDLE FOLLOW - Unfollow successful, setting isFollowing to false');
         setIsFollowing(false);
       } else {
-        console.log('DEBUG HANDLE FOLLOW - Following user:', profile.id);
         await followUser(profile.id, token);
-        console.log('DEBUG HANDLE FOLLOW - Follow successful, setting isFollowing to true');
         setIsFollowing(true);
       }
       
       // Forcer une vérification de l'état après l'action
-      console.log('DEBUG HANDLE FOLLOW - Rechecking follow status after action');
       const newFollowStatus = await isFollowingUser(profile.id, token, user.id);
-      console.log('DEBUG HANDLE FOLLOW - New follow status from API:', newFollowStatus);
       setIsFollowing(newFollowStatus);
       
     } catch (error) {
-      console.error('DEBUG HANDLE FOLLOW - Error during follow/unfollow:', error);
+      console.error('Error during follow/unfollow:', error);
     } finally {
       setFollowLoading(false);
     }
@@ -252,10 +209,7 @@ const ProfilePage: React.FC = () => {
     window.location.reload();
   };
 
-  console.log('DEBUG PROFILE PAGE - Juste avant return, id:', id);
-  console.log('DEBUG PROFILE PAGE - Render state - loading:', loading, 'error:', error, 'profile:', profile);
-  console.log('DEBUG PUBLICATION COUNT:', publicationCount);
-  console.log('DEBUG REPOSTS', reposts);
+
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -367,15 +321,7 @@ const ProfilePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Debug JSON des publications et reposts */}
-      {process.env.NODE_ENV !== 'production' && (
-        <div style={{background:'#f5f5f5',border:'1px solid #ccc',padding:'1em',margin:'1em 0',fontSize:'0.9em',overflowX:'auto'}}>
-          <strong>DEBUG Publications :</strong>
-          <pre>{JSON.stringify(publications, null, 2)}</pre>
-          <strong>DEBUG Reposts :</strong>
-          <pre>{JSON.stringify(reposts, null, 2)}</pre>
-        </div>
-      )}
+
       {/* Liste des publications et retweets de l'utilisateur */}
       <div className="profile-publications" style={{marginTop: '24px'}}>
         <h3 style={{color: 'var(--text-primary)', marginBottom: '16px', fontSize: '1.2rem'}}>📝 Publications et retweets</h3>
