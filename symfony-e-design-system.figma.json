@@ -1,0 +1,1290 @@
+{
+  "name": "SymfoX - Design System",
+  "documentType": "DESIGN",
+  "version": "1.0.0",
+  "mainComponentKey": "main",
+  "schemaVersion": 1,
+  "components": {
+    "main": {
+      "id": "main",
+      "name": "SymfoX Design System",
+      "type": "FRAME",
+      "width": 1440,
+      "height": 1024,
+      "backgroundColor": {
+        "r": 0.98,
+        "g": 0.98,
+        "b": 0.98,
+        "a": 1
+      },
+      "children": [
+        {
+          "id": "color-palette",
+          "name": "Color Palette",
+          "type": "FRAME",
+          "x": 40,
+          "y": 40,
+          "width": 400,
+          "height": 300,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "cornerRadius": 16,
+          "children": [
+            {
+              "id": "primary-colors",
+              "name": "Primary Colors",
+              "type": "RECTANGLE",
+              "x": 20,
+              "y": 20,
+              "width": 80,
+              "height": 80,
+              "backgroundColor": {
+                "r": 0.11,
+                "g": 0.35,
+                "b": 0.15,
+                "a": 1
+              },
+              "cornerRadius": 8,
+              "name": "Primary Green"
+            },
+            {
+              "id": "primary-blue",
+              "name": "Primary Blue",
+              "type": "RECTANGLE",
+              "x": 120,
+              "y": 20,
+              "width": 80,
+              "height": 80,
+              "backgroundColor": {
+                "r": 0.11,
+                "g": 0.61,
+                "b": 0.94,
+                "a": 1
+              },
+              "cornerRadius": 8
+            },
+            {
+              "id": "primary-pink",
+              "name": "Primary Pink",
+              "type": "RECTANGLE",
+              "x": 220,
+              "y": 20,
+              "width": 80,
+              "height": 80,
+              "backgroundColor": {
+                "r": 0.98,
+                "g": 0.09,
+                "b": 0.5,
+                "a": 1
+              },
+              "cornerRadius": 8
+            },
+            {
+              "id": "gradient-purple",
+              "name": "Gradient Purple",
+              "type": "RECTANGLE",
+              "x": 320,
+              "y": 20,
+              "width": 80,
+              "height": 80,
+              "backgroundColor": {
+                "r": 0.4,
+                "g": 0.49,
+                "b": 0.92,
+                "a": 1
+              },
+              "cornerRadius": 8
+            }
+          ]
+        },
+        {
+          "id": "typography",
+          "name": "Typography",
+          "type": "FRAME",
+          "x": 480,
+          "y": 40,
+          "width": 400,
+          "height": 300,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "cornerRadius": 16,
+          "children": [
+            {
+              "id": "heading-1",
+              "name": "Heading 1",
+              "type": "TEXT",
+              "x": 20,
+              "y": 20,
+              "width": 360,
+              "height": 48,
+              "characters": "SymfoX Design System",
+              "fontSize": 32,
+              "fontWeight": 800,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "letterSpacing": -0.01,
+              "color": {
+                "r": 0.11,
+                "g": 0.35,
+                "b": 0.15,
+                "a": 1
+              }
+            },
+            {
+              "id": "heading-2",
+              "name": "Heading 2",
+              "type": "TEXT",
+              "x": 20,
+              "y": 80,
+              "width": 360,
+              "height": 32,
+              "characters": "Section Title",
+              "fontSize": 24,
+              "fontWeight": 700,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "color": {
+                "r": 0.11,
+                "g": 0.35,
+                "b": 0.15,
+                "a": 1
+              }
+            },
+            {
+              "id": "body-text",
+              "name": "Body Text",
+              "type": "TEXT",
+              "x": 20,
+              "y": 130,
+              "width": 360,
+              "height": 24,
+              "characters": "This is body text with regular weight",
+              "fontSize": 16,
+              "fontWeight": 400,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "color": {
+                "r": 0.2,
+                "g": 0.2,
+                "b": 0.2,
+                "a": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "navigation",
+          "name": "Navigation Bar",
+          "type": "FRAME",
+          "x": 40,
+          "y": 380,
+          "width": 1360,
+          "height": 80,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.08
+          },
+          "backdropFilter": "blur(20px)",
+          "border": {
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 0.12
+            },
+            "width": 1
+          },
+          "children": [
+            {
+              "id": "logo",
+              "name": "Logo",
+              "type": "TEXT",
+              "x": 40,
+              "y": 24,
+              "width": 120,
+              "height": 32,
+              "characters": "SymfoX",
+              "fontSize": 28,
+              "fontWeight": 700,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "color": {
+                "r": 0.4,
+                "g": 0.49,
+                "b": 0.92,
+                "a": 1
+              }
+            },
+            {
+              "id": "nav-links",
+              "name": "Navigation Links",
+              "type": "FRAME",
+              "x": 200,
+              "y": 20,
+              "width": 400,
+              "height": 40,
+              "children": [
+                {
+                  "id": "nav-home",
+                  "name": "Home",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 8,
+                  "width": 60,
+                  "height": 24,
+                  "characters": "🏠 Accueil",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.9
+                  }
+                },
+                {
+                  "id": "nav-profile",
+                  "name": "Profile",
+                  "type": "TEXT",
+                  "x": 100,
+                  "y": 8,
+                  "width": 80,
+                  "height": 24,
+                  "characters": "👤 Profil",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                },
+                {
+                  "id": "nav-search",
+                  "name": "Search",
+                  "type": "TEXT",
+                  "x": 200,
+                  "y": 8,
+                  "width": 80,
+                  "height": 24,
+                  "characters": "🔍 Recherche",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "auth-form",
+          "name": "Authentication Form",
+          "type": "FRAME",
+          "x": 40,
+          "y": 500,
+          "width": 400,
+          "height": 500,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.1
+          },
+          "backdropFilter": "blur(20px)",
+          "border": {
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 0.2
+            },
+            "width": 1
+          },
+          "cornerRadius": 25,
+          "children": [
+            {
+              "id": "auth-title",
+              "name": "Auth Title",
+              "type": "TEXT",
+              "x": 40,
+              "y": 40,
+              "width": 320,
+              "height": 48,
+              "characters": "Connexion",
+              "fontSize": 32,
+              "fontWeight": 700,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "color": {
+                "r": 0.11,
+                "g": 0.35,
+                "b": 0.15,
+                "a": 1
+              },
+              "textAlignHorizontal": "CENTER"
+            },
+            {
+              "id": "email-input",
+              "name": "Email Input",
+              "type": "RECTANGLE",
+              "x": 40,
+              "y": 120,
+              "width": 320,
+              "height": 56,
+              "backgroundColor": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0.15
+              },
+              "border": {
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 0.2
+                },
+                "width": 1
+              },
+              "cornerRadius": 15,
+              "children": [
+                {
+                  "id": "email-placeholder",
+                  "name": "Email Placeholder",
+                  "type": "TEXT",
+                  "x": 20,
+                  "y": 18,
+                  "width": 280,
+                  "height": 20,
+                  "characters": "votre@email.com",
+                  "fontSize": 16,
+                  "fontWeight": 400,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 0.11,
+                    "g": 0.35,
+                    "b": 0.15,
+                    "a": 0.6
+                  }
+                }
+              ]
+            },
+            {
+              "id": "password-input",
+              "name": "Password Input",
+              "type": "RECTANGLE",
+              "x": 40,
+              "y": 200,
+              "width": 320,
+              "height": 56,
+              "backgroundColor": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0.15
+              },
+              "border": {
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 0.2
+                },
+                "width": 1
+              },
+              "cornerRadius": 15,
+              "children": [
+                {
+                  "id": "password-placeholder",
+                  "name": "Password Placeholder",
+                  "type": "TEXT",
+                  "x": 20,
+                  "y": 18,
+                  "width": 280,
+                  "height": 20,
+                  "characters": "Votre mot de passe",
+                  "fontSize": 16,
+                  "fontWeight": 400,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 0.11,
+                    "g": 0.35,
+                    "b": 0.15,
+                    "a": 0.6
+                  }
+                }
+              ]
+            },
+            {
+              "id": "login-button",
+              "name": "Login Button",
+              "type": "RECTANGLE",
+              "x": 40,
+              "y": 280,
+              "width": 320,
+              "height": 56,
+              "backgroundColor": {
+                "r": 0.11,
+                "g": 0.35,
+                "b": 0.15,
+                "a": 1
+              },
+              "cornerRadius": 15,
+              "children": [
+                {
+                  "id": "login-text",
+                  "name": "Login Text",
+                  "type": "TEXT",
+                  "x": 140,
+                  "y": 18,
+                  "width": 40,
+                  "height": 20,
+                  "characters": "Se connecter",
+                  "fontSize": 16,
+                  "fontWeight": 600,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "publication-card",
+          "name": "Publication Card",
+          "type": "FRAME",
+          "x": 480,
+          "y": 500,
+          "width": 600,
+          "height": 400,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "cornerRadius": 16,
+          "shadow": {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.07
+            },
+            "offset": {
+              "x": 0,
+              "y": 2
+            },
+            "radius": 8,
+            "spread": 0
+          },
+          "children": [
+            {
+              "id": "pub-header",
+              "name": "Publication Header",
+              "type": "FRAME",
+              "x": 24,
+              "y": 24,
+              "width": 552,
+              "height": 48,
+              "children": [
+                {
+                  "id": "pub-avatar",
+                  "name": "Publication Avatar",
+                  "type": "ELLIPSE",
+                  "x": 0,
+                  "y": 0,
+                  "width": 48,
+                  "height": 48,
+                  "backgroundColor": {
+                    "r": 0.4,
+                    "g": 0.49,
+                    "b": 0.92,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "pub-meta",
+                  "name": "Publication Meta",
+                  "type": "FRAME",
+                  "x": 64,
+                  "y": 4,
+                  "width": 488,
+                  "height": 40,
+                  "children": [
+                    {
+                      "id": "pub-username",
+                      "name": "Publication Username",
+                      "type": "TEXT",
+                      "x": 0,
+                      "y": 0,
+                      "width": 120,
+                      "height": 20,
+                      "characters": "John Doe",
+                      "fontSize": 16,
+                      "fontWeight": 600,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                      "color": {
+                        "r": 0.2,
+                        "g": 0.2,
+                        "b": 0.2,
+                        "a": 1
+                      }
+                    },
+                    {
+                      "id": "pub-date",
+                      "name": "Publication Date",
+                      "type": "TEXT",
+                      "x": 0,
+                      "y": 24,
+                      "width": 100,
+                      "height": 16,
+                      "characters": "Il y a 2h",
+                      "fontSize": 14,
+                      "fontWeight": 400,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                      "color": {
+                        "r": 0.53,
+                        "g": 0.53,
+                        "b": 0.53,
+                        "a": 1
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "pub-content",
+              "name": "Publication Content",
+              "type": "TEXT",
+              "x": 24,
+              "y": 88,
+              "width": 552,
+              "height": 80,
+              "characters": "Voici ma nouvelle publication sur SymfoX ! 🚀\n\n#SymfoX #SocialNetwork #Innovation",
+              "fontSize": 16,
+              "fontWeight": 400,
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+              "color": {
+                "r": 0.2,
+                "g": 0.2,
+                "b": 0.2,
+                "a": 1
+              },
+              "lineHeight": 1.5
+            },
+            {
+              "id": "pub-actions",
+              "name": "Publication Actions",
+              "type": "FRAME",
+              "x": 24,
+              "y": 320,
+              "width": 552,
+              "height": 40,
+              "children": [
+                {
+                  "id": "like-btn",
+                  "name": "Like Button",
+                  "type": "FRAME",
+                  "x": 0,
+                  "y": 0,
+                  "width": 80,
+                  "height": 40,
+                  "backgroundColor": {
+                    "r": 0.98,
+                    "g": 0.09,
+                    "b": 0.5,
+                    "a": 0.1
+                  },
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "id": "like-icon",
+                      "name": "Like Icon",
+                      "type": "TEXT",
+                      "x": 8,
+                      "y": 8,
+                      "width": 24,
+                      "height": 24,
+                      "characters": "❤️",
+                      "fontSize": 20,
+                      "fontWeight": 400,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+                    },
+                    {
+                      "id": "like-count",
+                      "name": "Like Count",
+                      "type": "TEXT",
+                      "x": 36,
+                      "y": 10,
+                      "width": 36,
+                      "height": 20,
+                      "characters": "42",
+                      "fontSize": 14,
+                      "fontWeight": 500,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                      "color": {
+                        "r": 0.98,
+                        "g": 0.09,
+                        "b": 0.5,
+                        "a": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "comment-btn",
+                  "name": "Comment Button",
+                  "type": "FRAME",
+                  "x": 100,
+                  "y": 0,
+                  "width": 80,
+                  "height": 40,
+                  "backgroundColor": {
+                    "r": 0.11,
+                    "g": 0.61,
+                    "b": 0.94,
+                    "a": 0.1
+                  },
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "id": "comment-icon",
+                      "name": "Comment Icon",
+                      "type": "TEXT",
+                      "x": 8,
+                      "y": 8,
+                      "width": 24,
+                      "height": 24,
+                      "characters": "💬",
+                      "fontSize": 20,
+                      "fontWeight": 400,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+                    },
+                    {
+                      "id": "comment-count",
+                      "name": "Comment Count",
+                      "type": "TEXT",
+                      "x": 36,
+                      "y": 10,
+                      "width": 36,
+                      "height": 20,
+                      "characters": "12",
+                      "fontSize": 14,
+                      "fontWeight": 500,
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                      "color": {
+                        "r": 0.11,
+                        "g": 0.61,
+                        "b": 0.94,
+                        "a": 1
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-card",
+          "name": "Profile Card",
+          "type": "FRAME",
+          "x": 1120,
+          "y": 500,
+          "width": 280,
+          "height": 400,
+          "backgroundColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "cornerRadius": 24,
+          "shadow": {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.1
+            },
+            "offset": {
+              "x": 0,
+              "y": 20
+            },
+            "radius": 25,
+            "spread": 0
+          },
+          "children": [
+            {
+              "id": "profile-banner",
+              "name": "Profile Banner",
+              "type": "RECTANGLE",
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 120,
+              "backgroundColor": {
+                "r": 0.4,
+                "g": 0.49,
+                "b": 0.92,
+                "a": 1
+              }
+            },
+            {
+              "id": "profile-avatar",
+              "name": "Profile Avatar",
+              "type": "ELLIPSE",
+              "x": 60,
+              "y": 60,
+              "width": 160,
+              "height": 160,
+              "backgroundColor": {
+                "r": 0.4,
+                "g": 0.49,
+                "b": 0.92,
+                "a": 1
+              },
+              "border": {
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
+                },
+                "width": 6
+              }
+            },
+            {
+              "id": "profile-info",
+              "name": "Profile Info",
+              "type": "FRAME",
+              "x": 20,
+              "y": 240,
+              "width": 240,
+              "height": 140,
+              "children": [
+                {
+                  "id": "profile-name",
+                  "name": "Profile Name",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 0,
+                  "width": 240,
+                  "height": 32,
+                  "characters": "John Doe",
+                  "fontSize": 24,
+                  "fontWeight": 800,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 0.1,
+                    "g": 0.1,
+                    "b": 0.1,
+                    "a": 1
+                  },
+                  "textAlignHorizontal": "CENTER"
+                },
+                {
+                  "id": "profile-username",
+                  "name": "Profile Username",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 40,
+                  "width": 240,
+                  "height": 20,
+                  "characters": "@johndoe",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                  "color": {
+                    "r": 0.44,
+                    "g": 0.44,
+                    "b": 0.44,
+                    "a": 1
+                  },
+                  "textAlignHorizontal": "CENTER"
+                },
+                {
+                  "id": "profile-stats",
+                  "name": "Profile Stats",
+                  "type": "FRAME",
+                  "x": 0,
+                  "y": 80,
+                  "width": 240,
+                  "height": 60,
+                  "children": [
+                    {
+                      "id": "stat-posts",
+                      "name": "Posts Stat",
+                      "type": "FRAME",
+                      "x": 0,
+                      "y": 0,
+                      "width": 80,
+                      "height": 60,
+                      "children": [
+                        {
+                          "id": "posts-number",
+                          "name": "Posts Number",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 0,
+                          "width": 80,
+                          "height": 24,
+                          "characters": "156",
+                          "fontSize": 20,
+                          "fontWeight": 800,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.18,
+                            "g": 0.18,
+                            "b": 0.18,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        },
+                        {
+                          "id": "posts-label",
+                          "name": "Posts Label",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 28,
+                          "width": 80,
+                          "height": 16,
+                          "characters": "Posts",
+                          "fontSize": 12,
+                          "fontWeight": 500,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.44,
+                            "g": 0.44,
+                            "b": 0.44,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "stat-followers",
+                      "name": "Followers Stat",
+                      "type": "FRAME",
+                      "x": 80,
+                      "y": 0,
+                      "width": 80,
+                      "height": 60,
+                      "children": [
+                        {
+                          "id": "followers-number",
+                          "name": "Followers Number",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 0,
+                          "width": 80,
+                          "height": 24,
+                          "characters": "2.4K",
+                          "fontSize": 20,
+                          "fontWeight": 800,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.18,
+                            "g": 0.18,
+                            "b": 0.18,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        },
+                        {
+                          "id": "followers-label",
+                          "name": "Followers Label",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 28,
+                          "width": 80,
+                          "height": 16,
+                          "characters": "Followers",
+                          "fontSize": 12,
+                          "fontWeight": 500,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.44,
+                            "g": 0.44,
+                            "b": 0.44,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "stat-following",
+                      "name": "Following Stat",
+                      "type": "FRAME",
+                      "x": 160,
+                      "y": 0,
+                      "width": 80,
+                      "height": 60,
+                      "children": [
+                        {
+                          "id": "following-number",
+                          "name": "Following Number",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 0,
+                          "width": 80,
+                          "height": 24,
+                          "characters": "892",
+                          "fontSize": 20,
+                          "fontWeight": 800,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.18,
+                            "g": 0.18,
+                            "b": 0.18,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        },
+                        {
+                          "id": "following-label",
+                          "name": "Following Label",
+                          "type": "TEXT",
+                          "x": 0,
+                          "y": 28,
+                          "width": 80,
+                          "height": 16,
+                          "characters": "Following",
+                          "fontSize": 12,
+                          "fontWeight": 500,
+                          "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+                          "color": {
+                            "r": 0.44,
+                            "g": 0.44,
+                            "b": 0.44,
+                            "a": 1
+                          },
+                          "textAlignHorizontal": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "styles": {
+    "colors": {
+      "primary-green": {
+        "id": "primary-green",
+        "name": "Primary Green",
+        "type": "SOLID",
+        "color": {
+          "r": 0.11,
+          "g": 0.35,
+          "b": 0.15,
+          "a": 1
+        }
+      },
+      "primary-blue": {
+        "id": "primary-blue",
+        "name": "Primary Blue",
+        "type": "SOLID",
+        "color": {
+          "r": 0.11,
+          "g": 0.61,
+          "b": 0.94,
+          "a": 1
+        }
+      },
+      "primary-pink": {
+        "id": "primary-pink",
+        "name": "Primary Pink",
+        "type": "SOLID",
+        "color": {
+          "r": 0.98,
+          "g": 0.09,
+          "b": 0.5,
+          "a": 1
+        }
+      },
+      "gradient-purple": {
+        "id": "gradient-purple",
+        "name": "Gradient Purple",
+        "type": "SOLID",
+        "color": {
+          "r": 0.4,
+          "g": 0.49,
+          "b": 0.92,
+          "a": 1
+        }
+      },
+      "text-primary": {
+        "id": "text-primary",
+        "name": "Text Primary",
+        "type": "SOLID",
+        "color": {
+          "r": 0.2,
+          "g": 0.2,
+          "b": 0.2,
+          "a": 1
+        }
+      },
+      "text-secondary": {
+        "id": "text-secondary",
+        "name": "Text Secondary",
+        "type": "SOLID",
+        "color": {
+          "r": 0.53,
+          "g": 0.53,
+          "b": 0.53,
+          "a": 1
+        }
+      },
+      "background-white": {
+        "id": "background-white",
+        "name": "Background White",
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        }
+      },
+      "glass-background": {
+        "id": "glass-background",
+        "name": "Glass Background",
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.1
+        }
+      }
+    },
+    "textStyles": {
+      "heading-1": {
+        "id": "heading-1",
+        "name": "Heading 1",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+        "fontSize": 32,
+        "fontWeight": 800,
+        "letterSpacing": -0.01,
+        "lineHeight": 1.2
+      },
+      "heading-2": {
+        "id": "heading-2",
+        "name": "Heading 2",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+        "fontSize": 24,
+        "fontWeight": 700,
+        "letterSpacing": 0,
+        "lineHeight": 1.3
+      },
+      "body-text": {
+        "id": "body-text",
+        "name": "Body Text",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+        "fontSize": 16,
+        "fontWeight": 400,
+        "letterSpacing": 0,
+        "lineHeight": 1.5
+      },
+      "caption": {
+        "id": "caption",
+        "name": "Caption",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+        "fontSize": 14,
+        "fontWeight": 400,
+        "letterSpacing": 0,
+        "lineHeight": 1.4
+      }
+    },
+    "effects": {
+      "glass-blur": {
+        "id": "glass-blur",
+        "name": "Glass Blur",
+        "type": "LAYER_BLUR",
+        "blur": 20
+      },
+      "drop-shadow-light": {
+        "id": "drop-shadow-light",
+        "name": "Drop Shadow Light",
+        "type": "DROP_SHADOW",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.07
+        },
+        "offset": {
+          "x": 0,
+          "y": 2
+        },
+        "radius": 8,
+        "spread": 0
+      },
+      "drop-shadow-medium": {
+        "id": "drop-shadow-medium",
+        "name": "Drop Shadow Medium",
+        "type": "DROP_SHADOW",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.1
+        },
+        "offset": {
+          "x": 0,
+          "y": 20
+        },
+        "radius": 25,
+        "spread": 0
+      }
+    }
+  },
+  "componentProperties": {
+    "button-variants": {
+      "primary": {
+        "backgroundColor": "primary-green",
+        "textColor": "white",
+        "cornerRadius": 15,
+        "padding": "16px 32px",
+        "fontSize": 16,
+        "fontWeight": 600
+      },
+      "secondary": {
+        "backgroundColor": "glass-background",
+        "textColor": "primary-green",
+        "cornerRadius": 15,
+        "borderColor": "rgba(255,255,255,0.2)",
+        "borderWidth": 1,
+        "padding": "16px 32px",
+        "fontSize": 16,
+        "fontWeight": 600
+      },
+      "ghost": {
+        "backgroundColor": "transparent",
+        "textColor": "text-primary",
+        "cornerRadius": 12,
+        "padding": "8px 16px",
+        "fontSize": 16,
+        "fontWeight": 500
+      }
+    },
+    "input-variants": {
+      "default": {
+        "backgroundColor": "glass-background",
+        "borderColor": "rgba(255,255,255,0.2)",
+        "borderWidth": 1,
+        "cornerRadius": 15,
+        "padding": "16px 24px",
+        "fontSize": 16,
+        "fontWeight": 400
+      },
+      "focused": {
+        "backgroundColor": "rgba(255,255,255,0.2)",
+        "borderColor": "primary-green",
+        "borderWidth": 1,
+        "cornerRadius": 15,
+        "padding": "16px 24px",
+        "fontSize": 16,
+        "fontWeight": 400,
+        "boxShadow": "0 0 0 3px rgba(45, 90, 39, 0.1)"
+      }
+    }
+  },
+  "documentation": {
+    "description": "Design system complet pour l'application SymfoX - Réseau social moderne inspiré de Twitter avec interface glassmorphism et couleurs naturelles",
+    "version": "1.0.0",
+    "lastUpdated": "2024-12-19",
+    "designTokens": {
+      "colors": {
+        "primary": {
+          "green": "#2d5a27",
+          "blue": "#1da1f2",
+          "pink": "#f91880",
+          "purple": "#667eea"
+        },
+        "text": {
+          "primary": "#333333",
+          "secondary": "#888888",
+          "light": "#aab8c2"
+        },
+        "background": {
+          "white": "#ffffff",
+          "glass": "rgba(255, 255, 255, 0.1)",
+          "light": "#f7f9fa"
+        }
+      },
+      "typography": {
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+        "fontSizes": {
+          "xs": "12px",
+          "sm": "14px",
+          "base": "16px",
+          "lg": "18px",
+          "xl": "20px",
+          "2xl": "24px",
+          "3xl": "32px"
+        },
+        "fontWeights": {
+          "normal": 400,
+          "medium": 500,
+          "semibold": 600,
+          "bold": 700,
+          "extrabold": 800
+        }
+      },
+      "spacing": {
+        "xs": "4px",
+        "sm": "8px",
+        "md": "12px",
+        "lg": "16px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "32px"
+      },
+      "borderRadius": {
+        "sm": "4px",
+        "md": "8px",
+        "lg": "12px",
+        "xl": "16px",
+        "2xl": "20px",
+        "full": "9999px"
+      },
+      "shadows": {
+        "sm": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "md": "0 4px 6px rgba(0, 0, 0, 0.1)",
+        "lg": "0 10px 15px rgba(0, 0, 0, 0.1)",
+        "xl": "0 20px 25px rgba(0, 0, 0, 0.1)"
+      }
+    }
+  }
+} 
