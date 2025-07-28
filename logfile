@@ -425,3 +425,11 @@
 [PublicationDataPersister] Mapping PublicationInput vers Publication
 [PublicationDataPersister] Publication persistée avec ID: 58, texte: J'adore vraiment #Symfony
 [PublicationUploadController] Publication créée avec ID: 58
+[PublicationUploadController] Début upload
+[PublicationUploadController] Texte: Joris est trop fort en code
+[PublicationUploadController] Image: null
+[PublicationUploadController] Vidéo: null
+[PublicationDataPersister] Entrée process, type: App\Entity\PublicationInput
+[PublicationDataPersister] Mapping PublicationInput vers Publication
+[PublicationDataPersister] Publication persistée avec ID: 59, texte: Joris est trop fort en code
+[PublicationUploadController] Publication créée avec ID: 59
