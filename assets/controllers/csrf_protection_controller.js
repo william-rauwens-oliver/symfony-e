@@ -64,6 +64,7 @@ export function removeCsrfToken (formElement) {
 
     if (!csrfField) {
         return;
+        
     }
 
     const csrfCookie = csrfField.getAttribute('data-csrf-protection-cookie-value');
